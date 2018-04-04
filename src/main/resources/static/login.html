@@ -39,18 +39,14 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script>
     var data= {
         activeName:'login',
         form: {
             name: '',
-            region: '',
-            date1: '',
-            date2: '',
-            delivery: false,
-            type: [],
-            resource: '',
-            desc: ''
+            pass:''
         }
     };
 
@@ -63,6 +59,22 @@
             },
             onSubmit() {
                 console.log('submit!');
+                console.log(data.form.name + "," +data.form.pass);
+                var params = new URLSearchParams();
+                params.append('account', data.form.name);
+                params.append('password', data.form.pass);
+                var v = this;
+                axios.post('/login', params)
+                    .then(function (response) {
+                        console.log(response);
+                        v.$message('登录成功');
+                        setTimeout(function(){
+                            window.location.href="/main.html";
+                        },1000);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                });
             }
         }
     })

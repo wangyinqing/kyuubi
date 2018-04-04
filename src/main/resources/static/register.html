@@ -117,6 +117,8 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script>
     var data= {
         activeName:'etpreg',
@@ -141,6 +143,20 @@
             },
             onSubmit() {
                 console.log('submit!');
+                var v = this;
+                axios.post('/regist/create', {
+                    name : data.form.name
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        v.$message('注册成功');
+                    /*    setTimeout(function(){
+                         window.location.href="/login.html";
+                         },1000);*/
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })
