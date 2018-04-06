@@ -75,12 +75,12 @@
                                         <el-row :gutter="0">
                                             <el-col :span="2" style="text-align: right;margin: 10px auto;">取件地：</el-col>
                                             <el-col :span="10">
-                                                <el-input placeholder="请输入内容"></el-input>
+                                                <el-input placeholder="请输入内容"  v-model="searchParams.packageLocation"></el-input>
                                             </el-col>
                                             <el-col :span="2" style="text-align: right;margin: 10px auto;">目的地：
                                             </el-col>
                                             <el-col :span="10">
-                                                <el-input placeholder="请输入内容"></el-input>
+                                                <el-input placeholder="请输入内容" v-model="searchParams.destination"></el-input>
                                             </el-col>
                                         </el-row>
                                         <el-row :gutter="0" style="margin-top:  10px;">
@@ -89,31 +89,31 @@
                                                         长：
                                                     </el-col>
                                                     <el-col  :span="2">
-                                                        <el-input placeholder="请输入内容"></el-input>
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.length"></el-input>
                                                     </el-col>
                                                     <el-col  :span="2" style="text-align: right;margin: 10px auto;">
                                                         宽：
                                                     </el-col>
                                                     <el-col  :span="2">
-                                                        <el-input placeholder="请输入内容"></el-input>
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.width"></el-input>
                                                     </el-col>
                                                     <el-col  :span="2" style="text-align: right;margin: 10px auto;">
                                                         高：
                                                     </el-col>
                                                     <el-col  :span="2">
-                                                        <el-input placeholder="请输入内容"></el-input>
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.height"></el-input>
                                                     </el-col>
                                                     <el-col  :span="2" style="text-align: right;margin: 10px auto;">
                                                         重量：
                                                     </el-col>
                                                     <el-col  :span="2">
-                                                        <el-input placeholder="请输入内容"></el-input>
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.weight"></el-input>
                                                     </el-col>
                                                     <el-col  :span="3" style="text-align: right;margin: 10px auto;">
                                                         同尺寸重：
                                                     </el-col>
                                                     <el-col  :span="4">
-                                                        <el-input placeholder="请输入内容"></el-input>
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.boxes"></el-input>
                                                     </el-col>
                                                     <el-col  :span="1" style="margin: 10px auto;">
                                                         箱
@@ -125,11 +125,11 @@
                                                 特殊物品：
                                             </el-col>
                                             <el-col  :span="21">
-                                                <el-radio-group >
-                                                    <el-radio :label="3">普货</el-radio>
-                                                    <el-radio :label="6">外置电(配套电)</el-radio>
-                                                    <el-radio :label="9">内置电</el-radio>
-                                                    <el-radio :label="9">纺织品</el-radio>
+                                                <el-radio-group v-model="searchParams.specialItem">
+                                                    <el-radio label="normal">普货</el-radio>
+                                                    <el-radio label="outter">外置电(配套电)</el-radio>
+                                                    <el-radio label="inner">内置电</el-radio>
+                                                    <el-radio label="spin">纺织品</el-radio>
                                                 </el-radio-group>
                                             </el-col>
                                         </el-row>
@@ -138,19 +138,19 @@
                                                 运输方式：
                                             </el-col>
                                             <el-col  :span="21">
-                                                <el-radio-group >
-                                                    <el-radio :label="3">智能推荐</el-radio>
-                                                    <el-radio :label="6">快递</el-radio>
-                                                    <el-radio :label="9">空派</el-radio>
-                                                    <el-radio :label="9">海运</el-radio>
-                                                    <el-radio :label="9">铁路</el-radio>
-                                                    <el-radio :label="9">中港</el-radio>
+                                                <el-radio-group  v-model="searchParams.deliverApproach">
+                                                    <el-radio label="intelli">智能推荐</el-radio>
+                                                    <el-radio label="deliveryExp">快递</el-radio>
+                                                    <el-radio label="air">空派</el-radio>
+                                                    <el-radio label="sea">海运</el-radio>
+                                                    <el-radio label="railway">铁路</el-radio>
+                                                    <el-radio label="zg">中港</el-radio>
                                                 </el-radio-group>
                                             </el-col>
                                         </el-row>
                                         <el-row style="margin-top:  10px;">
                                             <el-col style="text-align: center;">
-                                                <el-button type="primary">全网查价</el-button>
+                                                <el-button type="primary" @click="search">全网查价</el-button>
                                             </el-col>
                                         </el-row >
                                 </el-col>
@@ -187,6 +187,17 @@
     data.tabs={activeName:"fba"};
     data.userType = 'guest';
     data.userName='游客';
+    data.searchParams = {
+        packageLocation: "",
+        destination: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+        boxes: "",
+        specialItem: "normal",
+        deliverApproach: "intelli"
+    };
 
     new Vue({
         el: '#app',
@@ -216,6 +227,9 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            search(){
+                console.log('search ' + JSON.stringify(data.searchParams) );
             }
         }
     });
