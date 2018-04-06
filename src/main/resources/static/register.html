@@ -27,7 +27,14 @@
                                             <el-input type="password" v-model="form.checkPass" auto-complete="off"></el-input>
                                         </el-form-item>
                                         <el-form-item label="手机号码">
-                                            <el-input v-model="form.mobile" placeholder="请选择活动区域"></el-input>
+                                            <el-row>
+                                                <el-col :span="21">
+                                                    <el-input v-model="form.mobile" placeholder="请选择活动区域"></el-input>
+                                                </el-col>
+                                                <el-col :span="3" >
+                                                    <el-button type="primary" @click="onSubmit" style="width:98%;float:right;">获取验证码</el-button>
+                                                </el-col>
+                                            </el-row>
                                         </el-form-item>
                                         <el-form-item label="公司名称">
                                             <el-input v-model="form.eptname" placeholder="请选择活动区域"></el-input>
@@ -84,13 +91,20 @@
                                             <el-input v-model="form.name" placeholder="请选择活动区域"></el-input>
                                         </el-form-item>
                                         <el-form-item label="手机号码">
-                                            <el-input v-model="form.mobile" placeholder="请选择活动区域"></el-input>
+                                            <el-row>
+                                                <el-col :span="21">
+                                                    <el-input v-model="form.mobile" placeholder="请选择活动区域"></el-input>
+                                                </el-col>
+                                                <el-col :span="3" >
+                                                    <el-button type="primary" @click="onSubmit" style="width:98%;float:right;">获取验证码</el-button>
+                                                </el-col>
+                                            </el-row>
                                         </el-form-item>
                                         <el-form-item label="联系QQ">
                                             <el-input v-model="form.qq" placeholder="请选择活动区域"></el-input>
                                         </el-form-item>
                                         <el-form-item label="联系邮箱">
-                                            <el-input v-model="form.mobile" placeholder="请选择活动区域"></el-input>
+                                            <el-input v-model="form.email" placeholder="请选择活动区域"></el-input>
                                         </el-form-item>
                                         <el-form-item label="店铺平台">
                                             <el-select v-model="form.store" placeholder="请选择活动区域">
@@ -169,7 +183,7 @@
                             type: 'success'
                         });
                         setTimeout(function(){
-                            window.location.href="/main.html";
+                            window.location.href="/login.html";
                         },1000);
                     })
                     .catch(function (error) {
