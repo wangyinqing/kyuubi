@@ -17,6 +17,7 @@ public class RegistController {
     @ResponseBody
     @RequestMapping("/create")
     public String create(@RequestBody Map data) {
+        System.out.println(data);
         return "";
     }
 }
