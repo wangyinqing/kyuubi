@@ -2,6 +2,7 @@ package com.project.service;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -50,4 +51,25 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+
+    private ConcurrentMap<String,RegUser> tokenMap = new ConcurrentHashMap<>();
+
+    @Override
+    public String generateSut(RegUser user) {
+        String token  =  UUID.randomUUID().toString().replaceAll("-","");
+        tokenMap.put(token, user);
+        return token;
+    }
+
+    @Override
+    public RegUser getUserByToken(String token) {
+        return tokenMap.get(token);
+    }
+
+    @Override
+    public RegUser removeUserByToken(String token) {
+        return tokenMap.remove(token);
+    }
+
 }

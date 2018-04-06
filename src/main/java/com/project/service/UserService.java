@@ -15,4 +15,10 @@ public interface UserService {
 
     RegUser findUserByMobileAndPass(String mobile, String password);
 
+    String generateSut(RegUser user);
+
+    RegUser getUserByToken(String token);
+
+    RegUser removeUserByToken(String token);
+
 }

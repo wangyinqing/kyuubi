@@ -40,8 +40,14 @@
     <el-container>
         <el-header style="padding: 1px;">
             <div  class="top_level">
-                    <el-button type="text" @click="goRegister" >用户注册</el-button>
+                <template v-if="userType == 'guest' ">
+                    <el-button type="text" @click="goRegister">用户注册</el-button>
                     <el-button type="text" @click="login">用户登录</el-button>
+                </template>
+                <template v-if="userType == 'front' ">
+                    <el-button type="text" @click="goPersonal">{{userName}}</el-button>
+                    <el-button type="text" @click="logout">退出登录</el-button>
+                </template>
             </div>
         </el-header>
         <el-main style="padding: 1px;">
@@ -174,9 +180,13 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script>
     var data = {};
     data.tabs={activeName:"fba"};
+    data.userType = 'guest';
+    data.userName='游客';
 
     new Vue({
         el: '#app',
@@ -190,8 +200,40 @@
             },
             login(){
                 window.location.href="login.html";
+            },
+            goPersonal(){
+                window.location.href="personal.html";
+            },
+            logout(){
+                axios.get('/invalidateUser')
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            data.userType = 'guest';
+                            data.userName='游客';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
-    })
+    });
+
+    axios.get('/validateUser')
+        .then(function (response) {
+            console.log(response);
+            if(response.data.code == 1) {
+                data.userType = "front";
+                data.user = response.data.user;
+                data.userName = data.user.account;
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+
 </script>
 </html>
