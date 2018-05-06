@@ -44,23 +44,76 @@
                             </template>
                             <template v-if="active==1">
                                 <el-form-item label="营业执照">
-                                    <el-input v-model="form.license"></el-input>
+                                    <el-upload
+                                            class="upload-demo"
+                                            ref="upload"
+                                            action="/business/regist/upload"
+                                            :on-preview="handlePreview"
+                                            :on-remove="handleRemove"
+                                            :file-list="form.license"
+                                            :auto-upload="true"
+                                            :limit="1"
+                                            :data="{'id':form.id,'field':'license'}">
+                                        <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
+                                    </el-upload>
                                 </el-form-item>
+
                                 <el-form-item label="组织结构代码证">
-                                    <el-input v-model="form.permissionCode"></el-input>
+                                    <el-upload
+                                            class="upload-demo"
+                                            ref="upload"
+                                            action="/business/regist/upload"
+                                            :on-preview="handlePreview"
+                                            :on-remove="handleRemove"
+                                            :file-list="form.permissionCode"
+                                            :auto-upload="true"
+                                            :limit="1"
+                                            :data="{'id':form.id,'field':'permissionCode'}">
+                                        <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
+                                    </el-upload>
                                 </el-form-item>
+
+
                                 <el-form-item label="税务登记证">
-                                    <el-input v-model="form.taxLicense"></el-input>
+                                    <el-upload
+                                            class="upload-demo"
+                                            ref="upload"
+                                            action="/business/regist/upload"
+                                            :on-preview="handlePreview"
+                                            :on-remove="handleRemove"
+                                            :file-list="form.taxLicense"
+                                            :auto-upload="true"
+                                            :limit="1"
+                                            :data="{'id':form.id,'field':'taxLicense'}">
+                                        <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
+                                        <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+                                    </el-upload>
                                 </el-form-item>
+
                                 <el-form-item label="道路运输许可证">
-                                    <el-input v-model="form.transportPermission"></el-input>
+                                    <el-upload
+                                            class="upload-demo"
+                                            ref="upload"
+                                            action="/business/regist/upload"
+                                            :on-preview="handlePreview"
+                                            :on-remove="handleRemove"
+                                            :file-list="form.transportPermission"
+                                            :auto-upload="true"
+                                            :limit="1"
+                                            :data="{'id':form.id,'field':'transportPermission'}">
+                                        <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
+                                    </el-upload>
                                 </el-form-item>
+
                             </template>
                             <template v-if="active==2">
                                 <h3>物流商入驻服务协议</h3>
                             </template>
                             <template v-if="active==3">
-                                   恭喜你入驻完成
+                                请点击完成
+                            </template>
+                            <template v-if="active==4">
+                                恭喜你完成入驻,请等待审核
                             </template>
                         </el-form>
                     </el-col>
@@ -69,7 +122,7 @@
                     <el-col :span="4" :offset="12" v-if="active <=3">
                         <el-button style="margin-top: 12px;" @click="prev">上一步</el-button>
                         <el-button style="margin-top: 12px;" @click="next"  type="primary" v-if="active <3">下一步</el-button>
-                        <el-button style="margin-top: 12px;" @click="next"  type="primary" v-if="active >=3">完成</el-button>
+                        <el-button style="margin-top: 12px;" @click="onSubmit"  type="primary" v-if="active >=3" >完成</el-button>
                     </el-col>
                 </el-row>
             </el-main>
@@ -86,6 +139,7 @@
     var data= {
         active:0,
         form: {
+            id:'13dfsfet345ggrhwwer2343fre',
             name: '',
             region: '',
             date1: '',
@@ -94,7 +148,8 @@
             type: [],
             resource: '',
             desc: '',
-            regType:1
+            regType:1,
+            fileList:[]
         }
     };
 
@@ -107,6 +162,46 @@
             },
             prev(){
                 if(this.active-- < 0) this.active = 0;
+            },
+            submitUpload() {
+                this.$refs.upload.submit();
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            onSubmit() {
+                //debugger;
+                console.log('submit!');
+                var v = this;
+                axios.post('/business/regist/create', {
+                    eptName:data.form.eptName,
+                    contact:data.form.contact,
+                    mobile:data.form.mobile,
+                    qq:data.form.qq,
+                    eptType:data.form.eptType,
+                    name : data.form.name,
+                    license:data.form.license,
+                    permissionCode:data.form.permissionCode,
+                    taxLicense:data.form.taxLicense,
+                    transportPermission:data.form.transportPermission,
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        v.$message({
+                            message: '注册成功',
+                            type: 'success'
+                        });
+                        // setTimeout(function(){
+                        //     window.location.href="/business/login.html";
+                        // },1000);
+                        if (data.active++ > 3) data.active = 4;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })
