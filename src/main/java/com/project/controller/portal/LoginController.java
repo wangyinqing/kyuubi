@@ -1,4 +1,4 @@
-package com.project.controller;
+package com.project.controller.portal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.dto.RegUser;
-import com.project.service.UserService;
+import com.project.service.portal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -28,8 +28,9 @@ public class LoginController {
     @RequestMapping("/login")
     public String login(@RequestParam() String account, @RequestParam() String password, HttpServletResponse response) throws Exception{
         RegUser regUser = userService.findUserByAccountAndPass(account, password);
-        if(regUser == null)
+        if(regUser == null) {
             regUser = userService.findUserByMobileAndPass(account,password);
+        }
         Map map = new HashMap();
         if(regUser == null){
             map.put("code",0);

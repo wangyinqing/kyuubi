@@ -1,6 +1,8 @@
 package com.project.controller.business;
 
 import com.project.dto.BizUser;
+import com.project.service.business.LogisticsProviderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +19,14 @@ import java.io.IOException;
 @RequestMapping("/business/regist")
 public class RegistController {
 
+    @Autowired
+    private LogisticsProviderService logisticsProviderService;
+
     @RequestMapping("/create")
     @ResponseBody
     public String createUser(@RequestBody BizUser user){
-        System.out.println(user);
-        return "";
+        int addNum = logisticsProviderService.createLogisticsProvider(user);
+        return String.valueOf(addNum);
     }
 
     @RequestMapping("/upload")

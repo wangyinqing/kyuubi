@@ -1,7 +1,7 @@
-package com.project.controller;
+package com.project.controller.portal;
 
 import com.project.dto.RegUser;
-import com.project.service.UserService;
+import com.project.service.portal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,9 +21,8 @@ public class RegistController {
     @ResponseBody
     @RequestMapping("/create")
     public String create(@RequestBody RegUser user) {
-        System.out.println(user);
-        userService.addUser(user);
-        return "";
+        int addNum = userService.addUser(user);
+        return String.valueOf(addNum);
     }
 
     @Autowired

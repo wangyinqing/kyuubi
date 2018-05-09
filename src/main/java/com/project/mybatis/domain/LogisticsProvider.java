@@ -1,10 +1,13 @@
-package com.project.dto;
+package com.project.mybatis.domain;
+
+import java.util.Date;
 
 /**
- * 物流商
+ * @Author: jiazhuang
+ * @Description: 物流商
+ * @Date: 16:39 2018/5/9
  */
-public class BizUser {
-
+public class LogisticsProvider {
     private String eptName;
 
     private Integer status;
@@ -24,6 +27,10 @@ public class BizUser {
     private String taxLicense;
 
     private String transportPermission;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public String getEptName() {
         return eptName;
@@ -105,10 +112,27 @@ public class BizUser {
         this.transportPermission = transportPermission;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
     public String toString() {
-        return "BizUser{" +
+        return "LogisticsProvider{" +
                 "eptName='" + eptName + '\'' +
+                ", status=" + status +
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +
@@ -117,6 +141,8 @@ public class BizUser {
                 ", permissionCode='" + permissionCode + '\'' +
                 ", taxLicense='" + taxLicense + '\'' +
                 ", transportPermission='" + transportPermission + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

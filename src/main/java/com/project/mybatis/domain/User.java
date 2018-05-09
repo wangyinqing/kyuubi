@@ -1,20 +1,34 @@
-package com.project.dto;
+package com.project.mybatis.domain;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
- * @author wangyinqing
+ * @Author: jiazhuang
+ * @Date: 19:13 2018/5/8
  */
-public class RegUser {
+public class User implements Serializable{
+    private static final long serialVersionUID = 1L;
 
+    private Long id;
     private String account;
     private String password;
     private String mobile;
     private String eptname;
     private String name;
-
     private String qq;
     private String email;
     private String eptaddress;
-    private int regType = 1;
+    private Date createTime;
+    private Date updateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getAccount() {
         return account;
@@ -80,18 +94,27 @@ public class RegUser {
         this.eptaddress = eptaddress;
     }
 
-    public int getRegType() {
-        return regType;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setRegType(int regType) {
-        this.regType = regType;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
     public String toString() {
-        return "RegUser{" +
-                "account='" + account + '\'' +
+        return "User{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", eptname='" + eptname + '\'' +
@@ -99,7 +122,8 @@ public class RegUser {
                 ", qq='" + qq + '\'' +
                 ", email='" + email + '\'' +
                 ", eptaddress='" + eptaddress + '\'' +
-                ", regType=" + regType +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }
