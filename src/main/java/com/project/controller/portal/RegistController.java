@@ -1,6 +1,6 @@
 package com.project.controller.portal;
 
-import com.project.dto.RegUser;
+import com.project.model.dto.RegUser;
 import com.project.service.portal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

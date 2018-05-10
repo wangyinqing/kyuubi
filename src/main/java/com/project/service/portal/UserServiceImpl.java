@@ -1,7 +1,7 @@
 package com.project.service.portal;
 
-import com.project.dto.RegUser;
 import com.project.manager.UserManager;
+import com.project.model.dto.RegUser;
 import com.project.mybatis.domain.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

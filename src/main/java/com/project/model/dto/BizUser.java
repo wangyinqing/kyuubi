@@ -1,11 +1,15 @@
-package com.project.dto;
+package com.project.model.dto;
 
 /**
  * 物流商
  */
 public class BizUser {
 
-    private String eptName;
+    private String account;
+
+    private String password;
+
+    private String eptname;
 
     private Integer status;
 
@@ -25,12 +29,28 @@ public class BizUser {
 
     private String transportPermission;
 
-    public String getEptName() {
-        return eptName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setEptName(String eptName) {
-        this.eptName = eptName;
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEptname() {
+        return eptname;
+    }
+
+    public void setEptname(String eptname) {
+        this.eptname = eptname;
     }
 
     public Integer getStatus() {
@@ -108,7 +128,7 @@ public class BizUser {
     @Override
     public String toString() {
         return "BizUser{" +
-                "eptName='" + eptName + '\'' +
+                "eptName='" + eptname + '\'' +
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +

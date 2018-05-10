@@ -1,6 +1,7 @@
 package com.project.service.business;
 
-import com.project.dto.BizUser;
+import com.project.model.UserStatusEnum;
+import com.project.model.dto.BizUser;
 import com.project.manager.LogisticsProviderManager;
 import com.project.mybatis.domain.LogisticsProvider;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,25 @@ public class LogisticsProviderServiceImpl implements LogisticsProviderService {
         if (isProviderPresent(logisticsProvider)) {
             return 0;
         }
+        //创建账号时设置用户为待审核状态status=0
+        logisticsProvider.setStatus(UserStatusEnum.PENDING.getValue());
         return logisticsProviderManager.addLogisticsProvider(logisticsProvider);
+    }
+
+    /**
+     * 根据账号密码查询用户
+     *
+     * @param account
+     * @param password
+     * @return
+     */
+    @Override
+    public BizUser findLogisticsProviderByAccountAndPass(String account, String password) {
+        LogisticsProvider logisticsProvider = logisticsProviderManager.findLogisticsProviderByAccount(account);
+        if (logisticsProvider != null && password.equals(logisticsProvider.getPassword())) {
+            return convertLogisticsProviderToBizUser(logisticsProvider);
+        }
+        return null;
     }
 
     private LogisticsProvider convertBizUserToLogisticsProvider(BizUser bizUser) {
@@ -37,7 +56,14 @@ public class LogisticsProviderServiceImpl implements LogisticsProviderService {
         return logisticsProvider;
     }
 
+    private BizUser convertLogisticsProviderToBizUser(LogisticsProvider logisticsProvider) {
+        BizUser bizUser = new BizUser();
+        BeanUtils.copyProperties(logisticsProvider, bizUser);
+        return bizUser;
+    }
+
     private boolean isProviderPresent(LogisticsProvider logisticsProvider) {
-        return false;
+        LogisticsProvider lp = logisticsProviderManager.findLogisticsProviderByAccount(logisticsProvider.getAccount());
+        return lp != null;
     }
 }

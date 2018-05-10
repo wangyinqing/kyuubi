@@ -1,14 +1,24 @@
 package com.project.mybatis.domain;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @Author: jiazhuang
  * @Description: 物流商
  * @Date: 16:39 2018/5/9
  */
-public class LogisticsProvider {
-    private String eptName;
+public class LogisticsProvider implements Serializable {
+
+    private final static long serialVersionUID = 1L;
+
+    private Long id;
+
+    private String account;
+
+    private String password;
+
+    private String eptname;
 
     private Integer status;
 
@@ -28,16 +38,40 @@ public class LogisticsProvider {
 
     private String transportPermission;
 
-    private Date createTime;
+    private Timestamp createTime;
 
-    private Date updateTime;
+    private Timestamp updateTime;
 
-    public String getEptName() {
-        return eptName;
+    public Long getId() {
+        return id;
     }
 
-    public void setEptName(String eptName) {
-        this.eptName = eptName;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEptname() {
+        return eptname;
+    }
+
+    public void setEptname(String eptname) {
+        this.eptname = eptname;
     }
 
     public Integer getStatus() {
@@ -112,26 +146,26 @@ public class LogisticsProvider {
         this.transportPermission = transportPermission;
     }
 
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
     @Override
     public String toString() {
         return "LogisticsProvider{" +
-                "eptName='" + eptName + '\'' +
+                "eptName='" + eptname + '\'' +
                 ", status=" + status +
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +

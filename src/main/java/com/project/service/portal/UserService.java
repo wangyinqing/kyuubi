@@ -1,6 +1,6 @@
 package com.project.service.portal;
 
-import com.project.dto.RegUser;
+import com.project.model.dto.RegUser;
 
 /**
  * @author wangyinqing

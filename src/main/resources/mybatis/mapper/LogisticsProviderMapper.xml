@@ -19,19 +19,51 @@
         id,
         account,
         password,
-        mobile,
         eptname,
-        name,
+        status,
+        contact,
+        mobile,
         qq,
-        email,
-        eptaddress,
+        ept_type AS eptType,
+        license,
+        permission_code AS permissionCode,
+        tax_license AS taxLicense,
+        transport_permission AS transportPermission,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
 
     <insert id="addLogisticsProvider" parameterType="LogisticsProvider" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (account, password, mobile, eptname, name, qq, email, eptaddress)
-        VALUES (#{account}, #{password}, #{mobile}, #{eptname}, #{name}, #{qq}, #{email}, #{eptaddress})
+        INSERT INTO logistics_provider
+        (account,
+        password,
+        eptname,
+        status,
+        contact,
+        mobile,
+        qq,
+        ept_type,
+        license,
+        permission_code,
+        tax_license,
+        transport_permission)
+        VALUES
+        (#{account},
+        #{password},
+        #{eptname},
+        #{status},
+        #{contact},
+        #{mobile},
+        #{qq},
+        #{eptType},
+        #{license},
+        #{permissionCode},
+        #{taxLicense},
+        #{transportPermission})
     </insert>
 
+    <select id="findLogisticsProviderByAccount" parameterType="String" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider WHERE account = #{account}
+    </select>
 </mapper>

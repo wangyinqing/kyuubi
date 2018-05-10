@@ -1,6 +1,6 @@
 package com.project.service.business;
 
-import com.project.dto.BizUser;
+import com.project.model.dto.BizUser;
 
 /**
  * @Author: jiazhuang
@@ -13,4 +13,12 @@ public interface LogisticsProviderService {
      * @return
      */
     int createLogisticsProvider(BizUser bizUser);
+
+    /**
+     * 根据账号密码查询用户
+     * @param account
+     * @param password
+     * @return
+     */
+    BizUser findLogisticsProviderByAccountAndPass(String account, String password);
 }

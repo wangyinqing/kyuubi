@@ -1,6 +1,6 @@
 package com.project.controller.business;
 
-import com.project.dto.BizUser;
+import com.project.model.dto.BizUser;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

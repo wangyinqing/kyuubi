@@ -24,8 +24,17 @@
                     <el-col :span="16" :offset="4">
                         <el-form ref="form" :model="form" label-width="200px">
                             <template v-if="active==0">
+                                <el-form-item label="用户名">
+                                    <el-input v-model="form.account" placeholder="用于登录九尾狐物流商平台"></el-input>
+                                </el-form-item>
+                                <el-form-item label="密码" prop="pass">
+                                    <el-input type="password" v-model="form.pass" auto-complete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="确认密码" prop="checkPass">
+                                    <el-input type="password" v-model="form.checkPass" auto-complete="off"></el-input>
+                                </el-form-item>
                                 <el-form-item label="物流企业名">
-                                    <el-input v-model="form.eptName" placeholder="请输入名称"></el-input>
+                                    <el-input v-model="form.eptname" placeholder="请输入名称"></el-input>
                                 </el-form-item>
                                 <el-form-item label="联系人">
                                     <el-input v-model="form.contact" placeholder="请输入联系人"></el-input>
@@ -177,7 +186,9 @@
                 console.log('submit!');
                 var v = this;
                 axios.post('/business/regist/create', {
-                    eptName:data.form.eptName,
+                    account:data.form.account,
+                    password:data.form.pass,
+                    eptname:data.form.eptname,
                     contact:data.form.contact,
                     mobile:data.form.mobile,
                     qq:data.form.qq,

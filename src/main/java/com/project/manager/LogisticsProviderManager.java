@@ -13,4 +13,11 @@ public interface LogisticsProviderManager {
      * @return
      */
     int addLogisticsProvider(LogisticsProvider logisticsProvider);
+
+    /**
+     * 根据用户名查询物流商
+     * @param account
+     * @return
+     */
+    LogisticsProvider findLogisticsProviderByAccount(String account);
 }
