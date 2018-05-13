@@ -40,7 +40,8 @@
                             <el-table
                                     :data="logistics"
                                     border
-                                    style="width: 100%">
+                                    style="width: 100%"
+                                    v-loading="logisticsLoading">
                                 <el-table-column
                                         prop="account"
                                         label="用户名"
@@ -158,6 +159,7 @@
     var data= {
         menu:1,
         logistics:[],
+        logisticsLoading: false
     };
 
     new Vue({
@@ -180,13 +182,16 @@
                 console.log(key, keyPath);
                 data.menu=key;
                 if(key == 2){
+                    data.logisticsLoading = true;
                     axios.get('/backend/logistics/find')
                         .then(function (response) {
                             console.log(response);
                             data.logistics = response.data;
+                            data.logisticsLoading = false;
                         })
                         .catch(function (error) {
                             console.log(error);
+                            data.logisticsLoading = false;
                         });
                 }else if(key == 3){
                     this.$confirm('确定登出?', '提示', {

@@ -59,10 +59,11 @@
                                             action="/business/regist/upload"
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
+                                            :on-success="handleSuccess"
                                             :file-list="form.license"
                                             :auto-upload="true"
                                             :limit="1"
-                                            :data="{'id':form.id,'field':'license'}">
+                                            :data="{'id':form.account,'field':'license'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                     </el-upload>
                                 </el-form-item>
@@ -74,10 +75,11 @@
                                             action="/business/regist/upload"
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
+                                            :on-success="handleSuccess"
                                             :file-list="form.permissionCode"
                                             :auto-upload="true"
                                             :limit="1"
-                                            :data="{'id':form.id,'field':'permissionCode'}">
+                                            :data="{'id':form.account,'field':'permissionCode'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                     </el-upload>
                                 </el-form-item>
@@ -90,10 +92,11 @@
                                             action="/business/regist/upload"
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
+                                            :on-success="handleSuccess"
                                             :file-list="form.taxLicense"
                                             :auto-upload="true"
                                             :limit="1"
-                                            :data="{'id':form.id,'field':'taxLicense'}">
+                                            :data="{'id':form.account,'field':'taxLicense'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                         <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
                                     </el-upload>
@@ -106,10 +109,11 @@
                                             action="/business/regist/upload"
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
+                                            :on-success="handleSuccess"
                                             :file-list="form.transportPermission"
                                             :auto-upload="true"
                                             :limit="1"
-                                            :data="{'id':form.id,'field':'transportPermission'}">
+                                            :data="{'id':form.account,'field':'transportPermission'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                     </el-upload>
                                 </el-form-item>
@@ -148,17 +152,12 @@
     var data= {
         active:0,
         form: {
-            id:'13dfsfet345ggrhwwer2343fre',
-            name: '',
-            region: '',
-            date1: '',
-            date2: '',
-            delivery: false,
-            type: [],
-            resource: '',
-            desc: '',
-            regType:1,
-            fileList:[]
+            account: '',
+            eptname: '',
+            contact: '',
+            mobile: '',
+            qq: '',
+            eptType: ''
         }
     };
 
@@ -193,11 +192,10 @@
                     mobile:data.form.mobile,
                     qq:data.form.qq,
                     eptType:data.form.eptType,
-                    name : data.form.name,
                     license:data.form.license,
                     permissionCode:data.form.permissionCode,
                     taxLicense:data.form.taxLicense,
-                    transportPermission:data.form.transportPermission,
+                    transportPermission:data.form.transportPermission
                 })
                     .then(function (response) {
                         console.log(response);
@@ -213,6 +211,21 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            handleSuccess(response, file, fileList){
+                console.log(response);
+                if(response.code == 1){
+                    if(response.type == 'license'){
+                        data.form.license = response.url;
+                    }else if(response.type == 'permissionCode'){
+                        data.form.permissionCode = response.url;
+                    }else if(response.type == 'taxLicense'){
+                        data.form.taxLicense = response.url;
+                    }else if(response.type == 'transportPermission'){
+                        data.form.transportPermission = response.url;
+                    }
+                }
+
             }
         }
     })
