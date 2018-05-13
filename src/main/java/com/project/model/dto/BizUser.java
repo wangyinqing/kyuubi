@@ -29,6 +29,15 @@ public class BizUser {
 
     private String transportPermission;
 
+
+    private boolean licenseVisible = false;
+
+    private boolean permissionCodeVisible = false;
+
+    private boolean taxLicenseVisible = false;
+
+    private boolean transportPermissionVisible = false;
+
     public String getAccount() {
         return account;
     }
@@ -123,6 +132,22 @@ public class BizUser {
 
     public void setTransportPermission(String transportPermission) {
         this.transportPermission = transportPermission;
+    }
+
+    public boolean isLicenseVisible() {
+        return licenseVisible;
+    }
+
+    public boolean isPermissionCodeVisible() {
+        return permissionCodeVisible;
+    }
+
+    public boolean isTaxLicenseVisible() {
+        return taxLicenseVisible;
+    }
+
+    public boolean isTransportPermissionVisible() {
+        return transportPermissionVisible;
     }
 
     @Override

@@ -66,4 +66,11 @@
         SELECT <include refid="logisticsProviderColumns"></include>
         FROM logistics_provider WHERE account = #{account}
     </select>
+
+
+    <select id="findLogistics" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider
+    </select>
+
 </mapper>

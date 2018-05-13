@@ -3,6 +3,8 @@ package com.project.mybatis.mapper;
 import com.project.mybatis.domain.LogisticsProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @Author: jiazhuang
  * @Date: 16:41 2018/5/9
@@ -21,4 +23,9 @@ public interface LogisticsProviderMapper {
      * @return
      */
     LogisticsProvider findLogisticsProviderByAccount(String account);
+
+    /**
+     * @return
+     */
+    List<LogisticsProvider> findLogistics();
 }

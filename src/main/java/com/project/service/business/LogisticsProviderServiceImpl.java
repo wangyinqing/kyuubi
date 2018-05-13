@@ -1,12 +1,17 @@
 package com.project.service.business;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.project.manager.LogisticsProviderManager;
 import com.project.model.UserStatusEnum;
 import com.project.model.dto.BizUser;
-import com.project.manager.LogisticsProviderManager;
 import com.project.mybatis.domain.LogisticsProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: jiazhuang
@@ -65,5 +70,20 @@ public class LogisticsProviderServiceImpl implements LogisticsProviderService {
     private boolean isProviderPresent(LogisticsProvider logisticsProvider) {
         LogisticsProvider lp = logisticsProviderManager.findLogisticsProviderByAccount(logisticsProvider.getAccount());
         return lp != null;
+    }
+
+
+    @Override
+    public List<BizUser> findLogistcits(Map<String,Object> params) {
+        List<LogisticsProvider> providerList = logisticsProviderManager.findLogistics(null);
+        List<BizUser> bizUsers = Lists.transform(providerList, new Function<LogisticsProvider, BizUser>() {
+            @Override
+            public BizUser apply(LogisticsProvider logisticsProvider) {
+                BizUser bizUser = new BizUser();
+                BeanUtils.copyProperties(logisticsProvider, bizUser);
+                return bizUser;
+            }
+        });
+        return bizUsers;
     }
 }
