@@ -29,4 +29,7 @@ public interface LogisticsProviderManager {
      * @return
      */
     List<LogisticsProvider> findLogistics(Map<String,Object> params);
+
+
+    long updateLogistics(Map<String,Object> params);
 }

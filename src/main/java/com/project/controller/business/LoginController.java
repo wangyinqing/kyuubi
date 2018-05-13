@@ -29,10 +29,16 @@ public class LoginController {
         BizUser bizUser = logisticsProviderService.findLogisticsProviderByAccountAndPass(account, password);
 
         Map map = new HashMap();
+        map.put("code", 0);
         if (bizUser == null) {
-            map.put("code", 0);
             map.put("message", "账号或者密码不正确");
-        } else {
+        }else if(bizUser.getStatus() == 0){
+            map.put("message", "您的账号还未审核通过，请先联系运营审核");
+        }else if(bizUser.getStatus() == 2){
+            map.put("message", "您的账号审核未通过，请先联系运营核实");
+        }else if(bizUser.getStatus() == 3){
+            map.put("message", "您的账号已被删除，请联系运营核实并重新注册");
+        }else {
             map.put("code", 1);
         }
         ObjectMapper mapper = new ObjectMapper();

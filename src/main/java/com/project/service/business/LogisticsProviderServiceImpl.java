@@ -86,4 +86,9 @@ public class LogisticsProviderServiceImpl implements LogisticsProviderService {
         });
         return bizUsers;
     }
+
+    @Override
+    public long updateLogistics(Map<String, Object> params) {
+        return logisticsProviderManager.updateLogistics(params);
+    }
 }

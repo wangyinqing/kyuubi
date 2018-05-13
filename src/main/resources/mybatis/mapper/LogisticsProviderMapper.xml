@@ -73,4 +73,10 @@
         FROM logistics_provider
     </select>
 
+
+    <update id="updateLogistics" parameterType="map">
+        UPDATE logistics_provider SET status = #{status} WHERE ID = #{id}
+    </update>
+
+
 </mapper>

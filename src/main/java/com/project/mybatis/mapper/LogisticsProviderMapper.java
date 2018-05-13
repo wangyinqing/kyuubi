@@ -4,6 +4,7 @@ import com.project.mybatis.domain.LogisticsProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: jiazhuang
@@ -28,4 +29,10 @@ public interface LogisticsProviderMapper {
      * @return
      */
     List<LogisticsProvider> findLogistics();
+
+    /**
+     * @param params
+     * @return
+     */
+    long updateLogistics(Map<String,Object> params);
 }

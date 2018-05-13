@@ -43,4 +43,9 @@ public class LogisticsProviderManagerImpl implements LogisticsProviderManager {
     public List<LogisticsProvider> findLogistics(Map<String, Object> params) {
         return logisticsProviderMapper.findLogistics();
     }
+
+    @Override
+    public long updateLogistics(Map<String, Object> params) {
+        return logisticsProviderMapper.updateLogistics(params);
+    }
 }

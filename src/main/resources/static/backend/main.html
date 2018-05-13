@@ -52,6 +52,16 @@
                                         width="120">
                                 </el-table-column>
                                 <el-table-column
+                                        label="状态"
+                                        width="120">
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.status==0">待审核</span>
+                                        <span v-if="scope.row.status==1">审核通过</span>
+                                        <span v-if="scope.row.status==2">审核未通过</span>
+                                        <span v-if="scope.row.status==3">已删除</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
                                         prop="contact"
                                         label="联系人"
                                         width="120">
@@ -124,9 +134,9 @@
                                         label="操作"
                                         min-width="200">
                                     <template slot-scope="scope">
-                                        <el-button v-if="scope.row.status==0" @click="handleClick(scope.row)" type="text" size="small">审核通过</el-button>
-                                        <el-button v-if="scope.row.status==0" @click="handleClick(scope.row)" type="text" size="small">审核不通过</el-button>
-                                        <el-button v-if="scope.row.status!=3" type="text" size="small">删除</el-button>
+                                        <el-button v-if="scope.row.status==0" @click="operateLogistic(scope.row, 1)" type="text" size="small">审核通过</el-button>
+                                        <el-button v-if="scope.row.status==0" @click="operateLogistic(scope.row, 2)" type="text" size="small">审核不通过</el-button>
+                                        <el-button v-if="scope.row.status!=3" @click="operateLogistic(scope.row, 3)" type="text" size="small">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -199,6 +209,39 @@
                 }).catch(() => {
                     });
                 }
+            },
+            operateLogistic(data, action){
+                var msg = null;
+                if(action == 1){
+                    msg = '确定通过审核？';
+                }else if(action == 2){
+                    msg = '确定审核不通过？';
+                }else if(action == 3){
+                    msg = '确定删除？';
+                }
+                var v = this;
+                this.$confirm(msg, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/backend/logistics/update', {
+                    id:data.id,
+                    status:action
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        data.status = action;
+                        v.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }).catch(() => {
+                });
             }
         }
     })

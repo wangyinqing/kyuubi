@@ -33,4 +33,10 @@ public interface LogisticsProviderService {
      */
     List<BizUser> findLogistcits(Map<String,Object> params);
 
+    /**
+     * @param params
+     * @return
+     */
+    long updateLogistics(Map<String,Object> params);
+
 }
