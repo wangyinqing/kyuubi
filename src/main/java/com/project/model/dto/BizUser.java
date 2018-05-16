@@ -25,10 +25,6 @@ public class BizUser {
 
     private String license;
 
-    private String permissionCode;
-
-    private String taxLicense;
-
     private String transportPermission;
 
 
@@ -120,22 +116,6 @@ public class BizUser {
         this.license = license;
     }
 
-    public String getPermissionCode() {
-        return permissionCode;
-    }
-
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode;
-    }
-
-    public String getTaxLicense() {
-        return taxLicense;
-    }
-
-    public void setTaxLicense(String taxLicense) {
-        this.taxLicense = taxLicense;
-    }
-
     public String getTransportPermission() {
         return transportPermission;
     }
@@ -163,15 +143,21 @@ public class BizUser {
     @Override
     public String toString() {
         return "BizUser{" +
-                "eptName='" + eptname + '\'' +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", eptname='" + eptname + '\'' +
+                ", status=" + status +
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +
                 ", eptType='" + eptType + '\'' +
                 ", license='" + license + '\'' +
-                ", permissionCode='" + permissionCode + '\'' +
-                ", taxLicense='" + taxLicense + '\'' +
                 ", transportPermission='" + transportPermission + '\'' +
+                ", licenseVisible=" + licenseVisible +
+                ", permissionCodeVisible=" + permissionCodeVisible +
+                ", taxLicenseVisible=" + taxLicenseVisible +
+                ", transportPermissionVisible=" + transportPermissionVisible +
                 '}';
     }
 }

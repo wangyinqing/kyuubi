@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,11 @@ public class LoginController {
         }else if(bizUser.getStatus() == 3){
             map.put("message", "您的账号已被删除，请联系运营核实并重新注册");
         }else {
+            String token = logisticsProviderService.generateSut(bizUser);
+            Cookie cookie = new Cookie("sut", token);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+            map.put("bizUser", bizUser);
             map.put("code", 1);
         }
         ObjectMapper mapper = new ObjectMapper();

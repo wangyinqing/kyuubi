@@ -39,4 +39,25 @@ public interface LogisticsProviderService {
      */
     long updateLogistics(Map<String,Object> params);
 
+    /**
+     * 生成token
+     * @param bizUser
+     * @return
+     */
+    String generateSut(BizUser bizUser);
+
+    /**
+     * 根据token获取bizUser
+     * @param token
+     * @return
+     */
+    BizUser getBizUserByToken(String token);
+
+    /**
+     * 根据token删除bizUser
+     * @param token
+     * @return
+     */
+    BizUser removeBizUserByToken(String token);
+
 }

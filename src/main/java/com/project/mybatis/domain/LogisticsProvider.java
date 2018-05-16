@@ -32,10 +32,6 @@ public class LogisticsProvider implements Serializable {
 
     private String license;
 
-    private String permissionCode;
-
-    private String taxLicense;
-
     private String transportPermission;
 
     private Timestamp createTime;
@@ -122,22 +118,6 @@ public class LogisticsProvider implements Serializable {
         this.license = license;
     }
 
-    public String getPermissionCode() {
-        return permissionCode;
-    }
-
-    public void setPermissionCode(String permissionCode) {
-        this.permissionCode = permissionCode;
-    }
-
-    public String getTaxLicense() {
-        return taxLicense;
-    }
-
-    public void setTaxLicense(String taxLicense) {
-        this.taxLicense = taxLicense;
-    }
-
     public String getTransportPermission() {
         return transportPermission;
     }
@@ -165,15 +145,16 @@ public class LogisticsProvider implements Serializable {
     @Override
     public String toString() {
         return "LogisticsProvider{" +
-                "eptName='" + eptname + '\'' +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", eptname='" + eptname + '\'' +
                 ", status=" + status +
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +
                 ", eptType='" + eptType + '\'' +
                 ", license='" + license + '\'' +
-                ", permissionCode='" + permissionCode + '\'' +
-                ", taxLicense='" + taxLicense + '\'' +
                 ", transportPermission='" + transportPermission + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

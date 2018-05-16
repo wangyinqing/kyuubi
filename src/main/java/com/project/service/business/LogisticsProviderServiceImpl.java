@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: jiazhuang
@@ -90,5 +92,41 @@ public class LogisticsProviderServiceImpl implements LogisticsProviderService {
     @Override
     public long updateLogistics(Map<String, Object> params) {
         return logisticsProviderManager.updateLogistics(params);
+    }
+
+    private ConcurrentHashMap<String, BizUser> bizUserMap = new ConcurrentHashMap<>();
+    /**
+     * 生成token
+     *
+     * @param bizUser
+     * @return
+     */
+    @Override
+    public String generateSut(BizUser bizUser) {
+        String token = UUID.randomUUID().toString().replaceAll("-", "");
+        bizUserMap.put(token, bizUser);
+        return token;
+    }
+
+    /**
+     * 根据token获取bizUser
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public BizUser getBizUserByToken(String token) {
+        return bizUserMap.get(token);
+    }
+
+    /**
+     * 根据token删除bizUser
+     *
+     * @param token
+     * @return
+     */
+    @Override
+    public BizUser removeBizUserByToken(String token) {
+        return bizUserMap.remove(token);
     }
 }

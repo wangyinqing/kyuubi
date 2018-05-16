@@ -95,30 +95,6 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                        prop="permissionCode"
-                                        label="组织结构代码证"
-                                        width="120">
-                                    <template slot-scope="scope">
-                                        <el-button type="text" @click="scope.row.permissionCodeVisible = true" v-if="scope.row.permissionCode!=null">点击查看</el-button>
-                                        <el-dialog title="图片查看" :visible.sync="scope.row.permissionCodeVisible" :modal-append-to-body="false" v-if="scope.row.permissionCode!=null">
-                                            <img :src="scope.row.permissionCode" />
-                                        </el-dialog>
-                                        <span v-if="scope.row.permissionCode==null">无文件上传</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
-                                        prop="taxLicense"
-                                        label="税务登记证"
-                                        width="120">
-                                    <template slot-scope="scope">
-                                        <el-button type="text" @click="scope.row.taxLicenseVisible = true" v-if="scope.row.taxLicense!=null">点击查看</el-button>
-                                        <el-dialog title="图片查看" :visible.sync="scope.row.taxLicenseVisible" :modal-append-to-body="false" v-if="scope.row.taxLicense!=null">
-                                            <img :src="scope.row.taxLicense" />
-                                        </el-dialog>
-                                        <span v-if="scope.row.taxLicense==null">无文件上传</span>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column
                                         prop="transportPermission"
                                         label="道路运输许可证"
                                         width="120">

@@ -26,8 +26,6 @@
         qq,
         ept_type AS eptType,
         license,
-        permission_code AS permissionCode,
-        tax_license AS taxLicense,
         transport_permission AS transportPermission,
         create_time AS createTime,
         update_time AS updateTime
@@ -44,8 +42,6 @@
         qq,
         ept_type,
         license,
-        permission_code,
-        tax_license,
         transport_permission)
         VALUES
         (#{account},
@@ -57,8 +53,6 @@
         #{qq},
         #{eptType},
         #{license},
-        #{permissionCode},
-        #{taxLicense},
         #{transportPermission})
     </insert>
 
