@@ -30,7 +30,85 @@
                     </el-menu>
                 </el-col>
                 <el-col :span="18" >
-                    <div v-if="menu==1">运费设置</div>
+                    <div v-if="menu==1">
+                        <el-form ref="form" :model="form" label-width="120px">
+                            <el-form-item label="始发地">
+                                <el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                            </el-form-item>
+                            <el-form-item label="目的地">
+                               <el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                            </el-form-item>
+                            <el-form-item label="业务类型">
+                                <el-select v-model="form.bizType" placeholder="请选择业务类型">
+                                    <el-option label="FBA" value="1"></el-option>
+                                    <el-option label="大宗普货" value="2"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="航空公司">
+                                <el-select v-model="form.airlines" placeholder="请选择航空公司">
+                                    <el-option label="南航" value="1"></el-option>
+                                    <el-option label="东航" value="2"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="货物种类">
+                                <el-select v-model="form.cargoType" placeholder="请选择货物种类">
+                                    <el-option label="FBA" value="1"></el-option>
+                                    <el-option label="大宗普货" value="2"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="价格">
+                                <el-button icon="el-icon-plus"
+                                           size="mini"
+                                           type="primary"
+                                           @click="handleAdd"></el-button>
+                                <el-table :data="form.freights" size="mini" @cell-click="" @cell-mouse-enter="cellEdit1" @cell-mouse-leave="cellShow1">
+                                    <el-table-column label="起始区间">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_from_edit">
+                                                <input v-model="scope.row.from" @blur="cellShow(scope,0)" size="small"/>
+                                                <!--<el-button size="mini" @click="scope.row.save">save</el-button>
+                                                <el-button size="mini" @click="scope.row.is_edit = false">cancel</el-button>-->
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,0)">{{ scope.row.from }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="结束区间">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_to_edit">
+                                                <input v-model="scope.row.to" />
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,1)">{{ scope.row.to }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="单价">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_price_edit">
+                                                <input v-model="scope.row.price" />
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,2)">{{ scope.row.price }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="120px">
+                                        <template slot-scope="scope">
+                                            <el-button icon="el-icon-delete" round
+                                                    size="mini"
+                                                    type="danger"
+                                                    @click="handleDelete(scope.$index, scope.row)"></el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit">创建</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
                 </el-col>
             </el-row>
         </el-main>
@@ -45,7 +123,17 @@
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 <script>
     var data= {
-        menu:1
+        menu:1,
+        form: {
+            origin: '',
+            destination: '',
+            bizType: '1',
+            airlines: '1',
+            cargoType:'1',
+            freights:[
+                {'from':0,'to':100,'price':100.1,'is_from_edit':false,'is_to_edit':false,'is_price_edit':false},
+                {'from':100,'to':300,'price':300.5,'is_from_edit':false,'is_to_edit':false,'is_price_edit':false}]
+        }
     };
 
     new Vue({
@@ -54,9 +142,6 @@
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
-            },
-            onSubmit() {
-                console.log('submit!');
             },
             handleOpen(key, keyPath) {
                 console.log(key, keyPath);
@@ -88,7 +173,83 @@
                 }).catch(() => {
                     });
                 }
-            }
+            },
+            cellEdit(row,index){
+                /*if(index == 0){
+                    row.is_from_edit = true;
+                }else if(index == 1){
+                    row.is_to_edit = true;
+                }else if(index == 2){
+                    row.is_price_edit = true;
+                }*/
+
+            },
+            cellShow(row,index){
+               /* if(index == 0){
+                    row.is_from_edit = false;
+                }else if(index == 1){
+                    row.is_to_edit = false;
+                }else if(index == 2){
+                    row.is_price_edit = false;
+                }*/
+
+            },
+            cellEdit1(row, column, cell, event){
+               var index = cell.cellIndex;
+               if(index == 0){
+                   row.is_from_edit = true;
+               }else if(index == 1){
+                   row.is_to_edit = true;
+               }else if(index == 2){
+                   row.is_price_edit = true;
+               }
+            },
+            cellShow1(row, column, cell, event){
+                var index = cell.cellIndex;
+                if(index == 0){
+                    row.is_from_edit = false;
+                }else if(index == 1){
+                    row.is_to_edit = false;
+                }else if(index == 2){
+                    row.is_price_edit = false;
+                }
+            },
+            handleDelete(index, row){
+                data.form.freights.splice(index,1);
+            },
+            handleAdd(){
+                data.form.freights.push(
+                    {   'from':0,
+                        'to':0,
+                        'price':0,
+                        'is_from_edit':false,
+                        'is_to_edit':false,
+                        'is_price_edit':false}
+                    );
+            },
+            onSubmit() {
+                console.log(JSON.stringify(data.form));
+                console.log('submit!');
+                var v = this;
+                axios.post('/business/freight/create', data.form)
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            v.$message({
+                                message: '创建成功',
+                                type: 'success'
+                            });
+                        }else{
+                            v.$message({
+                                message: response.data.message,
+                                type: 'error'
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
         }
     })
 </script>
