@@ -1,8 +1,12 @@
-package com.project.model.dto.freight;
+package com.project.mybatis.domain;
 
 import java.math.BigDecimal;
 
-public class SingleFreight {
+public class FreightRange {
+
+    private Long id;
+
+    private Long freightId;
 
     private Integer from;
 
@@ -10,13 +14,20 @@ public class SingleFreight {
 
     private BigDecimal price;
 
-    public SingleFreight() {
+    public Long getId() {
+        return id;
     }
 
-    public SingleFreight(Integer from, Integer to, BigDecimal price) {
-        this.from = from;
-        this.to = to;
-        this.price = price;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getFreightId() {
+        return freightId;
+    }
+
+    public void setFreightId(Long freightId) {
+        this.freightId = freightId;
     }
 
     public Integer getFrom() {
@@ -41,14 +52,5 @@ public class SingleFreight {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "SingleFreight{" +
-                "from=" + from +
-                ", to=" + to +
-                ", price=" + price +
-                '}';
     }
 }

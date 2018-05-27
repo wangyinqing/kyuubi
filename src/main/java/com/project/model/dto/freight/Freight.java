@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Freight {
 
+    private Long id;
+
     private String origin;
 
     private String destination;
@@ -16,12 +18,14 @@ public class Freight {
 
     private Long providerId;
 
-    private List<SingleFreight> freights;
+    private List<FreightRange> freights;
 
     public Freight() {
     }
 
-    public Freight(String origin, String destination, String bizType, String airlines, String cargoType, Long providerId, List<SingleFreight> freights) {
+
+    public Freight(Long id, String origin, String destination, String bizType, String airlines, String cargoType, Long providerId, List<FreightRange> freights) {
+        this.id = id;
         this.origin = origin;
         this.destination = destination;
         this.bizType = bizType;
@@ -29,6 +33,14 @@ public class Freight {
         this.cargoType = cargoType;
         this.providerId = providerId;
         this.freights = freights;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getOrigin() {
@@ -71,11 +83,11 @@ public class Freight {
         this.cargoType = cargoType;
     }
 
-    public List<SingleFreight> getFreights() {
+    public List<FreightRange> getFreights() {
         return freights;
     }
 
-    public void setFreights(List<SingleFreight> freights) {
+    public void setFreights(List<FreightRange> freights) {
         this.freights = freights;
     }
 
@@ -88,10 +100,12 @@ public class Freight {
         this.providerId = providerId;
     }
 
+
     @Override
     public String toString() {
         return "Freight{" +
-                "origin='" + origin + '\'' +
+                "id=" + id +
+                ", origin='" + origin + '\'' +
                 ", destination='" + destination + '\'' +
                 ", bizType='" + bizType + '\'' +
                 ", airlines='" + airlines + '\'' +

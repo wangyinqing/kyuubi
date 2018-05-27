@@ -3,6 +3,7 @@ package com.project.controller.business;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.dto.BizUser;
 import com.project.model.dto.freight.Freight;
+import com.project.service.business.FreightService;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ public class FreightController {
     @Autowired
     private LogisticsProviderService logisticsProviderService;
 
+    @Autowired
+    private FreightService freightService;
 
     @RequestMapping("/create")
     @ResponseBody
@@ -34,10 +37,13 @@ public class FreightController {
             System.out.println(freight);
             BizUser bizUser = logisticsProviderService.getBizUserByToken(sut);
             freight.setProviderId(bizUser.getId());
+            long id = freightService.create(freight);
             map.put("code", 1);
         }
         return mapper.writeValueAsString(map);
     }
+
+
 
 
 }
