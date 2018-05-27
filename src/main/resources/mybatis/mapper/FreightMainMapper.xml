@@ -16,11 +16,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mybatis.mapper.FreightMainMapper">
 
+    <sql id="freightMainColumns">
+        id,
+        origin,
+        destination,
+        biz_type as bizType,
+        airlines,
+        cargo_type as cargoType,
+        provider_id as providerId
+    </sql>
+
 
     <insert id="create" parameterType="FreightMain" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO logistics_freight (origin, destination, biz_type, airlines, cargo_type, provider_id)
         VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{cargoType}, #{providerId})
     </insert>
 
+    <select id="findByProvider" parameterType="long" resultType="FreightMain">
+        SELECT <include refid="freightMainColumns"></include>
+        FROM logistics_freight WHERE provider_id = #{providerId}
+    </select>
+
+    <update id="update" parameterType="FreightMain">
+        UPDATE logistics_freight
+        set origin = #{origin},destination=#{destination},biz_type= #{bizType}
+        ,airlines=#{airlines},cargo_type=#{cargoType} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        delete from logistics_freight where id = #{id}
+    </delete>
 
 </mapper>

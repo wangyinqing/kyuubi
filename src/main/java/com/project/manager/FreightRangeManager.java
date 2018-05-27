@@ -8,4 +8,8 @@ import java.util.List;
 public interface FreightRangeManager {
 
     long create(List<FreightRange> freightRange);
+
+    List<FreightRange> findByFreightId(long freightId);
+
+    int deleteByFreightId(long freightId);
 }

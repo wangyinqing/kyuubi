@@ -30,7 +30,7 @@
                     </el-menu>
                 </el-col>
                 <el-col :span="18" >
-                    <div v-if="menu==1">
+                    <div v-if="menu==1 && mode==1">
                         <el-form ref="form" :model="form" label-width="120px">
                             <el-form-item label="始发地">
                                 <el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
@@ -105,9 +105,58 @@
                                 </el-table>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="onSubmit">创建</el-button>
+                                <el-button type="primary" @click="onSubmit" v-if="!form.id">创建</el-button>
+                                <el-button type="primary" @click="onSubmit" v-if="!!form.id">保存</el-button>
                             </el-form-item>
                         </el-form>
+                    </div>
+                    <div v-if="menu==1 && mode==2">
+                        <el-table
+                                :data="freights"
+                                border
+                                style="width: 100%"
+                                v-loading="freightLoading">
+                            <el-table-column
+                                    prop="id"
+                                    label="id"
+                                    width="150">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="origin"
+                                    label="始发地"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="destination"
+                                    label="目的地"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="airlines"
+                                    label="航空公司"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bizType"
+                                    label="业务类型"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cargoType"
+                                    label="货物种类"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    min-width="200">
+                                <template slot-scope="scope">
+                                    <el-button @click="editFreight(scope.row)" type="primary" size="small" class="el-icon-edit"></el-button>
+                                    <el-button @click="deleteFreight(scope.row);" type="danger" size="small" class="el-icon-delete"></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-button @click="addFreight" type="primary" size="small" class="el-icon-plus"></el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -125,15 +174,17 @@
     var data= {
         menu:1,
         form: {
+            id:null,
             origin: '',
             destination: '',
-            bizType: '1',
-            airlines: '1',
-            cargoType:'1',
-            freights:[
-                {'from':0,'to':100,'price':100.1,'is_from_edit':false,'is_to_edit':false,'is_price_edit':false},
-                {'from':100,'to':300,'price':300.5,'is_from_edit':false,'is_to_edit':false,'is_price_edit':false}]
-        }
+            bizType: '',
+            airlines: '',
+            cargoType:'',
+            freights:[]
+        },
+        mode:2,
+        freights:[],
+        freightLoading: false
     };
 
     new Vue({
@@ -172,6 +223,9 @@
                         });
                 }).catch(() => {
                     });
+                }else if(key ==1){
+                    getFreights();
+                    data.mode = 2;
                 }
             },
             cellEdit(row,index){
@@ -231,12 +285,12 @@
                 console.log(JSON.stringify(data.form));
                 console.log('submit!');
                 var v = this;
-                axios.post('/business/freight/create', data.form)
+                axios.post('/business/freight/saveOrUpdate', data.form)
                     .then(function (response) {
                         console.log(response);
                         if(response.data.code == 1) {
                             v.$message({
-                                message: '创建成功',
+                                message: '操作成功',
                                 type: 'success'
                             });
                         }else{
@@ -250,7 +304,83 @@
                         console.log(error);
                     });
             },
+            editFreight(row){
+                console.log(row.id);
+                data.form.id = row.id;
+                data.form.origin = row.origin;
+                data.form.destination = row.destination;
+                data.form.bizType = row.bizType;
+                data.form.cargoType = row.cargoType;
+                data.form.airlines = row.airlines;
+                data.form.freights = [];
+                for(idx in row.freights){
+                    // row.freights[idx].is_from_edit = false;
+                    // row.freights[idx].is_to_edit = false;
+                    // row.freights[idx].is_price_edit = false;
+                    data.form.freights.push(row.freights[idx]);
+                }
+                data.mode = 1;
+            },
+            addFreight(){
+                data.form = {
+                        id:null,
+                        origin: '',
+                        destination: '',
+                        bizType: '',
+                        airlines: '',
+                        cargoType:'',
+                        freights:[]
+                };
+                data.mode = 1;
+            },
+            deleteFreight(row){
+                var id = row.id;
+                var v = this;
+                axios.get('/business/freight/delete/' + id)
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            v.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                        }else{
+                            v.$message({
+                                message: response.data.message,
+                                type: 'error'
+                            });
+                        }
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
     })
+
+    function getFreights(){
+        data.freightLoading = true;
+        axios.get('/business/freight/list')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    console.log(response.data.data);
+                    data.freights = response.data.data;
+                    data.freightLoading = false;
+                }
+                data.mode == 2;
+            })
+            .catch(function (error) {
+                console.log(error);
+                data.freightLoading = false;
+                data.mode == 2;
+            });
+    }
+
+    if(data.menu == 1){
+        getFreights();
+    }
+
 </script>
 </html>

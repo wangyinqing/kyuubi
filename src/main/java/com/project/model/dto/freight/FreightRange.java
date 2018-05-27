@@ -12,6 +12,12 @@ public class FreightRange {
 
     private Long freightId;
 
+    // from view only
+    private boolean is_from_edit = false;
+    private boolean is_to_edit = false;
+    private boolean is_price_edit = false;
+
+
     public FreightRange() {
     }
 
@@ -52,6 +58,18 @@ public class FreightRange {
 
     public void setFreightId(Long freightId) {
         this.freightId = freightId;
+    }
+
+    public boolean isIs_from_edit() {
+        return is_from_edit;
+    }
+
+    public boolean isIs_to_edit() {
+        return is_to_edit;
+    }
+
+    public boolean isIs_price_edit() {
+        return is_price_edit;
     }
 
     @Override

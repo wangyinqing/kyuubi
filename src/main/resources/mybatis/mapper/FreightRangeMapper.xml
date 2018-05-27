@@ -16,8 +16,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mybatis.mapper.FreightRangeMapper">
 
+    <sql id="freightRangeColumns">
+        id,
+        freight_id as freightId,
+        range_from as `from`,
+        range_to as `to`,
+        price
+    </sql>
+
     <insert id="create" parameterType="FreightRange" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO logistics_freight_range (freight_id, range_from, range_to, price)
         VALUES (#{freightId}, #{from}, #{to}, #{price})
     </insert>
+
+    <select id="findByFreightId" parameterType="long" resultType="FreightRange">
+        SELECT <include refid="freightRangeColumns"></include>
+        FROM logistics_freight_range WHERE freight_id = #{freightId}
+    </select>
+
+    <delete id="deleteByFreightId" parameterType="long">
+        DELETE FROM logistics_freight_range where freight_id = #{freightId}
+    </delete>
+
 </mapper>

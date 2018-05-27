@@ -7,12 +7,10 @@ import com.project.service.business.FreightService;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller("freightController")
@@ -25,9 +23,9 @@ public class FreightController {
     @Autowired
     private FreightService freightService;
 
-    @RequestMapping("/create")
+    @RequestMapping("/saveOrUpdate")
     @ResponseBody
-    public String create(@RequestBody Freight freight, @CookieValue(value = "sut", required = false) String sut) throws Exception{
+    public String saveOrUpdate(@RequestBody Freight freight, @CookieValue(value = "sut", required = false) String sut) throws Exception{
         Map map = new HashMap();
         ObjectMapper mapper = new ObjectMapper();
         if(sut == null){
@@ -37,13 +35,43 @@ public class FreightController {
             System.out.println(freight);
             BizUser bizUser = logisticsProviderService.getBizUserByToken(sut);
             freight.setProviderId(bizUser.getId());
-            long id = freightService.create(freight);
+            if(freight.getId() == null) {
+                long id = freightService.create(freight);
+            }else{
+                int updated = freightService.update(freight);
+            }
             map.put("code", 1);
         }
         return mapper.writeValueAsString(map);
     }
 
+    @RequestMapping(value = "/list", produces = {"application/json; charset=UTF-8"})
+    @ResponseBody
+    public String findByProvider(@CookieValue(value = "sut", required = false) String sut) throws Exception {
+        Map map = new HashMap();
+        ObjectMapper mapper = new ObjectMapper();
+        if(sut == null){
+            map.put("code", 0);
+            map.put("message", "请先登录");
+        }else {
+            BizUser bizUser = logisticsProviderService.getBizUserByToken(sut);
+            List<Freight> freights = freightService.findByProviderId(bizUser.getId());
+            map.put("code", 1);
+            map.put("data", freights);
+        }
+        return mapper.writeValueAsString(map);
+    }
 
+
+    @RequestMapping(value = "/delete/{id}", produces = {"application/json; charset=UTF-8"})
+    @ResponseBody
+    public String delete(@PathVariable("id") String id) throws Exception{
+        Map map = new HashMap();
+        ObjectMapper mapper = new ObjectMapper();
+        freightService.delete(Long.parseLong(id));
+        map.put("code", 1);
+        return mapper.writeValueAsString(map);
+    }
 
 
 }
