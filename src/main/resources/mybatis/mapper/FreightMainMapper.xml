@@ -22,14 +22,14 @@
         destination,
         biz_type as bizType,
         airlines,
-        cargo_type as cargoType,
+        freight_type as freightType,
         provider_id as providerId
     </sql>
 
 
     <insert id="create" parameterType="FreightMain" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO logistics_freight (origin, destination, biz_type, airlines, cargo_type, provider_id)
-        VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{cargoType}, #{providerId})
+        INSERT INTO logistics_freight (origin, destination, biz_type, airlines, freight_type, provider_id)
+        VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{freightType}, #{providerId})
     </insert>
 
     <select id="findByProvider" parameterType="long" resultType="FreightMain">
@@ -40,7 +40,7 @@
     <update id="update" parameterType="FreightMain">
         UPDATE logistics_freight
         set origin = #{origin},destination=#{destination},biz_type= #{bizType}
-        ,airlines=#{airlines},cargo_type=#{cargoType} where id=#{id}
+        ,airlines=#{airlines},freight_type=#{freightType} where id=#{id}
     </update>
 
     <delete id="delete" parameterType="long">

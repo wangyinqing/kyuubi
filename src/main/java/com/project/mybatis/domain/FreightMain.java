@@ -15,7 +15,7 @@ public class FreightMain implements Serializable {
 
     private String airlines;
 
-    private String cargoType;
+    private String freightType;
 
     private Timestamp createTime;
 
@@ -63,12 +63,12 @@ public class FreightMain implements Serializable {
         this.airlines = airlines;
     }
 
-    public String getCargoType() {
-        return cargoType;
+    public String getFreightType() {
+        return freightType;
     }
 
-    public void setCargoType(String cargoType) {
-        this.cargoType = cargoType;
+    public void setFreightType(String freightType) {
+        this.freightType = freightType;
     }
 
     public Timestamp getCreateTime() {
