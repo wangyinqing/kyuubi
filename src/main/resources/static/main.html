@@ -126,28 +126,25 @@
                                                     <el-col  :span="2">
                                                         <el-input placeholder="请输入内容" v-model="searchParams.weight"></el-input>
                                                     </el-col>
-                                                    <el-col  :span="3" style="text-align: right;margin: 10px auto;">
-                                                        同尺寸重：
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        数量：
                                                     </el-col>
                                                     <el-col  :span="4">
-                                                        <el-input placeholder="请输入内容" v-model="searchParams.boxes"></el-input>
-                                                    </el-col>
-                                                    <el-col  :span="1" style="margin: 10px auto;">
-                                                        箱
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.amount"></el-input>
                                                     </el-col>
                                                 </el-row>
                                         </el-row>
                                         <el-row :gutter="0" style="margin-top:  10px;">
                                             <el-col  :span="3">
-                                                特殊物品：
+                                                货物类型：
                                             </el-col>
                                             <el-col  :span="21">
-                                                <el-radio-group v-model="searchParams.specialItem">
-                                                    <el-radio label="normal">普货</el-radio>
-                                                    <el-radio label="outter">外置电(配套电)</el-radio>
-                                                    <el-radio label="inner">内置电</el-radio>
-                                                    <el-radio label="spin">纺织品</el-radio>
-                                                </el-radio-group>
+                                                <select v-model="searchParams.freightType">
+                                                    <option value="normal">普货</option>
+                                                    <option value="outter">外置电(配套电)</option>
+                                                    <option value="inner">内置电</option>
+                                                    <option value="spin">纺织品</option>
+                                                </select>
                                             </el-col>
                                         </el-row>
                                         <el-row :gutter="0" style="margin-top:  10px;">
@@ -157,11 +154,7 @@
                                             <el-col  :span="21">
                                                 <el-radio-group  v-model="searchParams.deliverApproach">
                                                     <el-radio label="intelli">智能推荐</el-radio>
-                                                    <el-radio label="deliveryExp">快递</el-radio>
                                                     <el-radio label="air">空派</el-radio>
-                                                    <el-radio label="sea">海运</el-radio>
-                                                    <el-radio label="railway">铁路</el-radio>
-                                                    <el-radio label="zg">中港</el-radio>
                                                 </el-radio-group>
                                             </el-col>
                                         </el-row>
@@ -211,8 +204,8 @@
         width: "",
         height: "",
         weight: "",
-        boxes: "",
-        specialItem: "normal",
+        amount: "",
+        freightType: "normal",
         deliverApproach: "intelli"
     };
     data.originOpts = [
@@ -284,6 +277,23 @@
             handleDestChange(val){
                 // console.log(val);
                 data.destination = val[val.length -1];
+                axios.post('/searchPriceSolution', {
+                    packageLocation:data.searchParams.packageLocation,
+                    destination:data.searchParams.destination,
+                    length:data.searchParams.length,
+                    width:data.searchParams.width,
+                    height:data.searchParams.height,
+                    weight : data.searchParams.weight,
+                    amount:data.searchParams.amount,
+                    freightType:data.searchParams.freightType,
+                    deliverApproach:data.searchParams.deliverApproach,
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     });
@@ -306,7 +316,7 @@
     function  doAfterLogin() {
 
     }
-    
+
     (function (){
         axios.get('/get/originsAndDests')
             .then(function (response) {
