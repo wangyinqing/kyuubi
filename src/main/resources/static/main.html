@@ -135,16 +135,24 @@
                                                 </el-row>
                                         </el-row>
                                         <el-row :gutter="0" style="margin-top:  10px;">
-                                            <el-col  :span="3">
+                                            <el-col  :span="3" style="text-align: left;margin: 10px auto;">
                                                 货物类型：
                                             </el-col>
                                             <el-col  :span="21">
-                                                <select v-model="searchParams.freightType">
+                                                <el-select v-model="searchParams.freightType" placeholder="请选择">
+                                                    <el-option
+                                                            v-for="item in freightTypes"
+                                                            :key="item.value"
+                                                            :label="item.label"
+                                                            :value="item.value">
+                                                    </el-option>
+                                                </el-select>
+                                               <!-- <select v-model="searchParams.freightType">
                                                     <option value="normal">普货</option>
                                                     <option value="outter">外置电(配套电)</option>
                                                     <option value="inner">内置电</option>
                                                     <option value="spin">纺织品</option>
-                                                </select>
+                                                </select>-->
                                             </el-col>
                                         </el-row>
                                         <el-row :gutter="0" style="margin-top:  10px;">
@@ -208,6 +216,21 @@
         freightType: "normal",
         deliverApproach: "intelli"
     };
+
+    data.freightTypes = [{
+        value: 'normal',
+        label: '普货'
+    },{
+        value: 'outter',
+        label: '外置电(配套电)'
+    },{
+        value: 'inner',
+        label: '内置电'
+    },{
+        value: 'spin',
+        label: '纺织品'
+    }];
+
     data.originOpts = [
        /* {
             value: 'shejiyuanze',
