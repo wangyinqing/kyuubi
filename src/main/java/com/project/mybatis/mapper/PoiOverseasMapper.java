@@ -15,5 +15,5 @@ public interface PoiOverseasMapper {
 
     PoiOverseas findPoiOverseasById(Long id);
 
-    List<PoiOverseas> findAllPoiOverseas();
+    List<PoiOverseas> findAllPoiOverseasByType(Integer businessType);
 }

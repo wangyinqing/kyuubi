@@ -1,7 +1,11 @@
 package com.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.model.dto.PoiDomesticEntity;
+import com.project.model.dto.PoiOverseasEntity;
+import com.project.service.ResourceService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,11 +16,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/get")
 public class ResourceController {
+
+    @Autowired
+    private ResourceService resourceService;
 
     @RequestMapping("/img/**")
     public void geImage(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -37,7 +45,7 @@ public class ResourceController {
         Map map = new HashMap();
         map.put("code",1);
 
-        // 创建取件地
+        /*// 创建取件地
         //省
         Entity beijing = new Entity(1L,"北京");
         Entity shanghai = new Entity(2L, "上海");
@@ -58,11 +66,11 @@ public class ResourceController {
 
         beijing.setChildren(new Entity[]{beijingCity});
         shanghai.setChildren(new Entity[]{shanghaiCity});
+*/
+        List<PoiDomesticEntity> poiDomestic = resourceService.buildDomesticPoiEntity();
+        map.put("origins", poiDomestic);
 
-        map.put("origins", new Entity[]{beijing,shanghai});
-
-        //创建国家
-
+        /*//创建国家
         Entity ab = new Entity(-1L,"AB");
         ab.setSelectable(false);
         Entity cd = new Entity(-2L,"CD");
@@ -78,9 +86,11 @@ public class ResourceController {
                 new Entity(4L,"加拿大"),
                 new Entity(5L,"中国"),
                 new Entity(6L,"丹麦")
-        });
+        });*/
 
-        map.put("destinations", new Entity[]{ab,cd});
+        //FBA目的地
+        List<PoiOverseasEntity> poiOverseas = resourceService.buildOverseasPoiEntityByType(1);
+        map.put("destinations", poiOverseas);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
     }

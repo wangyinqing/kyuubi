@@ -36,9 +36,9 @@
         FROM poi_overseas WHERE id = #{id}
     </select>
 
-    <select id="findAllPoiOverseas" resultType="PoiOverseas">
+    <select id="findAllPoiOverseasByType" parameterType="Integer" resultType="PoiOverseas">
         SELECT <include refid="poiOverseasColumns"></include>
-        FROM poi_overseas
+        FROM poi_overseas WHERE business_type=#{businessType}
     </select>
 
 </mapper>
