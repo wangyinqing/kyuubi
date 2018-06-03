@@ -12,8 +12,11 @@ public class PriceSearchParam {
     private Integer height;
     private Integer weight;
     private Integer amount;
+    private Integer bizType;
     private Integer freightType;
     private Integer deliverApproach;
+    private Integer index;
+    private Integer size;
 
     public Integer getPackageLocation() {
         return packageLocation;
@@ -71,6 +74,14 @@ public class PriceSearchParam {
         this.amount = amount;
     }
 
+    public Integer getBizType() {
+        return bizType;
+    }
+
+    public void setBizType(Integer bizType) {
+        this.bizType = bizType;
+    }
+
     public Integer getFreightType() {
         return freightType;
     }
@@ -85,5 +96,21 @@ public class PriceSearchParam {
 
     public void setDeliverApproach(Integer deliverApproach) {
         this.deliverApproach = deliverApproach;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

@@ -161,8 +161,8 @@
                                             </el-col>
                                             <el-col  :span="21">
                                                 <el-radio-group  v-model="searchParams.deliverApproach">
-                                                    <el-radio label="intelli">智能推荐</el-radio>
-                                                    <el-radio label="air">空派</el-radio>
+                                                    <el-radio label="1">智能推荐</el-radio>
+                                                    <el-radio label="2">空派</el-radio>
                                                 </el-radio-group>
                                             </el-col>
                                         </el-row>
@@ -213,22 +213,16 @@
         height: "",
         weight: "",
         amount: "",
-        freightType: "normal",
-        deliverApproach: "intelli"
+        freightType: "",
+        deliverApproach: ""
     };
 
     data.freightTypes = [{
-        value: 'normal',
+        value: '1',
         label: '普货'
     },{
-        value: 'outter',
-        label: '外置电(配套电)'
-    },{
-        value: 'inner',
-        label: '内置电'
-    },{
-        value: 'spin',
-        label: '纺织品'
+        value: '2',
+        label: '带电'
     }];
 
     data.originOpts = [
@@ -290,16 +284,7 @@
                     });
             },
             search(){
-                console.log('search ' + JSON.stringify(data.searchParams) );
-            },
-            handleOriginChange(val){
-               // console.log(val);
-                data.packageLocation = val[val.length -1];
-            },
-            handleDestChange(val){
-                // console.log(val);
-                data.destination = val[val.length -1];
-                axios.post('/searchPriceSolution', {
+                axios.post('/search/searchPriceSolution', {
                     packageLocation:data.searchParams.packageLocation,
                     destination:data.searchParams.destination,
                     length:data.searchParams.length,
@@ -308,14 +293,22 @@
                     weight : data.searchParams.weight,
                     amount:data.searchParams.amount,
                     freightType:data.searchParams.freightType,
-                    deliverApproach:data.searchParams.deliverApproach,
+                    deliverApproach:data.searchParams.deliverApproach
                 })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            handleOriginChange(val){
+               // console.log(val);
+                data.packageLocation = val[val.length -1];
+            },
+            handleDestChange(val){
+                // console.log(val);
+                data.destination = val[val.length -1];
             }
         }
     });

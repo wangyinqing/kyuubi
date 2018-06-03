@@ -23,7 +23,6 @@ import java.util.Map;
 public class LoginController {
 
     UserService userService;
-    PriceSearchService priceSearchService;
 
     @ResponseBody
     @RequestMapping("/login")
@@ -81,23 +80,8 @@ public class LoginController {
         return mapper.writeValueAsString(map);
     }
 
-    @RequestMapping("searchPriceSolution")
-    @ResponseBody
-    public String searchPriceSolution(@RequestBody PriceSearchParam priceSearchParam) throws Exception {
-        List<PriceSolution> priceSolutionList = priceSearchService.searchPriceSolution(priceSearchParam);
-        Map map = new HashMap();
-        map.put("priceSolutionList", priceSearchParam);
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(map);
-    }
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setPriceSearchService(PriceSearchService priceSearchService) {
-        this.priceSearchService = priceSearchService;
     }
 }
