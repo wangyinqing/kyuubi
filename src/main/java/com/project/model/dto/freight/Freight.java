@@ -14,7 +14,7 @@ public class Freight {
 
     private String airlines;
 
-    private String cargoType;
+    private String freightType;
 
     private Long providerId;
 
@@ -24,13 +24,13 @@ public class Freight {
     }
 
 
-    public Freight(Long id, String origin, String destination, String bizType, String airlines, String cargoType, Long providerId, List<FreightRange> freights) {
+    public Freight(Long id, String origin, String destination, String bizType, String airlines, String freightType, Long providerId, List<FreightRange> freights) {
         this.id = id;
         this.origin = origin;
         this.destination = destination;
         this.bizType = bizType;
         this.airlines = airlines;
-        this.cargoType = cargoType;
+        this.freightType = freightType;
         this.providerId = providerId;
         this.freights = freights;
     }
@@ -75,12 +75,12 @@ public class Freight {
         this.airlines = airlines;
     }
 
-    public String getCargoType() {
-        return cargoType;
+    public String getFreightType() {
+        return freightType;
     }
 
-    public void setCargoType(String cargoType) {
-        this.cargoType = cargoType;
+    public void setFreightType(String freightType) {
+        this.freightType = freightType;
     }
 
     public List<FreightRange> getFreights() {
@@ -100,7 +100,6 @@ public class Freight {
         this.providerId = providerId;
     }
 
-
     @Override
     public String toString() {
         return "Freight{" +
@@ -109,10 +108,9 @@ public class Freight {
                 ", destination='" + destination + '\'' +
                 ", bizType='" + bizType + '\'' +
                 ", airlines='" + airlines + '\'' +
-                ", cargoType='" + cargoType + '\'' +
+                ", freightType='" + freightType + '\'' +
                 ", providerId=" + providerId +
                 ", freights=" + freights +
                 '}';
     }
-
 }

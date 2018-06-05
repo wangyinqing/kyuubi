@@ -51,7 +51,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="货物种类">
-                                <el-select v-model="form.cargoType" placeholder="请选择货物种类">
+                                <el-select v-model="form.freightType" placeholder="请选择货物种类">
                                     <el-option label="FBA" value="1"></el-option>
                                     <el-option label="大宗普货" value="2"></el-option>
                                 </el-select>
@@ -142,7 +142,7 @@
                                     width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="cargoType"
+                                    prop="freightType"
                                     label="货物种类"
                                     width="120">
                             </el-table-column>
@@ -179,7 +179,7 @@
             destination: '',
             bizType: '',
             airlines: '',
-            cargoType:'',
+            freightType:'',
             freights:[]
         },
         mode:2,
@@ -310,7 +310,7 @@
                 data.form.origin = row.origin;
                 data.form.destination = row.destination;
                 data.form.bizType = row.bizType;
-                data.form.cargoType = row.cargoType;
+                data.form.freightType = row.freightType;
                 data.form.airlines = row.airlines;
                 data.form.freights = [];
                 for(idx in row.freights){
@@ -328,7 +328,7 @@
                         destination: '',
                         bizType: '',
                         airlines: '',
-                        cargoType:'',
+                        freightType:'',
                         freights:[]
                 };
                 data.mode = 1;
