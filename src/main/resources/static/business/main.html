@@ -33,10 +33,29 @@
                     <div v-if="menu==1 && mode==1">
                         <el-form ref="form" :model="form" label-width="120px">
                             <el-form-item label="始发地">
-                                <el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                                <!--<el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                                -->
+                                <el-cascader
+                                        placeholder="试试搜索：省市区"
+                                        :options="originOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleOriginChange"
+                                        filterable
+                                ></el-cascader>
                             </el-form-item>
                             <el-form-item label="目的地">
-                               <el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                               <!--<el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                               -->
+                                <el-cascader
+                                        placeholder="试试搜索：国家地区"
+                                        :options="destOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleDestChange"
+                                        :show-all-levels="false"
+                                        filterable
+                                ></el-cascader>
                             </el-form-item>
                             <el-form-item label="业务类型">
                                 <el-select v-model="form.bizType" placeholder="请选择业务类型">
@@ -116,35 +135,40 @@
                                 border
                                 style="width: 100%"
                                 v-loading="freightLoading">
-                            <el-table-column
+                            <!--<el-table-column
                                     prop="id"
                                     label="id"
-                                    width="150">
+                                    width="150">-->
                             </el-table-column>
                             <el-table-column
                                     prop="origin"
                                     label="始发地"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showOrigin">
                             </el-table-column>
                             <el-table-column
                                     prop="destination"
                                     label="目的地"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showDestination">
                             </el-table-column>
                             <el-table-column
                                     prop="airlines"
                                     label="航空公司"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showAirlines">
                             </el-table-column>
                             <el-table-column
                                     prop="bizType"
                                     label="业务类型"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showBizType">
                             </el-table-column>
                             <el-table-column
                                     prop="freightType"
                                     label="货物种类"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showFreightType">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -184,7 +208,14 @@
         },
         mode:2,
         freights:[],
-        freightLoading: false
+        freightLoading: false,
+        originOpts: [],
+        destOpts: [],
+        cascaderProps: {
+            "value":"id",
+            "label":"name",
+            "children":"children"
+        }
     };
 
     new Vue({
@@ -355,9 +386,73 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            handleOriginChange(val){
+                // console.log(val);
+                data.form.origin = val[val.length -1];
+            },
+            handleDestChange(val){
+                // console.log(val);
+                data.form.destination = val[val.length -1];
+            },
+            showAirlines(row, column, cellValue, index){
+                //console.log(cellValue);
+                if(cellValue == 1)
+                    return "南航";
+                else if(cellValue == 2)
+                    return "东航";
+                else
+                    return "";
+            },
+            showBizType(row, column, cellValue, index){
+                //console.log(cellValue);
+                if(cellValue == 1)
+                    return "FBA";
+                else if(cellValue == 2)
+                    return "大宗普货";
+                else
+                    return "";
+            },
+            showFreightType(row, column, cellValue, index){
+                //console.log(cellValue);
+                //数据待修复
+                if(cellValue == 1)
+                    return "FBA";
+                else if(cellValue == 2)
+                    return "大宗普货";
+                else
+                    return "";
+            },
+            showOrigin(row, column, cellValue, index){
+                return findLabelByValueRecursively(data.originOpts, cellValue);
+            },
+            showDestination(row, column, cellValue, index){
+                return findLabelByValueRecursively(data.destOpts, cellValue);
             }
+
         }
     })
+
+
+    function findLabelByValueRecursively(object, value){
+        //从始发地或目的地里找到显示内容
+        if(object){
+            for(var i in object){
+                var o = object[i];
+                if(o.id == value){
+                    return o.name;
+                }else{
+                    if(o.children){
+                        var r = findLabelByValueRecursively(o.children, value);
+                        if(r)
+                            return r;
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
 
     function getFreights(){
         data.freightLoading = true;
@@ -395,6 +490,21 @@
         .catch(function (error) {
             console.log(error);
         });
+
+
+    (function (){
+        axios.get('/get/originsAndDests')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.originOpts =response.data.origins ;
+                    data.destOpts =response.data.destinations;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
 
 </script>
 </html>
