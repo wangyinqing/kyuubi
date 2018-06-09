@@ -5,6 +5,7 @@ import com.project.model.dto.BizUser;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,5 +51,39 @@ public class LoginController {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
     }
+
+    @RequestMapping("validateUser")
+    @ResponseBody
+    public String vaildate(@CookieValue(value = "sut", required = false, defaultValue = "") String token) throws Exception {
+        BizUser user = logisticsProviderService.getBizUserByToken(token);
+        Map map = new HashMap();
+        if (user == null) {
+            map.put("code", 0);
+        } else {
+            map.put("code", 1);
+            map.put("user", user);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(map);
+    }
+
+    @RequestMapping("invalidateUser")
+    @ResponseBody
+    public String invaildate(@CookieValue("sut") String token, HttpServletResponse response) throws Exception {
+        BizUser user = logisticsProviderService.removeBizUserByToken(token);
+        Map map = new HashMap();
+        if (user == null) {
+            map.put("code", 0);
+        } else {
+            map.put("code", 1);
+            map.put("user", user);
+            Cookie cookie = new Cookie("sut", null);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(map);
+    }
+
 
 }
