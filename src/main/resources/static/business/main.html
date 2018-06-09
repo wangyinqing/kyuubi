@@ -67,14 +67,14 @@
                             </el-form-item>
                             <el-form-item label="航空公司">
                                 <el-select v-model="form.airlines" placeholder="请选择航空公司">
-                                    <el-option label="南航" value="1"></el-option>
-                                    <el-option label="东航" value="2"></el-option>
+                                    <el-option label="中国南方航空" value="1"></el-option>
+                                    <el-option label="东方航空公司" value="2"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="货物种类">
                                 <el-select v-model="form.freightType" placeholder="请选择货物种类">
-                                    <el-option label="FBA" value="1"></el-option>
-                                    <el-option label="大宗普货" value="2"></el-option>
+                                    <el-option label="普货" value="1"></el-option>
+                                    <el-option label="带电" value="2"></el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="价格">
@@ -144,34 +144,29 @@
                                     width="150">-->
                             </el-table-column>
                             <el-table-column
-                                    prop="origin"
+                                    prop="originName"
                                     label="始发地"
-                                    width="200"
-                                    :formatter="showOrigin">
+                                    width="200">
                             </el-table-column>
                             <el-table-column
-                                    prop="destination"
+                                    prop="destinationName"
                                     label="目的地"
-                                    width="120"
-                                    :formatter="showDestination">
+                                    width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="airlines"
+                                    prop="airLineName"
                                     label="航空公司"
-                                    width="120"
-                                    :formatter="showAirlines">
+                                    width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="bizType"
+                                    prop="bizTypeName"
                                     label="业务类型"
-                                    width="120"
-                                    :formatter="showBizType">
+                                    width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="freightType"
+                                    prop="freightTypeName"
                                     label="货物种类"
-                                    width="120"
-                                    :formatter="showFreightType">
+                                    width="120">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -347,24 +342,28 @@
                     });
             },
             editFreight(row){
-                console.log(row.id);
-                data.form.id = row.id;
-                data.form.origin = row.origin;
-                data.form.destination = row.destination;
-                data.form.bizType = row.bizType;
-                data.form.freightType = row.freightType;
-                data.form.airlines = row.airlines;
+                console.log(row.freightId);
+                data.form.id = row.freightId;
+                data.form.origin = row.originId;
+                data.form.destination = row.destinationId;
+                data.form.bizType = String(row.bizType);
+                data.form.freightType = String(row.freightTypeId);
+                data.form.airlines = String(row.airLineId);
                 data.form.freights = [];
-                for(idx in row.freights){
-                    // row.freights[idx].is_from_edit = false;
-                    // row.freights[idx].is_to_edit = false;
-                    // row.freights[idx].is_price_edit = false;
-                    data.form.freights.push(row.freights[idx]);
+                for(idx in row.freightRangeList){
+                    var frage = {};
+                    frage.is_from_edit = false;
+                    frage.is_to_edit = false;
+                    frage.is_price_edit = false;
+                    frage.from = row.freightRangeList[idx].from;
+                    frage.to = row.freightRangeList[idx].to;
+                    frage.price = row.freightRangeList[idx].price;
+                    data.form.freights.push(frage);
                 }
                 var selectedOrig = [];
-                findLabelByValueRecursively(data.originOpts, row.origin,selectedOrig,true);
+                findLabelByValueRecursively(data.originOpts, row.originId,selectedOrig,true);
                 var selectedDest = [];
-                findLabelByValueRecursively(data.destOpts, row.destination,selectedDest,true);
+                findLabelByValueRecursively(data.destOpts, row.destinationId,selectedDest,true);
                 data.form.selectedOriginOpts = getOriginOrDestId(selectedOrig);
                 data.form.selectedDestOpts = getOriginOrDestId(selectedDest);
                 data.mode = 1;
@@ -384,7 +383,7 @@
                 data.mode = 1;
             },
             deleteFreight(row){
-                var id = row.id;
+                var id = row.freightId;
                 var v = this;
                 this.$confirm('确定删除?', '提示', {
                     confirmButtonText: '确定',
@@ -422,34 +421,6 @@
             handleDestChange(val){
                 // console.log(val);
                 data.form.destination = val[val.length -1];
-            },
-            showAirlines(row, column, cellValue, index){
-                //console.log(cellValue);
-                if(cellValue == 1)
-                    return "南航";
-                else if(cellValue == 2)
-                    return "东航";
-                else
-                    return "";
-            },
-            showBizType(row, column, cellValue, index){
-                //console.log(cellValue);
-                if(cellValue == 1)
-                    return "FBA";
-                else if(cellValue == 2)
-                    return "大宗普货";
-                else
-                    return "";
-            },
-            showFreightType(row, column, cellValue, index){
-                //console.log(cellValue);
-                //数据待修复
-                if(cellValue == 1)
-                    return "FBA";
-                else if(cellValue == 2)
-                    return "大宗普货";
-                else
-                    return "";
             },
             showOrigin(row, column, cellValue, index){
                 var selected = [];
