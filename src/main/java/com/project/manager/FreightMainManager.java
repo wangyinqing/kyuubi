@@ -10,7 +10,7 @@ public interface FreightMainManager {
 
     long create(Freight freight);
 
-    List<Freight> findByProviderId(Long providerId);
+    List<Freight> findFreightMainByProviderId(Long providerId);
 
     long update(FreightMain freight);
 

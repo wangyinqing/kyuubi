@@ -16,4 +16,9 @@ public class PoiOverseasManagerImpl implements PoiOverseasManager {
     public List<PoiOverseas> findAllPoiOverseasByType(Integer businessType) {
         return poiOverseasMapper.findAllPoiOverseasByType(businessType);
     }
+
+    @Override
+    public PoiOverseas findPoiOverseasById(Long id) {
+        return poiOverseasMapper.findPoiOverseasById(id);
+    }
 }

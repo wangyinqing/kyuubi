@@ -18,21 +18,26 @@
 
     <sql id="freightTypeColumns">
         id,
-        name AS name,
-        type AS type,
+        name,
+        type,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
 
 
     <insert id="create" parameterType="FreightType" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO freight_type (name, type)
+        INSERT INTO freight_type ('name', 'type')
         VALUES (#{name}, #{type})
     </insert>
 
-    <select id="findFreightTypeById" parameterType="long" resultType="FreightType">
+    <select id="findFreightTypeById" parameterType="Long" resultType="FreightType">
         SELECT <include refid="freightTypeColumns"></include>
         FROM freight_type WHERE id = #{id}
+    </select>
+
+    <select id="findFreightTypeByType" parameterType="Integer" resultType="FreightType">
+        SELECT <include refid="freightTypeColumns"></include>
+        FROM freight_type WHERE type = #{type}
     </select>
 
     <select id="findAllFreightType" resultType="FreightType">

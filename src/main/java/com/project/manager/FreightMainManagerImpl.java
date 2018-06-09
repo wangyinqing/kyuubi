@@ -29,7 +29,7 @@ public class FreightMainManagerImpl implements FreightMainManager {
 
 
     @Override
-    public List<Freight> findByProviderId(Long providerId) {
+    public List<Freight> findFreightMainByProviderId(Long providerId) {
         List<FreightMain> freightMains = freightMainMapper.findByProvider(providerId);
         List<Freight> freights = Lists.transform(freightMains, new Function<FreightMain,Freight>(){
             @Override

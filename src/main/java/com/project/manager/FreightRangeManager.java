@@ -9,7 +9,7 @@ public interface FreightRangeManager {
 
     long create(List<FreightRange> freightRange);
 
-    List<FreightRange> findByFreightId(long freightId);
+    List<FreightRange> findFreightRangeByFreightId(long freightId);
 
     int deleteByFreightId(long freightId);
 }

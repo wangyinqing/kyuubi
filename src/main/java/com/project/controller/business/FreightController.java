@@ -3,6 +3,7 @@ package com.project.controller.business;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.dto.BizUser;
 import com.project.model.dto.freight.Freight;
+import com.project.model.dto.freight.FreightVO;
 import com.project.service.business.FreightService;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,12 @@ public class FreightController {
             map.put("message", "请先登录");
         }else {
             BizUser bizUser = logisticsProviderService.getBizUserByToken(sut);
-            List<Freight> freights = freightService.findByProviderId(bizUser.getId());
+            List<FreightVO> freights = freightService.findFreightByProviderId(bizUser.getId());
+            freights.stream()
+                    .forEach(a -> {
+                        a.setProviderId(bizUser.getId());
+                        a.setProviderName(bizUser.getEptname());
+                    });
             map.put("code", 1);
             map.put("data", freights);
         }

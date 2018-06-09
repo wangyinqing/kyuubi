@@ -16,4 +16,9 @@ public class PoiDomesticManagerImpl implements PoiDomesticManager {
     public List<PoiDomestic> findAllPoiDomestic() {
         return poiDomesticMapper.findAllPoiDomestic();
     }
+
+    @Override
+    public PoiDomestic findPoiDomesticById(Long id) {
+        return poiDomesticMapper.findPoiDomesticById(id);
+    }
 }

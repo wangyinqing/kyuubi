@@ -1,12 +1,14 @@
 package com.project.service;
 
+import com.project.manager.FreightTypeManager;
 import com.project.manager.PoiDomesticManager;
 import com.project.manager.PoiOverseasManager;
-import com.project.model.dto.PoiDomesticEntity;
-import com.project.model.dto.PoiOverseasEntity;
+import com.project.model.dto.PoiDomesticVO;
+import com.project.model.dto.PoiOverseasVO;
+import com.project.model.dto.freight.FreightTypeVO;
+import com.project.mybatis.domain.FreightType;
 import com.project.mybatis.domain.PoiDomestic;
 import com.project.mybatis.domain.PoiOverseas;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,35 +24,38 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private PoiOverseasManager poiOverseasManager;
 
+    @Autowired
+    private FreightTypeManager freightTypeManager;
+
     @Override
-    public List<PoiDomesticEntity> buildDomesticPoiEntity() {
+    public List<PoiDomesticVO> buildDomesticPoiVo() {
         List<PoiDomestic> poiList = poiDomesticManager.findAllPoiDomestic();
         if (CollectionUtils.isEmpty(poiList)) {
             return Collections.emptyList();
         }
         //省
-        List<PoiDomesticEntity> poiProvinceList = poiList.stream()
+        List<PoiDomesticVO> poiProvinceList = poiList.stream()
                 .filter(a -> a.getType() == 0)
-                .map(a -> new PoiDomesticEntity(a.getId(), a.getPoiName(), a.getParentId()))
+                .map(a -> new PoiDomesticVO(a.getId(), a.getPoiName(), a.getParentId()))
                 .collect(Collectors.toList());
         //市
-        List<PoiDomesticEntity> poiCityList = poiList.stream()
+        List<PoiDomesticVO> poiCityList = poiList.stream()
                 .filter(a -> a.getType() == 1)
-                .map(a -> new PoiDomesticEntity(a.getId(), a.getPoiName(), a.getParentId()))
+                .map(a -> new PoiDomesticVO(a.getId(), a.getPoiName(), a.getParentId()))
                 .collect(Collectors.toList());
         //区
-        List<PoiDomesticEntity> poiCountyList = poiList.stream()
+        List<PoiDomesticVO> poiCountyList = poiList.stream()
                 .filter(a -> a.getType() == 2)
-                .map(a -> new PoiDomesticEntity(a.getId(), a.getPoiName(), a.getParentId()))
+                .map(a -> new PoiDomesticVO(a.getId(), a.getPoiName(), a.getParentId()))
                 .collect(Collectors.toList());
-        Map<Long, List<PoiDomesticEntity>> cityMap = buildMap(poiCityList);
-        Map<Long, List<PoiDomesticEntity>> countyMap = buildMap(poiCountyList);
-        for (PoiDomesticEntity prov : poiProvinceList) {
-            List<PoiDomesticEntity> cityList = cityMap.get(prov.getId());
+        Map<Long, List<PoiDomesticVO>> cityMap = buildMap(poiCityList);
+        Map<Long, List<PoiDomesticVO>> countyMap = buildMap(poiCountyList);
+        for (PoiDomesticVO prov : poiProvinceList) {
+            List<PoiDomesticVO> cityList = cityMap.get(prov.getId());
             if (CollectionUtils.isEmpty(cityList)) {
                 continue;
             }
-            for (PoiDomesticEntity city : cityList) {
+            for (PoiDomesticVO city : cityList) {
                 city.setChildren(countyMap.get(city.getId()));
             }
             prov.setChildren(cityList);
@@ -59,19 +64,19 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<PoiOverseasEntity> buildOverseasPoiEntityByType(Integer businessType) {
+    public List<PoiOverseasVO> buildOverseasPoiVoByType(Integer businessType) {
         List<PoiOverseas> overseasPoiList = poiOverseasManager.findAllPoiOverseasByType(businessType);
         return overseasPoiList.stream()
-                .map(a -> new PoiOverseasEntity(a.getId(), a.getPoiName(), a.getShortName()))
+                .map(a -> new PoiOverseasVO(a.getId(), a.getPoiName(), a.getShortName()))
                 .collect(Collectors.toList());
     }
 
     //key:上级poiId
-    private Map buildMap(List<PoiDomesticEntity> poiList) {
-        Map<Long, List<PoiDomesticEntity>> map = new HashMap<>();
-        for (PoiDomesticEntity entity : poiList) {
+    private Map buildMap(List<PoiDomesticVO> poiList) {
+        Map<Long, List<PoiDomesticVO>> map = new HashMap<>();
+        for (PoiDomesticVO entity : poiList) {
             if (CollectionUtils.isEmpty(map.get(entity.getParentId()))) {
-                List<PoiDomesticEntity> list = new ArrayList<>();
+                List<PoiDomesticVO> list = new ArrayList<>();
                 list.add(entity);
                 map.put(entity.getParentId(), list);
             } else {
@@ -79,5 +84,16 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
         return map;
+    }
+
+    @Override
+    public List<FreightTypeVO> queryFreightTypeByType(Integer type) {
+        List<FreightType> freightTypeList = freightTypeManager.findFreightTypeByType(type);
+        if (CollectionUtils.isEmpty(freightTypeList)) {
+            return Collections.emptyList();
+        }
+        return freightTypeList.stream()
+                .map(a -> new FreightTypeVO(a.getId(), a.getName(), a.getType()))
+                .collect(Collectors.toList());
     }
 }

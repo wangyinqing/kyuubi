@@ -1,16 +1,14 @@
-package com.project.mybatis.mapper;
+package com.project.manager;
 
 import com.project.mybatis.domain.FreightType;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * @Author: jiazhuang
- * @Date: 13:08 2018/6/2
+ * @Date: 15:55 2018/6/9
  */
-@Repository
-public interface FreightTypeMapper {
+public interface FreightTypeManager {
     long create(FreightType freightType);
 
     FreightType findFreightTypeById(Long id);

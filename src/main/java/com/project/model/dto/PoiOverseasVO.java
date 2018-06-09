@@ -4,14 +4,14 @@ package com.project.model.dto;
  * @Author: jiazhuang
  * @Date: 16:18 2018/6/3
  */
-public class PoiOverseasEntity {
+public class PoiOverseasVO {
     private Long id;
     private String name;
     private String shortName;
     private Integer businessType;
     boolean selectable = true;
 
-    public PoiOverseasEntity(Long id, String name, String shortName) {
+    public PoiOverseasVO(Long id, String name, String shortName) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;

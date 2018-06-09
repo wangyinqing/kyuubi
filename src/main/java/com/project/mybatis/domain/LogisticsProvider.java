@@ -28,8 +28,6 @@ public class LogisticsProvider implements Serializable {
 
     private String qq;
 
-    private String eptType;
-
     private String license;
 
     private String transportPermission;
@@ -102,14 +100,6 @@ public class LogisticsProvider implements Serializable {
         this.qq = qq;
     }
 
-    public String getEptType() {
-        return eptType;
-    }
-
-    public void setEptType(String eptType) {
-        this.eptType = eptType;
-    }
-
     public String getLicense() {
         return license;
     }
@@ -153,7 +143,6 @@ public class LogisticsProvider implements Serializable {
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +
-                ", eptType='" + eptType + '\'' +
                 ", license='" + license + '\'' +
                 ", transportPermission='" + transportPermission + '\'' +
                 ", createTime=" + createTime +

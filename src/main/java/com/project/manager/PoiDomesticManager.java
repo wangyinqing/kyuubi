@@ -14,4 +14,6 @@ public interface PoiDomesticManager {
      * @return
      */
     List<PoiDomestic> findAllPoiDomestic();
+
+    PoiDomestic findPoiDomesticById(Long id);
 }

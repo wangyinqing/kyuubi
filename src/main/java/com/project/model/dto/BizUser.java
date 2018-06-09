@@ -21,8 +21,6 @@ public class BizUser {
 
     private String qq;
 
-    private String eptType;
-
     private String license;
 
     private String transportPermission;
@@ -100,14 +98,6 @@ public class BizUser {
         this.qq = qq;
     }
 
-    public String getEptType() {
-        return eptType;
-    }
-
-    public void setEptType(String eptType) {
-        this.eptType = eptType;
-    }
-
     public String getLicense() {
         return license;
     }
@@ -151,7 +141,6 @@ public class BizUser {
                 ", contact='" + contact + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", qq='" + qq + '\'' +
-                ", eptType='" + eptType + '\'' +
                 ", license='" + license + '\'' +
                 ", transportPermission='" + transportPermission + '\'' +
                 ", licenseVisible=" + licenseVisible +
@@ -161,3 +150,4 @@ public class BizUser {
                 '}';
     }
 }
+

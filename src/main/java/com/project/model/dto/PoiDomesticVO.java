@@ -6,20 +6,20 @@ import java.util.List;
  * @Author: jiazhuang
  * @Date: 12:25 2018/6/3
  */
-public class PoiDomesticEntity {
+public class PoiDomesticVO {
     Long id;
     String name;
     Long parentId;
-    List<PoiDomesticEntity> children;
+    List<PoiDomesticVO> children;
     boolean selectable = true;
 
-    public PoiDomesticEntity(Long id, String name, Long parentId) {
+    public PoiDomesticVO(Long id, String name, Long parentId) {
         this.id = id;
         this.name = name;
         this.parentId = parentId;
     }
 
-    public PoiDomesticEntity(Long id, String name, Long parentId, List<PoiDomesticEntity> children) {
+    public PoiDomesticVO(Long id, String name, Long parentId, List<PoiDomesticVO> children) {
         this.id = id;
         this.name = name;
         this.parentId = parentId;
@@ -50,11 +50,11 @@ public class PoiDomesticEntity {
         this.parentId = parentId;
     }
 
-    public List<PoiDomesticEntity> getChildren() {
+    public List<PoiDomesticVO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<PoiDomesticEntity> children) {
+    public void setChildren(List<PoiDomesticVO> children) {
         this.children = children;
     }
 

@@ -29,7 +29,7 @@ public class FreightRangeManagerImpl implements FreightRangeManager {
     }
 
     @Override
-    public List<FreightRange> findByFreightId(long freightId) {
+    public List<FreightRange> findFreightRangeByFreightId(long freightId) {
         List<com.project.mybatis.domain.FreightRange> freightRanges = freightRangeMapper.findByFreightId(freightId);
         List<FreightRange> freightRangeLists = Lists.transform(freightRanges, new Function<com.project.mybatis.domain.FreightRange, FreightRange>(){
             @Override

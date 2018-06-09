@@ -45,11 +45,6 @@
                                 <el-form-item label="QQ账号">
                                     <el-input v-model="form.qq"></el-input>
                                 </el-form-item>
-                                <el-form-item label="公司类型">
-                                    <el-select v-model="form.eptType">
-                                        <el-option label="国际快递" value="international"></el-option>
-                                    </el-select>
-                                </el-form-item>
                             </template>
                             <template v-if="active==1">
                                 <el-form-item label="营业执照(三证合一)">
@@ -122,8 +117,7 @@
             eptname: '',
             contact: '',
             mobile: '',
-            qq: '',
-            eptType: ''
+            qq: ''
         }
     };
 
@@ -157,7 +151,6 @@
                     contact:data.form.contact,
                     mobile:data.form.mobile,
                     qq:data.form.qq,
-                    eptType:data.form.eptType,
                     license:data.form.license,
                     transportPermission:data.form.transportPermission
                 })
