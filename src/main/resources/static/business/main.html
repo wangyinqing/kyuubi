@@ -38,6 +38,7 @@
                                 <el-cascader
                                         placeholder="试试搜索：省市区"
                                         :options="originOpts"
+                                        v-model="form.selectedOriginOpts"
                                         :props="cascaderProps"
                                         :clearable="true"
                                         @change="handleOriginChange"
@@ -50,6 +51,7 @@
                                 <el-cascader
                                         placeholder="试试搜索：国家地区"
                                         :options="destOpts"
+                                        v-model="form.selectedDestOpts"
                                         :props="cascaderProps"
                                         :clearable="true"
                                         @change="handleDestChange"
@@ -126,6 +128,7 @@
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" v-if="!form.id">创建</el-button>
                                 <el-button type="primary" @click="onSubmit" v-if="!!form.id">保存</el-button>
+                                <el-button type="danger" @click="back2FreightList" >返回</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -143,7 +146,7 @@
                             <el-table-column
                                     prop="origin"
                                     label="始发地"
-                                    width="120"
+                                    width="200"
                                     :formatter="showOrigin">
                             </el-table-column>
                             <el-table-column
@@ -181,6 +184,7 @@
                             </el-table-column>
                         </el-table>
                         <el-button @click="addFreight" type="primary" size="small" class="el-icon-plus"></el-button>
+                        <el-button @click="onRefresh" type="success" size="small" class="el-icon-refresh"></el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -204,7 +208,9 @@
             bizType: '',
             airlines: '',
             freightType:'',
-            freights:[]
+            freights:[],
+            selectedOriginOpts: [],
+            selectedDestOpts: []
         },
         mode:2,
         freights:[],
@@ -330,9 +336,14 @@
                                 type: 'error'
                             });
                         }
+                        setTimeout(function(){
+                            data.mode = 2;
+                            getFreights();
+                        },500);
                     })
                     .catch(function (error) {
                         console.log(error);
+                        data.mode = 2;
                     });
             },
             editFreight(row){
@@ -350,6 +361,12 @@
                     // row.freights[idx].is_price_edit = false;
                     data.form.freights.push(row.freights[idx]);
                 }
+                var selectedOrig = [];
+                findLabelByValueRecursively(data.originOpts, row.origin,selectedOrig,true);
+                var selectedDest = [];
+                findLabelByValueRecursively(data.destOpts, row.destination,selectedDest,true);
+                data.form.selectedOriginOpts = getOriginOrDestId(selectedOrig);
+                data.form.selectedDestOpts = getOriginOrDestId(selectedDest);
                 data.mode = 1;
             },
             addFreight(){
@@ -360,14 +377,21 @@
                         bizType: '',
                         airlines: '',
                         freightType:'',
-                        freights:[]
+                        freights:[],
+                        selectedDestOpts: [],
+                        selectedOriginOpts: []
                 };
                 data.mode = 1;
             },
             deleteFreight(row){
                 var id = row.id;
                 var v = this;
-                axios.get('/business/freight/delete/' + id)
+                this.$confirm('确定删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                    axios.get('/business/freight/delete/' + id)
                     .then(function (response) {
                         console.log(response);
                         if(response.data.code == 1) {
@@ -381,11 +405,15 @@
                                 type: 'error'
                             });
                         }
-
+                        setTimeout(function(){
+                            getFreights();
+                        },200);
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+                }).catch(() => {
+                });
             },
             handleOriginChange(val){
                 // console.log(val);
@@ -424,34 +452,77 @@
                     return "";
             },
             showOrigin(row, column, cellValue, index){
-                return findLabelByValueRecursively(data.originOpts, cellValue);
+                var selected = [];
+                findLabelByValueRecursively(data.originOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
             },
             showDestination(row, column, cellValue, index){
-                return findLabelByValueRecursively(data.destOpts, cellValue);
+                var selected = [];
+                findLabelByValueRecursively(data.destOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
+            },
+            onRefresh(){
+                getFreights();
+            },
+            back2FreightList(){
+                data.mode = 2;
+                //getFreights();
             }
 
         }
     })
 
 
-    function findLabelByValueRecursively(object, value){
+    function findLabelByValueRecursively(object, value, selected, withParent){
+        if(!selected)
+            selected = [];
+        if(!withParent)
+            withParent = false;
         //从始发地或目的地里找到显示内容
         if(object){
             for(var i in object){
                 var o = object[i];
                 if(o.id == value){
-                    return o.name;
+                    selected.unshift(o);
+                    return true;
                 }else{
                     if(o.children){
-                        var r = findLabelByValueRecursively(o.children, value);
-                        if(r)
-                            return r;
+                        if(findLabelByValueRecursively(o.children, value, selected, withParent) && withParent){
+                            selected.unshift(o);
+                            return true;
+                        }
                     }
                 }
             }
 
         }
-        return null;
+        return false;
+    }
+
+    function formatOriginOrDestValue(objects){
+        var str = '';
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                str += objects[i].name;
+                if( (i + 1) < objects.length)
+                    str += " / ";
+                i++;
+            }
+        }
+        return str;
+    }
+
+    function getOriginOrDestId(objects){
+        var ids = [];
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                ids.push(objects[i].id);
+                i++;
+            }
+        }
+        return ids;
     }
 
     function getFreights(){
@@ -464,12 +535,12 @@
                     data.freights = response.data.data;
                     data.freightLoading = false;
                 }
-                data.mode == 2;
+                data.mode = 2;
             })
             .catch(function (error) {
                 console.log(error);
                 data.freightLoading = false;
-                data.mode == 2;
+                data.mode = 2;
             });
     }
 
