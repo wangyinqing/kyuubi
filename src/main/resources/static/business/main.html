@@ -33,10 +33,31 @@
                     <div v-if="menu==1 && mode==1">
                         <el-form ref="form" :model="form" label-width="120px">
                             <el-form-item label="始发地">
-                                <el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                                <!--<el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                                -->
+                                <el-cascader
+                                        placeholder="试试搜索：省市区"
+                                        :options="originOpts"
+                                        v-model="form.selectedOriginOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleOriginChange"
+                                        filterable
+                                ></el-cascader>
                             </el-form-item>
                             <el-form-item label="目的地">
-                               <el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                               <!--<el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                               -->
+                                <el-cascader
+                                        placeholder="试试搜索：国家地区"
+                                        :options="destOpts"
+                                        v-model="form.selectedDestOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleDestChange"
+                                        :show-all-levels="false"
+                                        filterable
+                                ></el-cascader>
                             </el-form-item>
                             <el-form-item label="业务类型">
                                 <el-select v-model="form.bizType" placeholder="请选择业务类型">
@@ -107,6 +128,7 @@
                             <el-form-item>
                                 <el-button type="primary" @click="onSubmit" v-if="!form.id">创建</el-button>
                                 <el-button type="primary" @click="onSubmit" v-if="!!form.id">保存</el-button>
+                                <el-button type="danger" @click="back2FreightList" >返回</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -116,35 +138,40 @@
                                 border
                                 style="width: 100%"
                                 v-loading="freightLoading">
-                            <el-table-column
+                            <!--<el-table-column
                                     prop="id"
                                     label="id"
-                                    width="150">
+                                    width="150">-->
                             </el-table-column>
                             <el-table-column
                                     prop="origin"
                                     label="始发地"
-                                    width="120">
+                                    width="200"
+                                    :formatter="showOrigin">
                             </el-table-column>
                             <el-table-column
                                     prop="destination"
                                     label="目的地"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showDestination">
                             </el-table-column>
                             <el-table-column
                                     prop="airlines"
                                     label="航空公司"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showAirlines">
                             </el-table-column>
                             <el-table-column
                                     prop="bizType"
                                     label="业务类型"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showBizType">
                             </el-table-column>
                             <el-table-column
                                     prop="freightType"
                                     label="货物种类"
-                                    width="120">
+                                    width="120"
+                                    :formatter="showFreightType">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -157,6 +184,7 @@
                             </el-table-column>
                         </el-table>
                         <el-button @click="addFreight" type="primary" size="small" class="el-icon-plus"></el-button>
+                        <el-button @click="onRefresh" type="success" size="small" class="el-icon-refresh"></el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -180,11 +208,20 @@
             bizType: '',
             airlines: '',
             freightType:'',
-            freights:[]
+            freights:[],
+            selectedOriginOpts: [],
+            selectedDestOpts: []
         },
         mode:2,
         freights:[],
-        freightLoading: false
+        freightLoading: false,
+        originOpts: [],
+        destOpts: [],
+        cascaderProps: {
+            "value":"id",
+            "label":"name",
+            "children":"children"
+        }
     };
 
     new Vue({
@@ -209,13 +246,13 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        axios.get('/invalidateUser')
+                        axios.get('/business/invalidateUser')
                         .then(function (response) {
                             console.log(response);
                             if(response.data.code == 1) {
-                                setTimeout(function () {
-                                    window.location.href = "/backend/login.html";
-                                }, 500);
+                                //setTimeout(function () {
+                                    window.location.href = "/business/login.html";
+                                //}, 500);
                             }
                         })
                         .catch(function (error) {
@@ -299,9 +336,14 @@
                                 type: 'error'
                             });
                         }
+                        setTimeout(function(){
+                            data.mode = 2;
+                            getFreights();
+                        },500);
                     })
                     .catch(function (error) {
                         console.log(error);
+                        data.mode = 2;
                     });
             },
             editFreight(row){
@@ -319,6 +361,12 @@
                     // row.freights[idx].is_price_edit = false;
                     data.form.freights.push(row.freights[idx]);
                 }
+                var selectedOrig = [];
+                findLabelByValueRecursively(data.originOpts, row.origin,selectedOrig,true);
+                var selectedDest = [];
+                findLabelByValueRecursively(data.destOpts, row.destination,selectedDest,true);
+                data.form.selectedOriginOpts = getOriginOrDestId(selectedOrig);
+                data.form.selectedDestOpts = getOriginOrDestId(selectedDest);
                 data.mode = 1;
             },
             addFreight(){
@@ -329,14 +377,21 @@
                         bizType: '',
                         airlines: '',
                         freightType:'',
-                        freights:[]
+                        freights:[],
+                        selectedDestOpts: [],
+                        selectedOriginOpts: []
                 };
                 data.mode = 1;
             },
             deleteFreight(row){
                 var id = row.id;
                 var v = this;
-                axios.get('/business/freight/delete/' + id)
+                this.$confirm('确定删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                    axios.get('/business/freight/delete/' + id)
                     .then(function (response) {
                         console.log(response);
                         if(response.data.code == 1) {
@@ -350,14 +405,125 @@
                                 type: 'error'
                             });
                         }
-
+                        setTimeout(function(){
+                            getFreights();
+                        },200);
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+                }).catch(() => {
+                });
+            },
+            handleOriginChange(val){
+                // console.log(val);
+                data.form.origin = val[val.length -1];
+            },
+            handleDestChange(val){
+                // console.log(val);
+                data.form.destination = val[val.length -1];
+            },
+            showAirlines(row, column, cellValue, index){
+                //console.log(cellValue);
+                if(cellValue == 1)
+                    return "南航";
+                else if(cellValue == 2)
+                    return "东航";
+                else
+                    return "";
+            },
+            showBizType(row, column, cellValue, index){
+                //console.log(cellValue);
+                if(cellValue == 1)
+                    return "FBA";
+                else if(cellValue == 2)
+                    return "大宗普货";
+                else
+                    return "";
+            },
+            showFreightType(row, column, cellValue, index){
+                //console.log(cellValue);
+                //数据待修复
+                if(cellValue == 1)
+                    return "FBA";
+                else if(cellValue == 2)
+                    return "大宗普货";
+                else
+                    return "";
+            },
+            showOrigin(row, column, cellValue, index){
+                var selected = [];
+                findLabelByValueRecursively(data.originOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
+            },
+            showDestination(row, column, cellValue, index){
+                var selected = [];
+                findLabelByValueRecursively(data.destOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
+            },
+            onRefresh(){
+                getFreights();
+            },
+            back2FreightList(){
+                data.mode = 2;
+                //getFreights();
             }
+
         }
     })
+
+
+    function findLabelByValueRecursively(object, value, selected, withParent){
+        if(!selected)
+            selected = [];
+        if(!withParent)
+            withParent = false;
+        //从始发地或目的地里找到显示内容
+        if(object){
+            for(var i in object){
+                var o = object[i];
+                if(o.id == value){
+                    selected.unshift(o);
+                    return true;
+                }else{
+                    if(o.children){
+                        if(findLabelByValueRecursively(o.children, value, selected, withParent) && withParent){
+                            selected.unshift(o);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
+
+    function formatOriginOrDestValue(objects){
+        var str = '';
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                str += objects[i].name;
+                if( (i + 1) < objects.length)
+                    str += " / ";
+                i++;
+            }
+        }
+        return str;
+    }
+
+    function getOriginOrDestId(objects){
+        var ids = [];
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                ids.push(objects[i].id);
+                i++;
+            }
+        }
+        return ids;
+    }
 
     function getFreights(){
         data.freightLoading = true;
@@ -369,18 +535,47 @@
                     data.freights = response.data.data;
                     data.freightLoading = false;
                 }
-                data.mode == 2;
+                data.mode = 2;
             })
             .catch(function (error) {
                 console.log(error);
                 data.freightLoading = false;
-                data.mode == 2;
+                data.mode = 2;
             });
     }
 
     if(data.menu == 1){
         getFreights();
     }
+
+
+    axios.get('/business/validateUser')
+        .then(function (response) {
+            console.log(response);
+            if(!response.data.code  || response.data.code!= 1) {
+                setTimeout(function () {
+                    window.location.href = "/business/login.html";
+                }, 500);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+    (function (){
+        axios.get('/get/originsAndDests')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.originOpts =response.data.origins ;
+                    data.destOpts =response.data.destinations;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
 
 </script>
 </html>
