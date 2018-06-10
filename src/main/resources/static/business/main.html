@@ -66,27 +66,27 @@
                             <el-form-item label="业务类型">
                                 <el-select v-model="form.bizType" placeholder="请选择业务类型"  @change="bizTypeChange">
                                     <el-option   v-for="item in bizTypeOpts"
-                                                 :key="item.value"
-                                                 :label="item.label"
-                                                 :value="item.value">
+                                                 :key="item.id"
+                                                 :label="item.name"
+                                                 :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="航空公司">
                                 <el-select v-model="form.airlines" placeholder="请选择航空公司">
                                     <el-option   v-for="item in airlinesOpts"
-                                                 :key="item.value"
-                                                 :label="item.label"
-                                                 :value="item.value">
+                                                 :key="item.id"
+                                                 :label="item.airlineName"
+                                                 :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="货物种类">
                                 <el-select v-model="form.freightType" placeholder="请选择货物种类" :disabled="!form.bizType">
                                     <el-option   v-for="item in filterFreightTyeOpts"
-                                                 :key="item.value"
-                                                 :label="item.label"
-                                                 :value="item.value">
+                                                 :key="item.id"
+                                                 :label="item.name"
+                                                 :value="item.id">
                                     </el-option>
                                 </el-select>
                                 <el-tooltip content="货物种类根据业务类型改变">
@@ -191,26 +191,25 @@
                                     width="120">
                                 <template slot-scope="scope">
                                     <template v-if="!!scope.row.freightRangeList && scope.row.freightRangeList.length>0">
-                                    <el-popover trigger="hover" placement="top">
-                                        <table >
-                                            <tr>
-                                                <th>起始区间</th>
-                                                <th>结束区间</th>
-                                                <th>单价</th>
-                                            </tr>
-                                            <template v-for="(item,index) in scope.row.freightRangeList">
-                                                    <tr>
-                                                        <td>{{item.from}}</td>
-                                                        <td>{{item.to}}</td>
-                                                        <td>{{item.price}}</td>
-                                                    </tr>
-                                            </template>
-                                        </table>
-                                        <div slot="reference" >
-                                            <el-tag size="medium">查看价格</el-tag>
-                                        </div>
-                                    </el-popover>
-                                    </template>
+                                        <el-popover trigger="hover" placement="top">
+                                            <table >
+                                                <tr>
+                                                    <th>起始区间</th>
+                                                    <th>结束区间</th>
+                                                    <th>单价</th>
+                                                </tr>
+                                                <template v-for="(item,index) in scope.row.freightRangeList">
+                                                        <tr>
+                                                            <td>{{item.from}}</td>
+                                                            <td>{{item.to}}</td>
+                                                            <td>{{item.price}}</td>
+                                                        </tr>
+                                                </template>
+                                            </table>
+                                            <div slot="reference" >
+                                                <el-tag size="medium">查看价格</el-tag>
+                                            </div>
+                                        </el-popover>
                                     </template>
                                     <template v-else>
                                         暂无数据
@@ -268,31 +267,31 @@
             "children":"children"
         },
         bizTypeOpts: [{
-            value: '1',
-            label: 'FBA'
+            id: 1,
+            name: 'FBA'
         },{
-            value: '2',
-            label: '大宗普货'
+            id: 2,
+            name: '大宗普货'
         }],
         airlinesOpts: [{
-            value: '1',
-            label: '中国南方航空'
+            id: 1,
+            airlineName: '中国南方航空'
         },{
-            value: '2',
-            label: '东方航空公司'
+            id: 2,
+            airlineName: '东方航空公司'
         }],
         freightTypeOpts: [{
-            value: '1',
-            label: '普货',
-            businessType: '1'
+            id: 1,
+            name: '普货',
+            type: 1
         },{
-            value: '2',
-            label: '带电',
-            businessType: '1'
+            id: 2,
+            name: '带电',
+            type: 1
         },{
-            value: '5',
-            label: '纺织物',
-            businessType: '2'
+            id: 5,
+            name: '纺织物',
+            type: 2
         }],
         filterFreightTyeOpts: []
     };
@@ -424,9 +423,9 @@
                 data.form.id = row.freightId;
                 data.form.origin = row.originId;
                 data.form.destination = row.destinationId;
-                data.form.bizType = String(row.bizType);
-                data.form.freightType = String(row.freightTypeId);
-                data.form.airlines = String(row.airLineId);
+                data.form.bizType = row.bizType;
+                data.form.freightType = row.freightTypeId;
+                data.form.airlines = row.airLineId;
                 data.form.freights = [];
                 for(idx in row.freightRangeList){
                     var frage = {};
@@ -607,7 +606,7 @@
             if(clear)
                 data.form.freightType = null;
             for(var i in data.freightTypeOpts){
-                if(bizType == data.freightTypeOpts[i].businessType)
+                if(bizType == data.freightTypeOpts[i].type)
                     data.filterFreightTyeOpts.push(data.freightTypeOpts[i]);
             }
 
@@ -644,13 +643,16 @@
 
 
     (function (){
-        axios.get('/get/originsAndDests')
+        axios.get('/get/allResources')
             .then(function (response) {
                 console.log(response);
                 if(response.data.code == 1) {
                     data.originOpts =response.data.origins ;
                     data.destOpts =response.data.destinations;
                     data.filterDestOpts = [];
+                    data.bizTypeOpts = response.data.bizTypes;
+                    data.airlinesOpts = response.data.airlines;
+                    data.freightTypeOpts = response.data.freightTypes;
                 }
             })
             .catch(function (error) {

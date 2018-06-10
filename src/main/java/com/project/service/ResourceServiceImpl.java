@@ -86,7 +86,7 @@ public class ResourceServiceImpl implements ResourceService {
     public List<PoiOverseasVO> buildAllOverseasPoi() {
         List<PoiOverseas> overseasList = poiOverseasManager.findAllPoiOverseas();
         return overseasList.stream()
-                .map(a -> new PoiOverseasVO(a.getId(), a.getPoiName(), a.getShortName()))
+                .map(a -> new PoiOverseasVO(a.getId(), a.getPoiName(), a.getShortName(), a.getBusinessType()))
                 .collect(Collectors.toList());
     }
 
