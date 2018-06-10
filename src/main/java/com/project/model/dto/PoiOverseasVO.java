@@ -17,6 +17,13 @@ public class PoiOverseasVO {
         this.shortName = shortName;
     }
 
+    public PoiOverseasVO(Long id, String name, String shortName, Integer businessType) {
+        this.id = id;
+        this.name = name;
+        this.shortName = shortName;
+        this.businessType = businessType;
+    }
+
     public Long getId() {
         return id;
     }

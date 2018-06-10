@@ -50,32 +50,48 @@
                                -->
                                 <el-cascader
                                         placeholder="试试搜索：国家地区"
-                                        :options="destOpts"
+                                        :options="filterDestOpts"
                                         v-model="form.selectedDestOpts"
                                         :props="cascaderProps"
                                         :clearable="true"
                                         @change="handleDestChange"
                                         :show-all-levels="false"
                                         filterable
+                                        :disabled="!form.bizType"
                                 ></el-cascader>
+                                <el-tooltip content="目的地根据业务类型改变">
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
                             </el-form-item>
                             <el-form-item label="业务类型">
-                                <el-select v-model="form.bizType" placeholder="请选择业务类型">
-                                    <el-option label="FBA" value="1"></el-option>
-                                    <el-option label="大宗普货" value="2"></el-option>
+                                <el-select v-model="form.bizType" placeholder="请选择业务类型"  @change="bizTypeChange">
+                                    <el-option   v-for="item in bizTypeOpts"
+                                                 :key="item.value"
+                                                 :label="item.label"
+                                                 :value="item.value">
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="航空公司">
                                 <el-select v-model="form.airlines" placeholder="请选择航空公司">
-                                    <el-option label="中国南方航空" value="1"></el-option>
-                                    <el-option label="东方航空公司" value="2"></el-option>
+                                    <el-option   v-for="item in airlinesOpts"
+                                                 :key="item.value"
+                                                 :label="item.label"
+                                                 :value="item.value">
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="货物种类">
-                                <el-select v-model="form.freightType" placeholder="请选择货物种类">
-                                    <el-option label="普货" value="1"></el-option>
-                                    <el-option label="带电" value="2"></el-option>
+                                <el-select v-model="form.freightType" placeholder="请选择货物种类" :disabled="!form.bizType">
+                                    <el-option   v-for="item in filterFreightTyeOpts"
+                                                 :key="item.value"
+                                                 :label="item.label"
+                                                 :value="item.value">
+                                    </el-option>
                                 </el-select>
+                                <el-tooltip content="货物种类根据业务类型改变">
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
                             </el-form-item>
                             <el-form-item label="价格">
                                 <el-button icon="el-icon-plus"
@@ -214,11 +230,40 @@
         freightLoading: false,
         originOpts: [],
         destOpts: [],
+        filterDestOpts: [],
         cascaderProps: {
             "value":"id",
             "label":"name",
             "children":"children"
-        }
+        },
+        bizTypeOpts: [{
+            value: '1',
+            label: 'FBA'
+        },{
+            value: '2',
+            label: '大宗普货'
+        }],
+        airlinesOpts: [{
+            value: '1',
+            label: '中国南方航空'
+        },{
+            value: '2',
+            label: '东方航空公司'
+        }],
+        freightTypeOpts: [{
+            value: '1',
+            label: '普货',
+            businessType: '1'
+        },{
+            value: '2',
+            label: '带电',
+            businessType: '1'
+        },{
+            value: '5',
+            label: '纺织物',
+            businessType: '2'
+        }],
+        filterFreightTyeOpts: []
     };
 
     new Vue({
@@ -362,6 +407,7 @@
                     frage.price = row.freightRangeList[idx].price;
                     data.form.freights.push(frage);
                 }
+                fillDestAndFreightType(data.form.bizType);
                 var selectedOrig = [];
                 findLabelByValueRecursively(data.originOpts, row.originId,selectedOrig,true);
                 var selectedDest = [];
@@ -440,6 +486,10 @@
             back2FreightList(){
                 data.mode = 2;
                 //getFreights();
+            },
+            bizTypeChange(val){
+               // console.log(val);
+                fillDestAndFreightType(val, true);
             }
 
         }
@@ -517,6 +567,32 @@
             });
     }
 
+
+    function fillDestAndFreightType(bizType, clear){
+        if(!clear)
+            clear = false;
+        if(bizType){
+            data.filterFreightTyeOpts = [];
+            if(clear)
+                data.form.freightType = null;
+            for(var i in data.freightTypeOpts){
+                if(bizType == data.freightTypeOpts[i].businessType)
+                    data.filterFreightTyeOpts.push(data.freightTypeOpts[i]);
+            }
+
+            data.filterDestOpts = [];
+            if(clear){
+                data.form.destination = null;
+                data.form.selectedDestOpts = [];
+            }
+            for(var i in data.destOpts){
+                if(bizType == data.destOpts[i].businessType)
+                    data.filterDestOpts.push(data.destOpts[i]);
+            }
+
+        }
+    }
+
     if(data.menu == 1){
         getFreights();
     }
@@ -543,6 +619,7 @@
                 if(response.data.code == 1) {
                     data.originOpts =response.data.origins ;
                     data.destOpts =response.data.destinations;
+                    data.filterDestOpts = [];
                 }
             })
             .catch(function (error) {
