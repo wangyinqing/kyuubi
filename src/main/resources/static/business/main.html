@@ -187,9 +187,40 @@
                                     width="120">
                             </el-table-column>
                             <el-table-column
+                                    label="价格"
+                                    width="120">
+                                <template slot-scope="scope">
+                                    <template v-if="!!scope.row.freightRangeList && scope.row.freightRangeList.length>0">
+                                    <el-popover trigger="hover" placement="top">
+                                        <table >
+                                            <tr>
+                                                <th>起始区间</th>
+                                                <th>结束区间</th>
+                                                <th>单价</th>
+                                            </tr>
+                                            <template v-for="(item,index) in scope.row.freightRangeList">
+                                                    <tr>
+                                                        <td>{{item.from}}</td>
+                                                        <td>{{item.to}}</td>
+                                                        <td>{{item.price}}</td>
+                                                    </tr>
+                                            </template>
+                                        </table>
+                                        <div slot="reference" >
+                                            <el-tag size="medium">查看价格</el-tag>
+                                        </div>
+                                    </el-popover>
+                                    </template>
+                                    </template>
+                                    <template v-else>
+                                        暂无数据
+                                    </template>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
                                     fixed="right"
                                     label="操作"
-                                    min-width="200">
+                                    min-width="120">
                                 <template slot-scope="scope">
                                     <el-button @click="editFreight(scope.row)" type="primary" size="small" class="el-icon-edit"></el-button>
                                     <el-button @click="deleteFreight(scope.row);" type="danger" size="small" class="el-icon-delete"></el-button>
