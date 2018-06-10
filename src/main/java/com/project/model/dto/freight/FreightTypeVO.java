@@ -9,6 +9,9 @@ public class FreightTypeVO {
     private String name;
     private Integer type;
 
+    public FreightTypeVO() {
+    }
+
     public FreightTypeVO(Long id, String name, Integer type) {
         this.id = id;
         this.name = name;

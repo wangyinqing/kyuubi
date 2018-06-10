@@ -56,4 +56,15 @@ public class PoiOverseasVO {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
+
+    @Override
+    public String toString() {
+        return "PoiOverseasVO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", businessType=" + businessType +
+                ", selectable=" + selectable +
+                '}';
+    }
 }

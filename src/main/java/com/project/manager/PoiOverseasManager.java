@@ -15,5 +15,7 @@ public interface PoiOverseasManager {
      */
     List<PoiOverseas> findAllPoiOverseasByType(Integer businessType);
 
+    List<PoiOverseas> findAllPoiOverseas();
+
     PoiOverseas findPoiOverseasById(Long id);
 }

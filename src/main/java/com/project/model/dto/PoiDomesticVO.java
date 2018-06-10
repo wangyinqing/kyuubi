@@ -65,4 +65,15 @@ public class PoiDomesticVO {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
+
+    @Override
+    public String toString() {
+        return "PoiDomesticVO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", children=" + children +
+                ", selectable=" + selectable +
+                '}';
+    }
 }
