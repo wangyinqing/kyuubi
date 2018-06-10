@@ -3,6 +3,8 @@ package com.project.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.dto.AirlineVO;
 import com.project.model.dto.BizTypeVO;
+import com.google.common.collect.Lists;
+import com.project.model.BizTypeEnum;
 import com.project.model.dto.PoiDomesticVO;
 import com.project.model.dto.PoiOverseasVO;
 import com.project.model.dto.freight.FreightTypeVO;
@@ -51,8 +53,14 @@ public class ResourceController {
         List<PoiDomesticVO> poiDomestic = resourceService.buildDomesticPoiVo();
         map.put("origins", poiDomestic);
 
+        //FIXME 可以合成一个请求
         //FBA目的地
-        List<PoiOverseasVO> poiOverseas = resourceService.buildOverseasPoiVoByType(1);
+        List<PoiOverseasVO> poiOverseasFBA = resourceService.buildOverseasPoiVoByType(BizTypeEnum.FBA.getValue());
+        List<PoiOverseasVO> poiOverseasNormal = resourceService.buildOverseasPoiVoByType(BizTypeEnum.NORMAL.getValue());
+
+        List<PoiOverseasVO> poiOverseas = Lists.newArrayList();
+        poiOverseas.addAll(poiOverseasFBA);
+        poiOverseas.addAll(poiOverseasNormal);
         map.put("destinations", poiOverseas);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
