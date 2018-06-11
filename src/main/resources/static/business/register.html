@@ -22,9 +22,9 @@
 
                 <el-row style="margin-top: 20px">
                     <el-col :span="16" :offset="4">
-                        <el-form ref="form" :model="form" label-width="200px">
+                        <el-form ref="form" :model="form" status-icon :rules="rule" label-width="200px">
                             <template v-if="active==0">
-                                <el-form-item label="用户名">
+                                <el-form-item label="用户名" prop="account">
                                     <el-input v-model="form.account" placeholder="用于登录九尾狐物流商平台"></el-input>
                                 </el-form-item>
                                 <el-form-item label="密码" prop="pass">
@@ -33,17 +33,17 @@
                                 <el-form-item label="确认密码" prop="checkPass">
                                     <el-input type="password" v-model="form.checkPass" auto-complete="off"></el-input>
                                 </el-form-item>
-                                <el-form-item label="物流企业名">
+                                <el-form-item label="物流企业名" prop="eptname">
                                     <el-input v-model="form.eptname" placeholder="请输入名称"></el-input>
                                 </el-form-item>
-                                <el-form-item label="联系人">
+                                <el-form-item label="联系人" prop="contact">
                                     <el-input v-model="form.contact" placeholder="请输入联系人"></el-input>
                                 </el-form-item>
-                                <el-form-item label="联系电话">
-                                    <el-input v-model="form.mobile"></el-input>
+                                <el-form-item label="联系电话" prop="mobile">
+                                    <el-input v-model.number="form.mobile"></el-input>
                                 </el-form-item>
-                                <el-form-item label="QQ账号">
-                                    <el-input v-model="form.qq"></el-input>
+                                <el-form-item label="QQ账号" prop="qq">
+                                    <el-input v-model.number="form.qq"></el-input>
                                 </el-form-item>
                             </template>
                             <template v-if="active==1">
@@ -118,6 +118,31 @@
             contact: '',
             mobile: '',
             qq: ''
+        },
+        rule: {
+            account: [
+                { required: true, message: '请输入用户名', trigger: 'blur' }
+            ],
+            pass: [
+                { required: true, message: '请输入密码', trigger: 'blur' }
+            ],
+            checkPass: [
+                { required: true, message: '请再次输入密码确认', trigger: 'blur' }
+            ],
+            mobile: [
+                { required: true, message: '请输入手机号', trigger: 'blur' },
+                { type: 'number', message: '手机号必须为数字', trigger: ['blur'] }
+            ],
+            eptname: [
+                { required: true, message: '请输入物流企业名', trigger: 'blur' }
+            ],
+            contact: [
+                { required: true, message: '请输入联系人', trigger: 'blur' }
+            ],
+            qq: [
+                { required: true, message: '请输入QQ号', trigger: 'blur' },
+                { type: 'number', message: 'QQ号必须为数字', trigger: ['blur'] }
+            ]
         }
     };
 
@@ -126,7 +151,15 @@
         data: data,
         methods: {
             next() {
-                if (this.active++ > 3) this.active = 3;
+                if(this.active == 0) {
+                    this.$refs['form'].validate((valid) => {
+                        if(valid) {
+                            if (this.active++ > 3) this.active = 3;
+                        }
+                    });
+                }else {
+                    if (this.active++ > 3) this.active = 3;
+                }
             },
             prev(){
                 if(this.active-- < 0) this.active = 0;
