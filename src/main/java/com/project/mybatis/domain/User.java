@@ -2,7 +2,6 @@ package com.project.mybatis.domain;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @Author: jiazhuang
@@ -20,6 +19,7 @@ public class User implements Serializable{
     private String qq;
     private String email;
     private String eptaddress;
+    private Long region;
     private Timestamp createTime;
     private Timestamp updateTime;
 
@@ -95,6 +95,14 @@ public class User implements Serializable{
         this.eptaddress = eptaddress;
     }
 
+    public Long getRegion() {
+        return region;
+    }
+
+    public void setRegion(Long region) {
+        this.region = region;
+    }
+
     public Timestamp getCreateTime() {
         return createTime;
     }
@@ -123,8 +131,10 @@ public class User implements Serializable{
                 ", qq='" + qq + '\'' +
                 ", email='" + email + '\'' +
                 ", eptaddress='" + eptaddress + '\'' +
+                ", region=" + region +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';
     }
+
 }

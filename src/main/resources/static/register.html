@@ -40,10 +40,18 @@
                                             <el-input v-model="form.eptname" placeholder="请输入公司名称"></el-input>
                                         </el-form-item>
                                         <el-form-item label="所在省市" prop="region">
-                                            <el-select v-model="form.region" placeholder="请选择所在省市">
+                                            <el-cascader
+                                                    placeholder="试试搜索：省市区"
+                                                    :options="originOpts"
+                                                    v-model="form.region"
+                                                    :props="cascaderProps"
+                                                    :clearable="true"
+                                                    filterable
+                                            ></el-cascader>
+                                            <!--<el-select v-model="form.region" placeholder="请选择所在省市">
                                                 <el-option label="区域一" value="shanghai"></el-option>
                                                 <el-option label="区域二" value="beijing"></el-option>
-                                            </el-select>
+                                            </el-select>-->
                                         </el-form-item>
                                         <el-form-item label="公司地址" prop="eptaddress">
                                             <el-input
@@ -127,8 +135,10 @@
             name: '',
             qq: '',
             email: '',
-            regType:1
+            regType:1,
+            region:[]
         },
+        originOpts: [],
         rule1: {
             account: [
                 { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -164,8 +174,10 @@
                 { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
             ]
         },
-        rule2: {
-
+        cascaderProps: {
+            "value":"id",
+            "label":"name",
+            "children":"children"
         }
     };
 
@@ -194,6 +206,7 @@
                             name: data.form.name,
                             qq: data.form.qq,
                             email: data.form.email,
+                            region: data.form.region[data.form.region.length -1],
                             invitationCode: data.form.invitationCode,
                             eptaddress: data.form.eptaddress,
                             regType: data.form.regType
@@ -216,6 +229,20 @@
 
             }
         }
-    })
+    });
+
+
+    (function (){
+        axios.get('/get/allResources')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.originOpts =response.data.origins ;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
 </script>
 </html>

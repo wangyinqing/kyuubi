@@ -14,6 +14,8 @@ public class RegUser {
     private String qq;
     private String email;
     private String eptaddress;
+    private long region;
+
     private int regType = 1;
 
     public String getAccount() {
@@ -80,6 +82,14 @@ public class RegUser {
         this.eptaddress = eptaddress;
     }
 
+    public long getRegion() {
+        return region;
+    }
+
+    public void setRegion(long region) {
+        this.region = region;
+    }
+
     public int getRegType() {
         return regType;
     }
@@ -99,6 +109,7 @@ public class RegUser {
                 ", qq='" + qq + '\'' +
                 ", email='" + email + '\'' +
                 ", eptaddress='" + eptaddress + '\'' +
+                ", region=" + region +
                 ", regType=" + regType +
                 '}';
     }

@@ -30,8 +30,8 @@
     </sql>
 
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (account, password, mobile, eptname, name, qq, email, eptaddress)
-        VALUES (#{account}, #{password}, #{mobile}, #{eptname}, #{name}, #{qq}, #{email}, #{eptaddress})
+        INSERT INTO user (account, password, mobile, eptname, name, qq, email, eptaddress, region)
+        VALUES (#{account}, #{password}, #{mobile}, #{eptname}, #{name}, #{qq}, #{email}, #{eptaddress}, #{region})
     </insert>
 
     <select id="findUserById" parameterType="Long" resultType="User">
