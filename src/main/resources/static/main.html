@@ -296,7 +296,7 @@
 
             <br>
 
-            <el-row>
+            <el-row v-if="searched">
                 <el-col :span="16" :offset="4">
                     <el-table
                             :data="searchResults"
@@ -432,6 +432,7 @@
 
     data.resultLoading = false;
     data.searchResults = [];
+    data.searched = false;
 
     new Vue({
         el: '#app',
@@ -464,6 +465,7 @@
             },
             search(){
                 data.resultLoading = true;
+                data.searched = true;
                 axios.post('/search/searchPriceSolution', {
                     packageLocation:data.searchParams.packageLocation,
                     destination: (data.tabs.activeName == 'fba') ? data.searchParams.destinationFBA : data.searchParams.destinationExp,
