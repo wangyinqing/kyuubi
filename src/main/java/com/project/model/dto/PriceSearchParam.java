@@ -15,8 +15,8 @@ public class PriceSearchParam {
     private Integer bizType;
     private Integer freightType;
     private Integer deliverApproach;
-    private Integer index;
-    private Integer size;
+    private Integer index = 0;
+    private Integer size = 10;
 
     public Integer getPackageLocation() {
         return packageLocation;

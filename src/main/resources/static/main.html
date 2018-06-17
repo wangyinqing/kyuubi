@@ -293,6 +293,64 @@
                 </el-col>
             </el-row>
 
+
+            <br>
+
+            <el-row>
+                <el-col :span="16" :offset="4">
+                    <el-table
+                            :data="searchResults"
+                            border
+                            v-loading="resultLoading">
+                        <el-table-column
+                                prop="providerId"
+                                label="供应商"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="origin"
+                                label="起始地"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="destination"
+                                label="目的地"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="freightType"
+                                label="货物类型"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="airlines"
+                                label="航空公司"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="bizType"
+                                label="业务类型"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="from"
+                                label="起始区间"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="to"
+                                label="结束区间"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="价格"
+                                >
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
+
         </el-main>
 
         <el-footer>
@@ -322,7 +380,7 @@
         weight: "",
         amount: "",
         freightType: "",
-        deliverApproach: "1",
+        deliverApproach: "1"
     };
 
     data.selOrigins = [];
@@ -371,6 +429,10 @@
     data.freightTypesExp = [];
     data.freightTypesFBA = [];
 
+
+    data.resultLoading = false;
+    data.searchResults = [];
+
     new Vue({
         el: '#app',
         data: data,
@@ -401,6 +463,7 @@
                     });
             },
             search(){
+                data.resultLoading = true;
                 axios.post('/search/searchPriceSolution', {
                     packageLocation:data.searchParams.packageLocation,
                     destination: (data.tabs.activeName == 'fba') ? data.searchParams.destinationFBA : data.searchParams.destinationExp,
@@ -410,13 +473,24 @@
                     weight : data.searchParams.weight,
                     amount:data.searchParams.amount,
                     freightType:(data.tabs.activeName == 'fba') ? data.searchParams.freightTypeFBA : data.searchParams.freightTypeExp,
-                    deliverApproach:data.searchParams.deliverApproach
+                    deliverApproach:data.searchParams.deliverApproach,
+                    bizType: (data.tabs.activeName == 'fba') ? 1 : 2,
+                    index: 0,
+                    size: 10
                 })
                 .then(function (response) {
                     console.log(response);
+                    if(response.data && response.data.priceSolutionList){
+                        data.searchResults = response.data.priceSolutionList;
+                    }else{
+                        data.searchResults = [];
+                    }
+                    data.resultLoading = false;
                 })
                 .catch(function (error) {
                     console.log(error);
+                    data.searchResults = [];
+                    data.resultLoading = false;
                 });
             },
             handleOriginChange(val){
