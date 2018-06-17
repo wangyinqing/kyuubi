@@ -37,13 +37,17 @@ public class SmsSenderUtil {
 
     private static IAcsClient acsClient = new DefaultAcsClient(profile);
 
+    public static boolean sendVerifyCode(String mobile) throws Exception {
+        return sendVerifyCode(mobile, null);
+    }
+
     /**
      * 发送验证码短信
      *
      * @param mobile
      * @throws Exception
      */
-    public static void sendVerifyCode(String mobile) throws Exception {
+    public static boolean sendVerifyCode(String mobile,String vcode) throws Exception {
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", PRODUCT, DOMAIN);
         //组装请求对象
         SendSmsRequest request = new SendSmsRequest();
@@ -57,7 +61,7 @@ public class SmsSenderUtil {
         //必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(TEMPLATE_CODE);
         //随机生成验证码
-        String code = generateCode(4);
+        String code = vcode == null? generateCode(4):vcode;
         /* 友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要
            表示成\\r\\n,否则会导致JSON在服务端解析失败 */
         request.setTemplateParam("{\"code\":\"" + code + "\"}");
@@ -69,6 +73,9 @@ public class SmsSenderUtil {
             System.out.println("Code:" + sendSmsResponse.getCode());
             System.out.println("Message:" + sendSmsResponse.getMessage());
             System.out.println("BizId:" + sendSmsResponse.getBizId());
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -78,7 +85,7 @@ public class SmsSenderUtil {
      * @param codeLength
      * @return
      */
-    private static String generateCode(int codeLength) {
+    public static String generateCode(int codeLength) {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < codeLength; i++) {
@@ -86,4 +93,6 @@ public class SmsSenderUtil {
         }
         return sb.toString();
     }
+
+
 }

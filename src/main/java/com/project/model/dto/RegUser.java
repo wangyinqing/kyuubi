@@ -16,6 +16,8 @@ public class RegUser {
     private String eptaddress;
     private long region;
 
+    private String validationCode;
+
     private int regType = 1;
 
     public String getAccount() {
@@ -96,6 +98,14 @@ public class RegUser {
 
     public void setRegType(int regType) {
         this.regType = regType;
+    }
+
+    public String getValidationCode() {
+        return validationCode;
+    }
+
+    public void setValidationCode(String validationCode) {
+        this.validationCode = validationCode;
     }
 
     @Override

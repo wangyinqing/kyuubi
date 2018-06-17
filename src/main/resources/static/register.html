@@ -32,7 +32,14 @@
                                                     <el-input v-model.number="form.mobile" placeholder="请输入手机号"></el-input>
                                                 </el-col>
                                                 <el-col :span="3" >
-                                                    <el-button type="primary" @click="onSubmit" style="width:98%;float:right;">获取验证码</el-button>
+                                                    <el-button type="primary" @click="sendCode" style="width:98%;float:right;">获取验证码</el-button>
+                                                </el-col>
+                                            </el-row>
+                                        </el-form-item>
+                                        <el-form-item label="验证码" prop="validationCode">
+                                            <el-row>
+                                                <el-col :span="8">
+                                                    <el-input v-model="form.validationCode" placeholder="请输入验证码" auto-complete="off"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </el-form-item>
@@ -95,7 +102,14 @@
                                                     <el-input v-model.number="form.mobile" placeholder="请输入手机号"></el-input>
                                                 </el-col>
                                                 <el-col :span="3" >
-                                                    <el-button type="primary" @click="onSubmit" style="width:98%;float:right;">获取验证码</el-button>
+                                                    <el-button type="primary" @click="sendCode" style="width:98%;float:right;">获取验证码</el-button>
+                                                </el-col>
+                                            </el-row>
+                                        </el-form-item>
+                                        <el-form-item label="验证码" prop="validationCode">
+                                            <el-row>
+                                                <el-col :span="8">
+                                                    <el-input v-model="form.validationCode" placeholder="请输入验证码" auto-complete="off"></el-input>
                                                 </el-col>
                                             </el-row>
                                         </el-form-item>
@@ -136,7 +150,8 @@
             qq: '',
             email: '',
             regType:1,
-            region:[]
+            region:[],
+            validationCode:null
         },
         originOpts: [],
         rule1: {
@@ -144,10 +159,45 @@
                 { required: true, message: '请输入用户名', trigger: 'blur' }
             ],
             pass: [
-                { required: true, message: '请输入密码', trigger: 'blur' }
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                {
+                    validator: function (rule, value, callback) {
+                        if (data.form.checkPass != null && value != data.form.checkPass) {
+                            callback(new Error('两次输入密码不一致！'))
+                        } else {
+                            callback();
+                        }
+                    }, trigger: 'blur'
+                }
             ],
             checkPass: [
-                { required: true, message: '请再次输入密码确认', trigger: 'blur' }
+                { required: true, message: '请再次输入密码确认', trigger: 'blur' },
+                {
+                    validator: function (rule, value, callback) {
+                        if (value == null || value != data.form.pass) {
+                            callback(new Error('两次输入密码不一致！'))
+                        } else {
+                            callback();
+                        }
+                    }, trigger: 'blur'
+                }
+            ],
+            validationCode: [
+                { required: true, message: '请输入验证码', trigger: 'blur' },
+                {
+                    validator: function (rule, value, callback) {
+                        var params = new URLSearchParams();
+                        params.append('validationCode', data.form.validationCode);
+                        axios.post('/regist/validCode', params)
+                            .then(function (response) {
+                                if (!response.data || response.data.code != 1) {
+                                    callback(new Error('验证码不正确！'))
+                                } else {
+                                    callback();
+                                }
+                            });
+                    }, trigger: 'blur'
+                }
             ],
             mobile: [
                 { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -207,25 +257,76 @@
                             qq: data.form.qq,
                             email: data.form.email,
                             region: data.form.region[data.form.region.length -1],
-                            invitationCode: data.form.invitationCode,
+                            validationCode: data.form.validationCode,
                             eptaddress: data.form.eptaddress,
                             regType: data.form.regType
                         })
                             .then(function (response) {
-                                console.log(response);
-                                v.$message({
-                                    message: '注册成功',
-                                    type: 'success'
-                                });
-                                setTimeout(function () {
-                                    window.location.href = "/login.html";
-                                }, 1000);
+                                    console.log(response);
+                                    if (response.data && response.data.code == 1) {
+                                        v.$message({
+                                            message: '注册成功',
+                                            type: 'success'
+                                        });
+                                        setTimeout(function () {
+                                            window.location.href = "/login.html";
+                                        }, 1000);
+                                    } else {
+                                        if (response.data && response.data.message) {
+                                            v.$message({
+                                                message: response.data.message,
+                                                type: 'error'
+                                            });
+                                        } else {
+                                            v.$message({
+                                                message: '注册失败，请重试',
+                                                type: 'error'
+                                            });
+                                        }
+                                    }
                             })
                             .catch(function (error) {
                                 console.log(error);
                             });
                     }
                 });
+
+            },
+            sendCode(){
+                var v = this;
+                var params = new URLSearchParams();
+                params.append('mobile', data.form.mobile);
+                axios.post('/regist/sendCode', params)
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data && response.data.code == 1) {
+                            v.$message({
+                                message: '发送成功',
+                                type: 'success'
+                            });
+                        }else{
+                            if(response.data && response.data.message){
+                                v.$message({
+                                    message: response.data.message,
+                                    type: 'error'
+                                });
+                            }else{
+                                v.$message({
+                                    message: '发送失败，请重试',
+                                    type: 'error'
+                                });
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        v.$message({
+                            message: error,
+                            type: 'error'
+                        });
+                    });
+            },
+            validCode(){
 
             }
         }
