@@ -1,4 +1,4 @@
-package com.project.model;
+package com.project.model.enums;
 
 public enum BizTypeEnum {
     FBA(1, "FBA"),

@@ -3,7 +3,7 @@ package com.project.controller.business;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.dto.BizUser;
 import com.project.model.dto.freight.Freight;
-import com.project.model.dto.freight.FreightVO;
+import com.project.model.vo.FreightVO;
 import com.project.service.business.FreightService;
 import com.project.service.business.LogisticsProviderService;
 import org.springframework.beans.factory.annotation.Autowired;

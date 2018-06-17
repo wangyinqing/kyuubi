@@ -1,7 +1,7 @@
 package com.project.service.business;
 
 import com.project.model.dto.freight.Freight;
-import com.project.model.dto.freight.FreightVO;
+import com.project.model.vo.FreightVO;
 
 import java.util.List;
 

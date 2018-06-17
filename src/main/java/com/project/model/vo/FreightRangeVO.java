@@ -1,4 +1,4 @@
-package com.project.model.dto.freight;
+package com.project.model.vo;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.project.model.dto;
+package com.project.model.vo;
 
 import java.util.List;
 

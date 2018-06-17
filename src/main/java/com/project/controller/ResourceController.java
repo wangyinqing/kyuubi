@@ -1,13 +1,13 @@
 package com.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.model.dto.AirlineVO;
-import com.project.model.dto.BizTypeVO;
+import com.project.model.vo.AirlineVO;
+import com.project.model.vo.BizTypeVO;
 import com.google.common.collect.Lists;
-import com.project.model.BizTypeEnum;
-import com.project.model.dto.PoiDomesticVO;
-import com.project.model.dto.PoiOverseasVO;
-import com.project.model.dto.freight.FreightTypeVO;
+import com.project.model.enums.BizTypeEnum;
+import com.project.model.vo.PoiDomesticVO;
+import com.project.model.vo.PoiOverseasVO;
+import com.project.model.vo.FreightTypeVO;
 import com.project.service.ResourceService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;

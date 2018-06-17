@@ -8,11 +8,11 @@ import com.project.manager.FreightRangeManager;
 import com.project.manager.FreightTypeManager;
 import com.project.manager.PoiDomesticManager;
 import com.project.manager.PoiOverseasManager;
-import com.project.model.BizTypeEnum;
+import com.project.model.enums.BizTypeEnum;
 import com.project.model.dto.freight.Freight;
 import com.project.model.dto.freight.FreightRange;
-import com.project.model.dto.freight.FreightRangeVO;
-import com.project.model.dto.freight.FreightVO;
+import com.project.model.vo.FreightRangeVO;
+import com.project.model.vo.FreightVO;
 import com.project.mybatis.domain.Airline;
 import com.project.mybatis.domain.FreightMain;
 import com.project.mybatis.domain.FreightType;
@@ -26,7 +26,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service

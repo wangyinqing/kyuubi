@@ -8,11 +8,17 @@ import java.math.BigDecimal;
  */
 public class PriceSolution {
     private Long providerId;
+    private String providerName;
     private Long origin;
+    private String originName;
     private Long destination;
+    private String destinationName;
     private Integer freightType;
+    private String freightTypeName;
     private Long airlines;
+    private String airlineName;
     private Integer bizType;
+    private String bizTypeName;
     private Integer from;
     private Integer to;
     private BigDecimal price;
@@ -87,5 +93,53 @@ public class PriceSolution {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getOriginName() {
+        return originName;
+    }
+
+    public void setOriginName(String originName) {
+        this.originName = originName;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public void setDestinationName(String destinationName) {
+        this.destinationName = destinationName;
+    }
+
+    public String getFreightTypeName() {
+        return freightTypeName;
+    }
+
+    public void setFreightTypeName(String freightTypeName) {
+        this.freightTypeName = freightTypeName;
+    }
+
+    public String getAirlineName() {
+        return airlineName;
+    }
+
+    public void setAirlineName(String airlineName) {
+        this.airlineName = airlineName;
+    }
+
+    public String getBizTypeName() {
+        return bizTypeName;
+    }
+
+    public void setBizTypeName(String bizTypeName) {
+        this.bizTypeName = bizTypeName;
     }
 }

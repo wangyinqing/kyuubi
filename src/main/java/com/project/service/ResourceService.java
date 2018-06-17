@@ -1,11 +1,10 @@
 package com.project.service;
 
-import com.project.model.dto.AirlineVO;
-import com.project.model.dto.BizTypeVO;
-import com.project.model.dto.PoiDomesticVO;
-import com.project.model.dto.PoiOverseasVO;
-import com.project.model.dto.freight.FreightTypeVO;
-import com.project.mybatis.domain.Airline;
+import com.project.model.vo.AirlineVO;
+import com.project.model.vo.BizTypeVO;
+import com.project.model.vo.PoiDomesticVO;
+import com.project.model.vo.PoiOverseasVO;
+import com.project.model.vo.FreightTypeVO;
 
 import java.util.List;
 
