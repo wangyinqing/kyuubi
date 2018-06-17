@@ -14,7 +14,7 @@ public class RegUser {
     private String qq;
     private String email;
     private String eptaddress;
-    private long region;
+    private Long region;
 
     private String validationCode;
 
@@ -84,11 +84,11 @@ public class RegUser {
         this.eptaddress = eptaddress;
     }
 
-    public long getRegion() {
+    public Long getRegion() {
         return region;
     }
 
-    public void setRegion(long region) {
+    public void setRegion(Long region) {
         this.region = region;
     }
 
