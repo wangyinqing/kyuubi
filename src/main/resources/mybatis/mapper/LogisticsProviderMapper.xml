@@ -69,5 +69,9 @@
         UPDATE logistics_provider SET status = #{status} WHERE ID = #{id}
     </update>
 
+    <select id="findLogisticProviderById" parameterType="Long" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider WHERE id = #{id}
+    </select>
 
 </mapper>

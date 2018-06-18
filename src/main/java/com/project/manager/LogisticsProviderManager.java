@@ -30,6 +30,8 @@ public interface LogisticsProviderManager {
      */
     List<LogisticsProvider> findLogistics(Map<String,Object> params);
 
+    LogisticsProvider findLogisticProviderById(Long id);
+
 
     long updateLogistics(Map<String,Object> params);
 }

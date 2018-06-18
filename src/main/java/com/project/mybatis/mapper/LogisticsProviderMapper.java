@@ -30,6 +30,8 @@ public interface LogisticsProviderMapper {
      */
     List<LogisticsProvider> findLogistics();
 
+    LogisticsProvider findLogisticProviderById(Long id);
+
     /**
      * @param params
      * @return

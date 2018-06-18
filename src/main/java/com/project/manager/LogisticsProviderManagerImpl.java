@@ -45,6 +45,11 @@ public class LogisticsProviderManagerImpl implements LogisticsProviderManager {
     }
 
     @Override
+    public LogisticsProvider findLogisticProviderById(Long id) {
+        return logisticsProviderMapper.findLogisticProviderById(id);
+    }
+
+    @Override
     public long updateLogistics(Map<String, Object> params) {
         return logisticsProviderMapper.updateLogistics(params);
     }

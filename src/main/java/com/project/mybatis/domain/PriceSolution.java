@@ -13,7 +13,7 @@ public class PriceSolution {
     private String originName;
     private Long destination;
     private String destinationName;
-    private Integer freightType;
+    private Long freightType;
     private String freightTypeName;
     private Long airlines;
     private String airlineName;
@@ -47,11 +47,11 @@ public class PriceSolution {
         this.destination = destination;
     }
 
-    public Integer getFreightType() {
+    public Long getFreightType() {
         return freightType;
     }
 
-    public void setFreightType(Integer freightType) {
+    public void setFreightType(Long freightType) {
         this.freightType = freightType;
     }
 
