@@ -47,7 +47,7 @@
                                 </el-form-item>
                             </template>
                             <template v-if="active==1">
-                                <el-form-item label="营业执照(三证合一)">
+                                <el-form-item label="营业执照(三证合一)" prop="license">
                                     <el-upload
                                             class="upload-demo"
                                             ref="upload"
@@ -55,7 +55,7 @@
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
                                             :on-success="handleSuccess"
-                                            :file-list="form.license"
+                                            :file-list="form.licenseList"
                                             :auto-upload="true"
                                             :limit="1"
                                             :data="{'id':form.account,'field':'license'}">
@@ -71,7 +71,7 @@
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
                                             :on-success="handleSuccess"
-                                            :file-list="form.transportPermission"
+                                            :file-list="form.transportPermissionList"
                                             :auto-upload="true"
                                             :limit="1"
                                             :data="{'id':form.account,'field':'transportPermission'}">
@@ -83,6 +83,7 @@
                             <template v-if="active==2">
                                 <h3>物流商入驻服务协议</h3>
                                 <iframe src="signedAgreement.htm" style="width: 100%; height: 50rem; border: none; overflow-x: hidden; "></iframe>
+                                <el-checkbox v-model="form.agreed">我已阅读并同意物流商入驻服务协议</el-checkbox>
                             </template>
                             <template v-if="active==3">
                                 请点击完成
@@ -96,14 +97,14 @@
                 <el-row>
                     <el-col :span="4" :offset="12" v-if="active <=3">
                         <el-button style="margin-top: 12px;" @click="prev">上一步</el-button>
-                        <el-button style="margin-top: 12px;" @click="next"  type="primary" v-if="active <3">下一步</el-button>
+                        <el-button style="margin-top: 12px;" @click="next"  type="primary" v-if="active <3" :disabled="active ==2 && !form.agreed">下一步</el-button>
                         <el-button style="margin-top: 12px;" @click="onSubmit"  type="primary" v-if="active >=3" >完成</el-button>
                     </el-col>
                 </el-row>
             </el-main>
         </el-container>
     </div>
-</body>
+</body2
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
@@ -143,8 +144,12 @@
             qq: [
                 { required: true, message: '请输入QQ号', trigger: 'blur' },
                 { type: 'number', message: 'QQ号必须为数字', trigger: ['blur'] }
+            ],
+            license: [
+                { required: true, message: '请上传营业执照', trigger: 'blur' }
             ]
-        }
+        },
+        agreed : false
     };
 
     new Vue({
@@ -152,7 +157,7 @@
         data: data,
         methods: {
             next() {
-                if(this.active == 0) {
+                if(this.active <= 1) {
                     this.$refs['form'].validate((valid) => {
                         if(valid) {
                             if (this.active++ > 3) this.active = 3;
@@ -201,6 +206,10 @@
                     })
                     .catch(function (error) {
                         console.log(error);
+                        v.$message({
+                            message: '注册失败 ' + error,
+                            type: 'error'
+                        });
                     });
             },
             handleSuccess(response, file, fileList){
