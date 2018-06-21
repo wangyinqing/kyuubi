@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .pop_pic {
+            width: auto;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -55,9 +60,11 @@
                                             :on-preview="handlePreview"
                                             :on-remove="handleRemove"
                                             :on-success="handleSuccess"
+                                            :on-exceed="handleExceed"
                                             :file-list="form.licenseList"
                                             :auto-upload="true"
                                             :limit="1"
+                                            list-type="picture"
                                             :data="{'id':form.account,'field':'license'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                     </el-upload>
@@ -69,11 +76,13 @@
                                             ref="upload"
                                             action="/business/regist/upload"
                                             :on-preview="handlePreview"
-                                            :on-remove="handleRemove"
+                                            :on-remove="handleRemove2"
                                             :on-success="handleSuccess"
                                             :file-list="form.transportPermissionList"
+                                            :on-exceed="handleExceed"
                                             :auto-upload="true"
                                             :limit="1"
+                                            list-type="picture"
                                             :data="{'id':form.account,'field':'transportPermission'}">
                                         <el-button slot="trigger" size="small" type="primary">上传文件</el-button>
                                     </el-upload>
@@ -126,10 +135,28 @@
                 { required: true, message: '请输入用户名', trigger: 'blur' }
             ],
             pass: [
-                { required: true, message: '请输入密码', trigger: 'blur' }
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                {
+                    validator: function (rule, value, callback) {
+                        if (data.form.checkPass != null && value != data.form.checkPass) {
+                            callback(new Error('两次输入密码不一致！'))
+                        } else {
+                            callback();
+                        }
+                    }, trigger: 'blur'
+                }
             ],
             checkPass: [
-                { required: true, message: '请再次输入密码确认', trigger: 'blur' }
+                { required: true, message: '请再次输入密码确认', trigger: 'blur' },
+                {
+                    validator: function (rule, value, callback) {
+                        if (value == null || value != data.form.pass) {
+                            callback(new Error('两次输入密码不一致！'))
+                        } else {
+                            callback();
+                        }
+                    }, trigger: 'blur'
+                }
             ],
             mobile: [
                 { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -175,9 +202,23 @@
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
+                data.form.license = '';
+                data.form.licenseList = [];
+
+            },
+            handleRemove2(file, fileList) {
+                console.log(file, fileList);
+                data.form.transportPermission = '';
+                data.form.transportPermissionList = [];
             },
             handlePreview(file) {
                 console.log(file);
+                this.$msgbox({
+                    message: '<img src=' + file.url + '>',
+                    dangerouslyUseHTMLString: true,
+                    showConfirmButton: false,
+                    customClass: 'pop_pic'
+                });
             },
             onSubmit() {
                 //debugger;
@@ -217,12 +258,24 @@
                 if(response.code == 1){
                     if(response.type == 'license'){
                         data.form.license = response.url;
+                        data.form.licenseList = [{
+                            "name" : file.name,
+                            "url" : response.url
+                        }];
                     }else if(response.type == 'transportPermission'){
                         data.form.transportPermission = response.url;
+                        data.form.transportPermissionList = [{
+                            "name" : file.name,
+                            "url" : response.url
+                        }];
                     }
                 }
 
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning('只能上传1个文件');
             }
+
         }
     })
 </script>
