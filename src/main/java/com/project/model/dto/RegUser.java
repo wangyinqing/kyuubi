@@ -10,8 +10,6 @@ public class RegUser {
     private String mobile;
     private String eptname;
     private String name;
-
-    private String qq;
     private String email;
     private String eptaddress;
     private Long region;
@@ -58,14 +56,6 @@ public class RegUser {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
     }
 
     public String getEmail() {
@@ -116,7 +106,6 @@ public class RegUser {
                 ", mobile='" + mobile + '\'' +
                 ", eptname='" + eptname + '\'' +
                 ", name='" + name + '\'' +
-                ", qq='" + qq + '\'' +
                 ", email='" + email + '\'' +
                 ", eptaddress='" + eptaddress + '\'' +
                 ", region=" + region +

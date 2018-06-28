@@ -19,10 +19,10 @@
         id,
         account,
         password,
+        register_type AS regType,
         mobile,
         eptname,
         name,
-        qq,
         email,
         eptaddress,
         create_time AS createTime,
@@ -30,8 +30,8 @@
     </sql>
 
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (account, password, mobile, eptname, name, qq, email, eptaddress, region)
-        VALUES (#{account}, #{password}, #{mobile}, #{eptname}, #{name}, #{qq}, #{email}, #{eptaddress}, #{region})
+        INSERT INTO user (account, password, mobile, register_type, eptname, name, email, eptaddress, region)
+        VALUES (#{account}, #{password}, #{mobile}, #{regType}, #{eptname}, #{name}, #{email}, #{eptaddress}, #{region})
     </insert>
 
     <select id="findUserById" parameterType="Long" resultType="User">

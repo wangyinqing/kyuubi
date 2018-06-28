@@ -13,10 +13,10 @@ public class User implements Serializable{
     private Long id;
     private String account;
     private String password;
+    private Integer regType;
     private String mobile;
     private String eptname;
     private String name;
-    private String qq;
     private String email;
     private String eptaddress;
     private Long region;
@@ -47,6 +47,14 @@ public class User implements Serializable{
         this.password = password;
     }
 
+    public Integer getRegType() {
+        return regType;
+    }
+
+    public void setRegType(Integer regType) {
+        this.regType = regType;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -69,14 +77,6 @@ public class User implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
     }
 
     public String getEmail() {
@@ -125,10 +125,10 @@ public class User implements Serializable{
                 "id=" + id +
                 ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
+                ", regType=" + regType +
                 ", mobile='" + mobile + '\'' +
                 ", eptname='" + eptname + '\'' +
                 ", name='" + name + '\'' +
-                ", qq='" + qq + '\'' +
                 ", email='" + email + '\'' +
                 ", eptaddress='" + eptaddress + '\'' +
                 ", region=" + region +
@@ -136,5 +136,4 @@ public class User implements Serializable{
                 ", updateTime=" + updateTime +
                 '}';
     }
-
 }

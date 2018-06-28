@@ -71,9 +71,6 @@
                                         <el-form-item label="姓名" prop="name">
                                             <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="联系QQ" prop="qq">
-                                            <el-input v-model.number="form.qq" placeholder="请输入QQ号"></el-input>
-                                        </el-form-item>
                                         <el-form-item label="联系邮箱" prop="email">
                                             <el-input v-model="form.email" placeholder="请输入邮箱地址"></el-input>
                                         </el-form-item>
@@ -113,9 +110,6 @@
                                                 </el-col>
                                             </el-row>
                                         </el-form-item>
-                                        <el-form-item label="联系QQ" prop="qq">
-                                            <el-input v-model.number="form.qq" placeholder="请输入QQ号"></el-input>
-                                        </el-form-item>
                                         <el-form-item label="联系邮箱" prop="email">
                                             <el-input v-model="form.email" placeholder="请输入邮箱地址"></el-input>
                                         </el-form-item>
@@ -147,7 +141,6 @@
             eptname: '',
             eptaddress: '',
             name: '',
-            qq: '',
             email: '',
             regType:1,
             region:[],
@@ -215,10 +208,6 @@
             name: [
                 { required: true, message: '请输入姓名', trigger: 'blur' }
             ],
-            qq: [
-                { required: true, message: '请输入QQ号', trigger: 'blur' },
-                { type: 'number', message: 'QQ号必须为数字', trigger: ['blur'] }
-            ],
             email: [
                 { required: true, message: '请输入邮箱地址', trigger: 'blur' },
                 { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur'] }
@@ -254,7 +243,6 @@
                             eptname: data.form.eptname,
                             store: data.form.store,
                             name: data.form.name,
-                            qq: data.form.qq,
                             email: data.form.email,
                             region: data.form.region[data.form.region.length -1],
                             validationCode: data.form.validationCode,
