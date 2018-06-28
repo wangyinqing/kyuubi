@@ -25,6 +25,7 @@
         name,
         email,
         eptaddress,
+        region,
         create_time AS createTime,
         update_time AS updateTime
     </sql>
