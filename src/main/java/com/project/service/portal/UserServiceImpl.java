@@ -2,6 +2,7 @@ package com.project.service.portal;
 
 import com.project.manager.UserManager;
 import com.project.model.dto.RegUser;
+import com.project.model.vo.UserVO;
 import com.project.mybatis.domain.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,4 +94,11 @@ public class UserServiceImpl implements UserService {
         return currentUser != null;
     }
 
+    @Override
+    public UserVO queryUserInfoByAccount(String account) {
+        User user = userManager.findUserByAccount(account);
+        UserVO userInfo = new UserVO();
+        BeanUtils.copyProperties(user, userInfo);
+        return userInfo;
+    }
 }

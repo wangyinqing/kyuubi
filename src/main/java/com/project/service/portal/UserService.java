@@ -1,6 +1,7 @@
 package com.project.service.portal;
 
 import com.project.model.dto.RegUser;
+import com.project.model.vo.UserVO;
 
 /**
  * @author wangyinqing
@@ -20,5 +21,7 @@ public interface UserService {
     RegUser getUserByToken(String token);
 
     RegUser removeUserByToken(String token);
+
+    UserVO queryUserInfoByAccount(String account);
 
 }

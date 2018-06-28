@@ -3,11 +3,13 @@ package com.project.controller.portal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.dto.PriceSearchParam;
 import com.project.model.dto.RegUser;
+import com.project.model.vo.UserVO;
 import com.project.mybatis.domain.PriceSolution;
 import com.project.service.portal.PriceSearchService;
 import com.project.service.portal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -76,6 +78,20 @@ public class LoginController {
             cookie.setMaxAge(0);
             response.addCookie(cookie);
         }
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(map);
+    }
+
+    @RequestMapping("queryUserInfo")
+    @ResponseBody
+    public String queryUserInfo(@RequestParam() String account) throws Exception {
+        Map map = new HashMap();
+        if (StringUtils.isEmpty(account)) {
+            map.put("code", 0);
+        }
+        UserVO userInfo = userService.queryUserInfoByAccount(account);
+        map.put("code", 1);
+        map.put("userInfo", userInfo);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
     }
