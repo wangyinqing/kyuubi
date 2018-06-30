@@ -1,21 +1,20 @@
 package com.project.controller.portal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.model.dto.PriceSearchParam;
 import com.project.model.dto.RegUser;
 import com.project.model.vo.UserVO;
-import com.project.mybatis.domain.PriceSolution;
-import com.project.service.portal.PriceSearchService;
 import com.project.service.portal.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,7 +83,9 @@ public class LoginController {
 
     @RequestMapping("queryUserInfo")
     @ResponseBody
-    public String queryUserInfo(@RequestParam() String account) throws Exception {
+    public String queryUserInfo(@CookieValue(value = "sut", required = false, defaultValue = "") String token) throws Exception {
+        RegUser user = userService.getUserByToken(token);
+        String account = user.getAccount();
         Map map = new HashMap();
         if (StringUtils.isEmpty(account)) {
             map.put("code", 0);
