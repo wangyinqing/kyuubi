@@ -91,11 +91,33 @@ public class LoginController {
             map.put("code", 0);
         }
         UserVO userInfo = userService.queryUserInfoByAccount(account);
+        userInfo.setMobile(hideSomeInfo(userInfo.getMobile(), false));
+        userInfo.setEmail(hideSomeInfo(userInfo.getEmail(), true));
         map.put("code", 1);
         map.put("userInfo", userInfo);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
     }
+
+
+    private String hideSomeInfo(String origin, boolean isMail){
+        int start = origin.length() >= 3 ? 3: origin.length() -1;
+        int end = origin.length() >= 3 ? origin.length() - 3 : origin.length() -1;
+        char[] c = origin.toCharArray();
+        char[] cc = new char[origin.length()];
+        boolean isMailSuffix = false;
+        for(int i =0 ;i < origin.length(); i++){
+            if(isMail && c[i] == '@')
+                isMailSuffix = true;
+            if(!isMailSuffix && (i >= start && i < end)){
+                cc[i] = '*';
+            }else{
+                cc[i] = c[i];
+            }
+        }
+        return new String(cc);
+    }
+
 
     @Autowired
     public void setUserService(UserService userService) {

@@ -167,6 +167,10 @@
                     });
                 }else if(key == 1){
                     queryPersonalInfo();
+                    setTimeout(function(){
+                        initCharts();
+                    },100);
+
                 }
             }
         }
@@ -189,89 +193,93 @@
     queryPersonalInfo();
 
 
-
-    // 基于准备好的dom，初始化echarts实例
-    var myChart1 = echarts.init(document.getElementById('main1'));
-
-    // 指定图表的配置项和数据
-    var option1 = {
-        title: {
-           text: '我的订单'
-        },
-        tooltip: {},
-        legend: {
-            data:['订单']
-        },
-        xAxis: {
-            data: ["总订单","报关订单","空运订单"],
-            name: '类别'
-        },
-        yAxis: {
-             name: '订单数量'
-        },
-        series: [{
-            name: '订单',
-            type: 'bar',
-            data: [55, 20, 35]
-        }]
-    };
-
-    // 使用刚指定的配置项和数据显示图表。
-    myChart1.setOption(option1);
+    function initCharts() {
 
 
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main1'));
 
-    var myChart2 = echarts.init(document.getElementById('main2'));
+        // 指定图表的配置项和数据
+        var option1 = {
+            title: {
+                text: '我的订单'
+            },
+            tooltip: {},
+            legend: {
+                data: ['订单']
+            },
+            xAxis: {
+                data: ["总订单", "报关订单", "空运订单"],
+                name: '类别'
+            },
+            yAxis: {
+                name: '订单数量'
+            },
+            series: [{
+                name: '订单',
+                type: 'bar',
+                data: [55, 20, 35]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
 
 
-    var option2 = {
-        title: {
-            text: '订单',
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            x: 'left',
-            data:['报关','空运']
-        },
-        series: [
-            {
-                name:'订单',
-                type:'pie',
-                radius: ['50%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    normal: {
-                        show: false,
-                        position: 'center'
-                    },
-                    emphasis: {
-                        show: true,
-                        textStyle: {
-                            fontSize: '30',
-                            fontWeight: 'bold'
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+
+        var option2 = {
+            title: {
+                text: '订单',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['报关', '空运']
+            },
+            series: [
+                {
+                    name: '订单',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
                         }
-                    }
-                },
-                labelLine: {
-                    normal: {
-                        show: false
-                    }
-                },
-                data:[
-                    {value:20, name:'报关'},
-                    {value:35, name:'空运'}
-                ]
-            }
-        ]
-    };
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        {value: 20, name: '报关'},
+                        {value: 35, name: '空运'}
+                    ]
+                }
+            ]
+        };
 
-    myChart2.setOption(option2);
+        myChart2.setOption(option2);
+    }
 
+
+    initCharts();
 
 </script>
 </html>
