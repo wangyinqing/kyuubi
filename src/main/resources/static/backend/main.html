@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>九尾狐运营平台</title>
+    <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui@2.4.3/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header>
+            <h3>九尾狐运营平台</h3>
+        </el-header>
+        <el-main >
+            <el-row class="tac">
+                <el-col :span="6">
+                    <el-menu
+                            default-active="1"
+                            @open="handleOpen"
+                            @close="handleClose"
+                            @select="handleSelect">
+                        <el-menu-item index="1">
+                            <i class="el-icon-setting"></i>
+                            <span slot="title">运费模板</span>
+                        </el-menu-item>
+                        <el-menu-item index="2">
+                            <i class="el-icon-setting"></i>
+                            <span slot="title">物流商审核</span>
+                        </el-menu-item>
+                        <el-menu-item index="3">
+                            <i class="el-icon-remove-outline"></i>
+                            <span slot="title">退出登录</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-col>
+                <el-col :span="18" >
+                    <div v-if="menu==1">运费模板</div>
+                    <div v-if="menu==2">
+                        <template>
+                            <el-table
+                                    :data="logistics"
+                                    border
+                                    style="width: 100%"
+                                    v-loading="logisticsLoading">
+                                <el-table-column
+                                        prop="account"
+                                        label="用户名"
+                                        width="150">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="eptname"
+                                        label="物流企业名"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        label="状态"
+                                        width="120">
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.status==0">待审核</span>
+                                        <span v-if="scope.row.status==1">审核通过</span>
+                                        <span v-if="scope.row.status==2">审核未通过</span>
+                                        <span v-if="scope.row.status==3">已删除</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="contact"
+                                        label="联系人"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="mobile"
+                                        label="联系电话"
+                                        width="120">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="qq"
+                                        label="QQ"
+                                        width="80">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="license"
+                                        label="营业执照"
+                                        width="120">
+                                    <template slot-scope="scope" >
+                                        <el-button type="text" @click="scope.row.licenseVisible = true" v-if="scope.row.license!=null">点击查看</el-button>
+                                        <el-dialog title="图片查看" :visible.sync="scope.row.licenseVisible" :modal-append-to-body="false" v-if="scope.row.license!=null">
+                                            <img :src="scope.row.license" />
+                                        </el-dialog>
+                                        <span v-if="scope.row.license==null">无文件上传</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        prop="transportPermission"
+                                        label="道路运输许可证"
+                                        width="120">
+                                    <template slot-scope="scope">
+                                        <el-button type="text" @click="scope.row.transportPermissionVisible = true" v-if="scope.row.transportPermission!=null">点击查看</el-button>
+                                        <el-dialog title="图片查看" :visible.sync="scope.row.transportPermissionVisible" :modal-append-to-body="false" v-if="scope.row.transportPermission!=null">
+                                            <img :src="scope.row.transportPermission" />
+                                        </el-dialog>
+                                        <span v-if="scope.row.transportPermission==null">无文件上传</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        fixed="right"
+                                        label="操作"
+                                        min-width="200">
+                                    <template slot-scope="scope">
+                                        <el-tooltip class="item" effect="dark" content="审核通过" placement="top-start">
+                                            <el-button v-if="scope.row.status==0" @click="operateLogistic(scope.row, 1)" type="primary" size="small" icon="el-icon-circle-check-outline"></el-button>
+                                        </el-tooltip>
+
+                                        <el-tooltip class="item" effect="dark" content="审核不通过" placement="top">
+                                            <el-button v-if="scope.row.status==0" @click="operateLogistic(scope.row, 2)" type="warning" size="small" icon="el-icon-circle-close-outline"></el-button>
+                                        </el-tooltip>
+
+                                        <el-tooltip class="item" effect="dark" content="删除" placement="top-end">
+                                            <el-button v-if="scope.row.status!=3" @click="operateLogistic(scope.row, 3)" type="danger" size="small" icon="el-icon-delete"></el-button>
+                                        </el-tooltip>
+
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </template>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.zhimg.com/vue@2.5.16/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.zhimg.com/element-ui@2.4.3/lib/index.js"></script>
+
+<script src="https://unpkg.zhimg.com/axios@0.18.0/dist/axios.js"></script>
+<script>
+    var data= {
+        menu:1,
+        logistics:[],
+        logisticsLoading: false
+    };
+
+    new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            onSubmit() {
+                console.log('submit!');
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+                data.menu=key;
+                if(key == 2){
+                    data.logisticsLoading = true;
+                    axios.get('/backend/logistics/find')
+                        .then(function (response) {
+                            console.log(response);
+                            data.logistics = response.data;
+                            data.logisticsLoading = false;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            data.logisticsLoading = false;
+                        });
+                }else if(key == 3){
+                    this.$confirm('确定登出?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.get('/backend/invalidateUser')
+                        .then(function (response) {
+                            console.log(response);
+                            if(response.data.code == 1) {
+                                setTimeout(function () {
+                                    window.location.href = "/backend/login.html";
+                                }, 500);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }).catch(() => {
+                    });
+                }
+            },
+            operateLogistic(data, action){
+                var msg = null;
+                if(action == 1){
+                    msg = '确定通过审核？';
+                }else if(action == 2){
+                    msg = '确定审核不通过？';
+                }else if(action == 3){
+                    msg = '确定删除？';
+                }
+                var v = this;
+                this.$confirm(msg, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/backend/logistics/update', {
+                    id:data.id,
+                    status:action
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        data.status = action;
+                        v.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }).catch(() => {
+                });
+            }
+        }
+    });
+
+    axios.get('/backend/validateUser')
+        .then(function (response) {
+            console.log(response);
+            if(!response.data.code  || response.data.code!= 1) {
+                setTimeout(function () {
+                    window.location.href = "/backend/login.html";
+                }, 500);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+</script>
+</html>

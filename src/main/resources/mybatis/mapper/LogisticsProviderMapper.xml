@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mybatis.mapper.LogisticsProviderMapper">
+    <sql id="logisticsProviderColumns">
+        id,
+        account,
+        password,
+        eptname,
+        status,
+        contact,
+        mobile,
+        qq,
+        license,
+        transport_permission AS transportPermission,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="addLogisticsProvider" parameterType="LogisticsProvider" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO logistics_provider
+        (account,
+        password,
+        eptname,
+        status,
+        contact,
+        mobile,
+        qq,
+        license,
+        transport_permission)
+        VALUES
+        (#{account},
+        #{password},
+        #{eptname},
+        #{status},
+        #{contact},
+        #{mobile},
+        #{qq},
+        #{license},
+        #{transportPermission})
+    </insert>
+
+    <select id="findLogisticsProviderByAccount" parameterType="String" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider WHERE account = #{account}
+    </select>
+
+
+    <select id="findLogistics" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider
+    </select>
+
+
+    <update id="updateLogistics" parameterType="map">
+        UPDATE logistics_provider SET status = #{status} WHERE ID = #{id}
+    </update>
+
+    <select id="findLogisticProviderById" parameterType="Long" resultType="LogisticsProvider">
+        SELECT <include refid="logisticsProviderColumns"></include>
+        FROM logistics_provider WHERE id = #{id}
+    </select>
+
+</mapper>

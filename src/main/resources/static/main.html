@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui@2.4.3/lib/theme-chalk/index.css">
+
+    <style>
+        .el-carousel__item {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .el-carousel__item h3 {
+            color: #475669;
+            font-size: 14px;
+            opacity: 0.75;
+            line-height: 150px;
+            margin: 0;
+        }
+
+
+        .top_level{
+            background-color: black;
+            text-align: right;
+        }
+
+        .tab_express{
+            background-color: blue;
+        }
+
+    </style>
+
+</head>
+<body style="margin: 0;">
+<div id="app">
+    <el-container>
+        <el-header style="padding: 1px;">
+            <div  class="top_level">
+                <template v-if="userType == 'guest' ">
+                    <el-button type="text" @click="goRegister">用户注册</el-button>
+                    <el-button type="text" @click="login">用户登录</el-button>
+                </template>
+                <template v-if="userType == 'front' ">
+                    <el-button type="text" @click="goPersonal">{{userName}}</el-button>
+                    <el-button type="text" @click="logout">退出登录</el-button>
+                </template>
+            </div>
+        </el-header>
+        <el-main style="padding: 1px;">
+            <el-row>
+                <img src="/img/logo.png">
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div>
+                        <el-carousel trigger="click">
+                            <el-carousel-item v-for="item in carouselPics" :key="item">
+                                <img :src="item.url">
+                            </el-carousel-item>
+                        </el-carousel>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="16" :offset="4">
+                    <el-tabs v-model="tabs.activeName" @tab-click="handleClick">
+                        <el-tab-pane label="FBA" name="fba">
+                            <el-row>
+                                <el-col :span="24" >
+                                        <el-row :gutter="0">
+                                            <el-col :span="2" style="text-align: right;margin: 10px auto;">取件地：</el-col>
+                                            <el-col :span="10">
+                                            <!--    <el-input placeholder="请输入内容"  v-model="searchParams.packageLocation"></el-input>-->
+                                                <el-cascader
+                                                        placeholder="试试搜索：省市区"
+                                                        :options="originOpts"
+                                                        :props="cascaderProps"
+                                                        :clearable="true"
+                                                        @change="handleOriginChange"
+                                                        v-model="selOrigins"
+                                                        filterable
+                                                ></el-cascader>
+                                            </el-col>
+                                            <el-col :span="2" style="text-align: right;margin: 10px auto;">目的地：
+                                            </el-col>
+                                            <el-col :span="10">
+                                             <!--   <el-input placeholder="请输入内容" v-model="searchParams.destination"></el-input>-->
+                                                <el-cascader
+                                                        placeholder="试试搜索：国家地区"
+                                                        :options="destOptsFBA"
+                                                        :props="cascaderProps"
+                                                        :clearable="true"
+                                                        @change="handleDestChange"
+                                                        :show-all-levels="false"
+                                                        v-model="selDestsFBA"
+                                                        filterable
+                                                ></el-cascader>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row :gutter="0" style="margin-top:  10px;">
+                                                <el-row>
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        长：
+                                                    </el-col>
+                                                    <el-col  :span="2">
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.length"></el-input>
+                                                    </el-col>
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        宽：
+                                                    </el-col>
+                                                    <el-col  :span="2">
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.width"></el-input>
+                                                    </el-col>
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        高：
+                                                    </el-col>
+                                                    <el-col  :span="2">
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.height"></el-input>
+                                                    </el-col>
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        重量：
+                                                    </el-col>
+                                                    <el-col  :span="2">
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.weight"></el-input>
+                                                    </el-col>
+                                                    <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                        数量：
+                                                    </el-col>
+                                                    <el-col  :span="4">
+                                                        <el-input placeholder="请输入内容" v-model="searchParams.amount"></el-input>
+                                                    </el-col>
+                                                </el-row>
+                                        </el-row>
+                                        <el-row :gutter="0" style="margin-top:  10px;">
+                                            <el-col  :span="3" style="text-align: left;margin: 10px auto;">
+                                                货物类型：
+                                            </el-col>
+                                            <el-col  :span="21">
+                                                <el-select v-model="searchParams.freightTypeFBA" placeholder="请选择">
+                                                    <el-option
+                                                            v-for="item in freightTypesFBA"
+                                                            :key="item.id"
+                                                            :label="item.name"
+                                                            :value="item.id">
+                                                    </el-option>
+                                                </el-select>
+                                               <!-- <select v-model="searchParams.freightType">
+                                                    <option value="normal">普货</option>
+                                                    <option value="outter">外置电(配套电)</option>
+                                                    <option value="inner">内置电</option>
+                                                    <option value="spin">纺织品</option>
+                                                </select>-->
+                                            </el-col>
+                                        </el-row>
+                                        <el-row :gutter="0" style="margin-top:  10px;">
+                                            <el-col  :span="3">
+                                                运输方式：
+                                            </el-col>
+                                            <el-col  :span="21">
+                                                <el-radio-group  v-model="searchParams.deliverApproach">
+                                                    <el-radio label="1">智能推荐</el-radio>
+                                                    <el-radio label="2">空派</el-radio>
+                                                </el-radio-group>
+                                            </el-col>
+                                        </el-row>
+                                        <el-row style="margin-top:  10px;">
+                                            <el-col style="text-align: center;">
+                                                <el-button type="primary" @click="search">全网查价</el-button>
+                                            </el-col>
+                                        </el-row >
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                        <el-tab-pane label="商务快递" name="bizexpress">
+                            <el-row>
+                                <el-col :span="24" >
+                                    <el-row :gutter="0">
+                                        <el-col :span="2" style="text-align: right;margin: 10px auto;">取件地：</el-col>
+                                        <el-col :span="10">
+                                            <!--    <el-input placeholder="请输入内容"  v-model="searchParams.packageLocation"></el-input>-->
+                                            <el-cascader
+                                                    placeholder="试试搜索：省市区"
+                                                    :options="originOpts"
+                                                    :props="cascaderProps"
+                                                    :clearable="true"
+                                                    @change="handleOriginChange"
+                                                    v-model="selOrigins"
+                                                    filterable
+                                            ></el-cascader>
+                                        </el-col>
+                                        <el-col :span="2" style="text-align: right;margin: 10px auto;">目的地：
+                                        </el-col>
+                                        <el-col :span="10">
+                                            <!--   <el-input placeholder="请输入内容" v-model="searchParams.destination"></el-input>-->
+                                            <el-cascader
+                                                    placeholder="试试搜索：国家地区"
+                                                    :options="destOptsExp"
+                                                    :props="cascaderProps"
+                                                    :clearable="true"
+                                                    @change="handleDestChange"
+                                                    :show-all-levels="false"
+                                                    v-model="selDestsExp"
+                                                    filterable
+                                            ></el-cascader>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row :gutter="0" style="margin-top:  10px;">
+                                        <el-row>
+                                            <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                长：
+                                            </el-col>
+                                            <el-col  :span="2">
+                                                <el-input placeholder="请输入内容" v-model="searchParams.length"></el-input>
+                                            </el-col>
+                                            <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                宽：
+                                            </el-col>
+                                            <el-col  :span="2">
+                                                <el-input placeholder="请输入内容" v-model="searchParams.width"></el-input>
+                                            </el-col>
+                                            <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                高：
+                                            </el-col>
+                                            <el-col  :span="2">
+                                                <el-input placeholder="请输入内容" v-model="searchParams.height"></el-input>
+                                            </el-col>
+                                            <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                重量：
+                                            </el-col>
+                                            <el-col  :span="2">
+                                                <el-input placeholder="请输入内容" v-model="searchParams.weight"></el-input>
+                                            </el-col>
+                                            <el-col  :span="2" style="text-align: right;margin: 10px auto;">
+                                                数量：
+                                            </el-col>
+                                            <el-col  :span="4">
+                                                <el-input placeholder="请输入内容" v-model="searchParams.amount"></el-input>
+                                            </el-col>
+                                        </el-row>
+                                    </el-row>
+                                    <el-row :gutter="0" style="margin-top:  10px;">
+                                        <el-col  :span="3" style="text-align: left;margin: 10px auto;">
+                                            货物类型：
+                                        </el-col>
+                                        <el-col  :span="21">
+                                            <el-select v-model="searchParams.freightTypeExp" placeholder="请选择">
+                                                <el-option
+                                                        v-for="item in freightTypesExp"
+                                                        :key="item.id"
+                                                        :label="item.name"
+                                                        :value="item.id">
+                                                </el-option>
+                                            </el-select>
+                                            <!-- <select v-model="searchParams.freightType">
+                                                 <option value="normal">普货</option>
+                                                 <option value="outter">外置电(配套电)</option>
+                                                 <option value="inner">内置电</option>
+                                                 <option value="spin">纺织品</option>
+                                             </select>-->
+                                        </el-col>
+                                    </el-row>
+                                    <el-row :gutter="0" style="margin-top:  10px;">
+                                        <el-col  :span="3">
+                                            运输方式：
+                                        </el-col>
+                                        <el-col  :span="21">
+                                            <el-radio-group  v-model="searchParams.deliverApproach">
+                                                <el-radio label="1">智能推荐</el-radio>
+                                                <el-radio label="2">空派</el-radio>
+                                            </el-radio-group>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top:  10px;">
+                                        <el-col style="text-align: center;">
+                                            <el-button type="primary" @click="search">全网查价</el-button>
+                                        </el-col>
+                                    </el-row >
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="24">
+                    <div class="grid-content bg-purple-dark"></div>
+                </el-col>
+            </el-row>
+
+
+            <br>
+
+            <el-row v-if="searched">
+                <el-col :span="16" :offset="4">
+                    <el-table
+                            :data="searchResults"
+                            border
+                            v-loading="resultLoading">
+                        <el-table-column
+                                prop="providerName"
+                                label="供应商"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="originName"
+                                label="起始地"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="destinationName"
+                                label="目的地"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="freightTypeName"
+                                label="货物类型"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="airlineName"
+                                label="航空公司"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="bizTypeName"
+                                label="业务类型"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="from"
+                                label="起始区间"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="to"
+                                label="结束区间"
+                                >
+                        </el-table-column>
+                        <el-table-column
+                                prop="price"
+                                label="价格"
+                                >
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
+
+        </el-main>
+
+        <el-footer>
+
+        </el-footer>
+
+    </el-container>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.zhimg.com/vue@2.5.16/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.zhimg.com/element-ui@2.4.3/lib/index.js"></script>
+
+<script src="https://unpkg.zhimg.com/axios@0.18.0/dist/axios.js"></script>
+<script>
+    var data = {};
+
+    data.carouselPics = [{
+        "url":"/img/banner1.jpg"
+    },{
+        "url":"/img/banner2.jpg"
+    },{
+        "url":"/img/banner3.jpg"
+    }];
+
+
+    data.tabs={activeName:"fba"};
+    data.userType = 'guest';
+    data.userName='游客';
+    data.searchParams = {
+        packageLocation: "",
+        destination: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+        amount: "",
+        freightType: "",
+        deliverApproach: "1"
+    };
+
+    data.selOrigins = [];
+    data.selDestsFBA = [];
+    data.selDestsExp = [];
+
+    data.freightTypes = [{
+        value: '1',
+        label: '普货'
+    },{
+        value: '2',
+        label: '带电'
+    }];
+
+    data.originOpts = [
+       /* {
+            value: 'shejiyuanze',
+            label: '设计原则',
+            children: [{
+                value: 'yizhi',
+                label: '一致'
+            }, {
+                value: 'fankui',
+                label: '反馈'
+            }, {
+                value: 'xiaolv',
+                label: '效率'
+            }, {
+                value: 'kekong',
+                label: '可控'
+            }]
+        }*/
+    ];
+
+    data.destOpts = [
+    ];
+
+    data.cascaderProps = {
+        "value":"id",
+        "label":"name",
+        "children":"children"
+    };
+
+    data.destOptsFBA = [];
+    data.destOptsExp = [];
+    data.freightTypesExp = [];
+    data.freightTypesFBA = [];
+
+
+    data.resultLoading = false;
+    data.searchResults = [];
+    data.searched = false;
+
+    new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            goRegister(){
+                window.location.href="register.html";
+            },
+            login(){
+                window.location.href="login.html";
+            },
+            goPersonal(){
+                window.location.href="personal.html";
+            },
+            logout(){
+                axios.get('/invalidateUser')
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            data.userType = 'guest';
+                            data.userName='游客';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            search(){
+                data.resultLoading = true;
+                data.searched = true;
+                axios.post('/search/searchPriceSolution', {
+                    packageLocation:data.searchParams.packageLocation,
+                    destination: (data.tabs.activeName == 'fba') ? data.searchParams.destinationFBA : data.searchParams.destinationExp,
+                    length:data.searchParams.length,
+                    width:data.searchParams.width,
+                    height:data.searchParams.height,
+                    weight : data.searchParams.weight,
+                    amount:data.searchParams.amount,
+                    freightType:(data.tabs.activeName == 'fba') ? data.searchParams.freightTypeFBA : data.searchParams.freightTypeExp,
+                    deliverApproach:data.searchParams.deliverApproach,
+                    bizType: (data.tabs.activeName == 'fba') ? 1 : 2,
+                    index: 0,
+                    size: 10
+                })
+                .then(function (response) {
+                    console.log(response);
+                    if(response.data && response.data.priceSolutionList){
+                        data.searchResults = response.data.priceSolutionList;
+                    }else{
+                        data.searchResults = [];
+                    }
+                    data.resultLoading = false;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    data.searchResults = [];
+                    data.resultLoading = false;
+                });
+            },
+            handleOriginChange(val){
+               // console.log(val);
+                data.searchParams.packageLocation = val[val.length -1];
+            },
+            handleDestChange(val){
+                // console.log(val);
+                if(data.tabs.activeName == 'fba') {
+                    data.searchParams.destinationFBA = val[val.length - 1];
+                }else if(data.tabs.activeName == 'bizexpress'){
+                    data.searchParams.destinationExp = val[val.length - 1];
+                }
+            }
+        }
+    });
+
+    axios.get('/validateUser')
+        .then(function (response) {
+            console.log(response);
+            if(response.data.code == 1) {
+                data.userType = "front";
+                data.user = response.data.user;
+                data.userName = data.user.account;
+                doAfterLogin();
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+    function  doAfterLogin() {
+
+    }
+
+    (function (){
+        axios.get('/get/allResourcesByBizType?bizType=1')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.originOpts =response.data.origins ;
+                    data.destOptsFBA =response.data.destinations;
+                    data.freightTypesFBA = response.data.freightTypes;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
+
+    (function (){
+        axios.get('/get/allResourcesByBizType?bizType=2')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.destOptsExp=response.data.destinations;
+                    data.freightTypesExp = response.data.freightTypes;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
+
+
+</script>
+</html>

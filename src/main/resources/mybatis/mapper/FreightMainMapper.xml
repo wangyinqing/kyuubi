@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mybatis.mapper.FreightMainMapper">
+
+    <sql id="freightMainColumns">
+        id,
+        origin,
+        destination,
+        biz_type as bizType,
+        airlines,
+        freight_type as freightType,
+        provider_id as providerId
+    </sql>
+
+    <sql id="searchPriceSolutionColumns">
+        a.provider_id as providerId,
+        a.origin,
+        a.destination,
+        a.freight_type as freightType,
+        a.airlines,
+        a.biz_type as bizType,
+        b.range_from as `from`,
+        b.range_to as `to`,
+        b.price
+    </sql>
+
+
+    <insert id="create" parameterType="FreightMain" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO logistics_freight (origin, destination, biz_type, airlines, freight_type, provider_id)
+        VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{freightType}, #{providerId})
+    </insert>
+
+    <select id="findByProvider" parameterType="long" resultType="FreightMain">
+        SELECT <include refid="freightMainColumns"></include>
+        FROM logistics_freight WHERE provider_id = #{providerId}
+    </select>
+
+    <select id="searchPriceSolutionByCondition" parameterType="SearchPriceCondition" resultType="PriceSolution">
+        SELECT <include refid="searchPriceSolutionColumns"></include>
+        FROM logistics_freight a
+        LEFT JOIN logistics_freight_range b ON a.id = b.freight_id
+        WHERE a.origin = #{origin}
+        AND a.destination = #{destination}
+        AND a.biz_type = #{bizType}
+        AND a.freight_type = #{freightType}
+        AND b.range_from <![CDATA[ <= ]]> #{totalWeight}
+        AND b.range_to <![CDATA[ > ]]> #{totalWeight}
+        LIMIT #{index}, #{size}
+    </select>
+
+    <update id="update" parameterType="FreightMain">
+        UPDATE logistics_freight
+        set origin = #{origin},destination=#{destination},biz_type= #{bizType}
+        ,airlines=#{airlines},freight_type=#{freightType} where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        delete from logistics_freight where id = #{id}
+    </delete>
+
+</mapper>

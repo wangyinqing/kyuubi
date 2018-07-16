@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>九尾狐物流商平台</title>
+    <link rel="stylesheet" href="https://unpkg.zhimg.com/element-ui@2.4.3/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header>
+            <h3>九尾狐物流商平台</h3>
+        </el-header>
+        <el-main >
+            <el-row class="tac">
+                <el-col :span="6">
+                    <el-menu
+                            default-active="1"
+                            @open="handleOpen"
+                            @close="handleClose"
+                            @select="handleSelect">
+                        <el-menu-item index="1">
+                            <i class="el-icon-setting"></i>
+                            <span slot="title">运费设置</span>
+                        </el-menu-item>
+                        <el-menu-item index="2">
+                            <i class="el-icon-remove-outline"></i>
+                            <span slot="title">退出登录</span>
+                        </el-menu-item>
+                    </el-menu>
+                </el-col>
+                <el-col :span="18" >
+                    <div v-if="menu==1 && mode==1">
+                        <el-form ref="form" :model="form" label-width="120px">
+                            <el-form-item label="始发地">
+                                <!--<el-input v-model="form.origin" placeholder="请选择始发地"></el-input>
+                                -->
+                                <el-cascader
+                                        placeholder="试试搜索：省市区"
+                                        :options="originOpts"
+                                        v-model="form.selectedOriginOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleOriginChange"
+                                        filterable
+                                ></el-cascader>
+                            </el-form-item>
+                            <el-form-item label="目的地">
+                               <!--<el-input v-model="form.destination" placeholder="请选择目的地"></el-input >
+                               -->
+                                <el-cascader
+                                        placeholder="试试搜索：国家地区"
+                                        :options="filterDestOpts"
+                                        v-model="form.selectedDestOpts"
+                                        :props="cascaderProps"
+                                        :clearable="true"
+                                        @change="handleDestChange"
+                                        :show-all-levels="false"
+                                        filterable
+                                        :disabled="!form.bizType"
+                                ></el-cascader>
+                                <el-tooltip content="目的地根据业务类型改变">
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
+                            <el-form-item label="业务类型">
+                                <el-select v-model="form.bizType" placeholder="请选择业务类型"  @change="bizTypeChange">
+                                    <el-option   v-for="item in bizTypeOpts"
+                                                 :key="item.id"
+                                                 :label="item.name"
+                                                 :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="航空公司">
+                                <el-select v-model="form.airlines" placeholder="请选择航空公司">
+                                    <el-option   v-for="item in airlinesOpts"
+                                                 :key="item.id"
+                                                 :label="item.airlineName"
+                                                 :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="货物种类">
+                                <el-select v-model="form.freightType" placeholder="请选择货物种类" :disabled="!form.bizType">
+                                    <el-option   v-for="item in filterFreightTyeOpts"
+                                                 :key="item.id"
+                                                 :label="item.name"
+                                                 :value="item.id">
+                                    </el-option>
+                                </el-select>
+                                <el-tooltip content="货物种类根据业务类型改变">
+                                    <i class="el-icon-question"></i>
+                                </el-tooltip>
+                            </el-form-item>
+                            <el-form-item label="价格">
+                                <el-button icon="el-icon-plus"
+                                           size="mini"
+                                           type="primary"
+                                           @click="handleAdd"></el-button>
+                                <el-table :data="form.freights" size="mini" @cell-click="" @cell-mouse-enter="cellEdit1" @cell-mouse-leave="cellShow1">
+                                    <el-table-column label="起始区间">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_from_edit">
+                                                <input v-model="scope.row.from" @blur="cellShow(scope,0)" size="small"/>
+                                                <!--<el-button size="mini" @click="scope.row.save">save</el-button>
+                                                <el-button size="mini" @click="scope.row.is_edit = false">cancel</el-button>-->
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,0)">{{ scope.row.from }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="结束区间">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_to_edit">
+                                                <input v-model="scope.row.to" />
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,1)">{{ scope.row.to }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="单价">
+                                        <template slot-scope="scope">
+                                            <template v-if="scope.row.is_price_edit">
+                                                <input v-model="scope.row.price" />
+                                            </template>
+                                            <template v-else>
+                                                <span @click="cellEdit(scope.row,2)">{{ scope.row.price }}</span>
+                                            </template>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="操作" width="120px">
+                                        <template slot-scope="scope">
+                                            <el-button icon="el-icon-delete" round
+                                                    size="mini"
+                                                    type="danger"
+                                                    @click="handleDelete(scope.$index, scope.row)"></el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit" v-if="!form.id">创建</el-button>
+                                <el-button type="primary" @click="onSubmit" v-if="!!form.id">保存</el-button>
+                                <el-button type="danger" @click="back2FreightList" >返回</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                    <div v-if="menu==1 && mode==2">
+                        <el-table
+                                :data="freights"
+                                border
+                                style="width: 100%"
+                                v-loading="freightLoading">
+                            <!--<el-table-column
+                                    prop="id"
+                                    label="id"
+                                    width="150">
+                            </el-table-column>-->
+                            <el-table-column
+                                    prop="originId"
+                                    label="始发地"
+                                    width="200"
+                                    :formatter="showOrigin">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="destinationId"
+                                    label="目的地"
+                                    width="120"
+                                    :formatter="showDestination">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="airLineName"
+                                    label="航空公司"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="bizTypeName"
+                                    label="业务类型"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="freightTypeName"
+                                    label="货物种类"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    label="价格"
+                                    width="120">
+                                <template slot-scope="scope">
+                                    <template v-if="!!scope.row.freightRangeList && scope.row.freightRangeList.length>0">
+                                        <el-popover trigger="hover" placement="top">
+                                            <table >
+                                                <tr>
+                                                    <th>起始区间</th>
+                                                    <th>结束区间</th>
+                                                    <th>单价</th>
+                                                </tr>
+                                                <template v-for="(item,index) in scope.row.freightRangeList">
+                                                        <tr>
+                                                            <td>{{item.from}}</td>
+                                                            <td>{{item.to}}</td>
+                                                            <td>{{item.price}}</td>
+                                                        </tr>
+                                                </template>
+                                            </table>
+                                            <div slot="reference" >
+                                                <el-tag size="medium">查看价格</el-tag>
+                                            </div>
+                                        </el-popover>
+                                    </template>
+                                    <template v-else>
+                                        暂无数据
+                                    </template>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    min-width="120">
+                                <template slot-scope="scope">
+                                    <el-button @click="editFreight(scope.row)" type="primary" size="small" class="el-icon-edit"></el-button>
+                                    <el-button @click="deleteFreight(scope.row);" type="danger" size="small" class="el-icon-delete"></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-button @click="addFreight" type="primary" size="small" class="el-icon-plus"></el-button>
+                        <el-button @click="onRefresh" type="success" size="small" class="el-icon-refresh"></el-button>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.zhimg.com/vue@2.5.16/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.zhimg.com/element-ui@2.4.3/lib/index.js"></script>
+
+<script src="https://unpkg.zhimg.com/axios@0.18.0/dist/axios.js"></script>
+<script>
+    var data= {
+        menu:1,
+        form: {
+            id:null,
+            origin: '',
+            destination: '',
+            bizType: '',
+            airlines: '',
+            freightType:'',
+            freights:[],
+            selectedOriginOpts: [],
+            selectedDestOpts: []
+        },
+        mode:2,
+        freights:[],
+        freightLoading: false,
+        originOpts: [],
+        destOpts: [],
+        filterDestOpts: [],
+        cascaderProps: {
+            "value":"id",
+            "label":"name",
+            "children":"children"
+        },
+        bizTypeOpts: [{
+            id: 1,
+            name: 'FBA'
+        },{
+            id: 2,
+            name: '大宗普货'
+        }],
+        airlinesOpts: [{
+            id: 1,
+            airlineName: '中国南方航空'
+        },{
+            id: 2,
+            airlineName: '东方航空公司'
+        }],
+        freightTypeOpts: [{
+            id: 1,
+            name: '普货',
+            type: 1
+        },{
+            id: 2,
+            name: '带电',
+            type: 1
+        },{
+            id: 5,
+            name: '纺织物',
+            type: 2
+        }],
+        filterFreightTyeOpts: []
+    };
+
+    new Vue({
+        el: '#app',
+        data: data,
+        methods: {
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+                data.menu=key;
+                if(key == 2){
+                    this.$confirm('确定登出?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.get('/business/invalidateUser')
+                        .then(function (response) {
+                            console.log(response);
+                            if(response.data.code == 1) {
+                                //setTimeout(function () {
+                                    window.location.href = "/business/login.html";
+                                //}, 500);
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }).catch(() => {
+                    });
+                }else if(key ==1){
+                    getFreights();
+                    data.mode = 2;
+                }
+            },
+            cellEdit(row,index){
+                /*if(index == 0){
+                    row.is_from_edit = true;
+                }else if(index == 1){
+                    row.is_to_edit = true;
+                }else if(index == 2){
+                    row.is_price_edit = true;
+                }*/
+
+            },
+            cellShow(row,index){
+               /* if(index == 0){
+                    row.is_from_edit = false;
+                }else if(index == 1){
+                    row.is_to_edit = false;
+                }else if(index == 2){
+                    row.is_price_edit = false;
+                }*/
+
+            },
+            cellEdit1(row, column, cell, event){
+               var index = cell.cellIndex;
+               if(index == 0){
+                   row.is_from_edit = true;
+               }else if(index == 1){
+                   row.is_to_edit = true;
+               }else if(index == 2){
+                   row.is_price_edit = true;
+               }
+            },
+            cellShow1(row, column, cell, event){
+                var index = cell.cellIndex;
+                if(index == 0){
+                    row.is_from_edit = false;
+                }else if(index == 1){
+                    row.is_to_edit = false;
+                }else if(index == 2){
+                    row.is_price_edit = false;
+                }
+            },
+            handleDelete(index, row){
+                data.form.freights.splice(index,1);
+            },
+            handleAdd(){
+                data.form.freights.push(
+                    {   'from':0,
+                        'to':0,
+                        'price':0,
+                        'is_from_edit':false,
+                        'is_to_edit':false,
+                        'is_price_edit':false}
+                    );
+            },
+            onSubmit() {
+                console.log(JSON.stringify(data.form));
+                console.log('submit!');
+                var v = this;
+                axios.post('/business/freight/saveOrUpdate', data.form)
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            v.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            });
+                        }else{
+                            v.$message({
+                                message: response.data.message,
+                                type: 'error'
+                            });
+                        }
+                        setTimeout(function(){
+                            data.mode = 2;
+                            getFreights();
+                        },500);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        data.mode = 2;
+                    });
+            },
+            editFreight(row){
+                console.log(row.freightId);
+                data.form.id = row.freightId;
+                data.form.origin = row.originId;
+                data.form.destination = row.destinationId;
+                data.form.bizType = row.bizType;
+                data.form.freightType = row.freightTypeId;
+                data.form.airlines = row.airLineId;
+                data.form.freights = [];
+                for(idx in row.freightRangeList){
+                    var frage = {};
+                    frage.is_from_edit = false;
+                    frage.is_to_edit = false;
+                    frage.is_price_edit = false;
+                    frage.from = row.freightRangeList[idx].from;
+                    frage.to = row.freightRangeList[idx].to;
+                    frage.price = row.freightRangeList[idx].price;
+                    data.form.freights.push(frage);
+                }
+                fillDestAndFreightType(data.form.bizType);
+                var selectedOrig = [];
+                findLabelByValueRecursively(data.originOpts, row.originId,selectedOrig,true);
+                var selectedDest = [];
+                findLabelByValueRecursively(data.destOpts, row.destinationId,selectedDest,true);
+                data.form.selectedOriginOpts = getOriginOrDestId(selectedOrig);
+                data.form.selectedDestOpts = getOriginOrDestId(selectedDest);
+                data.mode = 1;
+            },
+            addFreight(){
+                data.form = {
+                        id:null,
+                        origin: '',
+                        destination: '',
+                        bizType: '',
+                        airlines: '',
+                        freightType:'',
+                        freights:[],
+                        selectedDestOpts: [],
+                        selectedOriginOpts: []
+                };
+                data.mode = 1;
+            },
+            deleteFreight(row){
+                var id = row.freightId;
+                var v = this;
+                this.$confirm('确定删除?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {
+                    axios.get('/business/freight/delete/' + id)
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code == 1) {
+                            v.$message({
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                        }else{
+                            v.$message({
+                                message: response.data.message,
+                                type: 'error'
+                            });
+                        }
+                        setTimeout(function(){
+                            getFreights();
+                        },200);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                }).catch(() => {
+                });
+            },
+            handleOriginChange(val){
+                // console.log(val);
+                data.form.origin = val[val.length -1];
+            },
+            handleDestChange(val){
+                // console.log(val);
+                data.form.destination = val[val.length -1];
+            },
+            showOrigin(row, column, cellValue, index){
+                var selected = [];
+                findLabelByValueRecursively(data.originOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
+            },
+            showDestination(row, column, cellValue, index){
+                var selected = [];
+                findLabelByValueRecursively(data.destOpts, cellValue,selected,true);
+                return formatOriginOrDestValue(selected);
+            },
+            onRefresh(){
+                getFreights();
+            },
+            back2FreightList(){
+                data.mode = 2;
+                //getFreights();
+            },
+            bizTypeChange(val){
+               // console.log(val);
+                fillDestAndFreightType(val, true);
+            }
+
+        }
+    })
+
+
+    function findLabelByValueRecursively(object, value, selected, withParent){
+        if(!selected)
+            selected = [];
+        if(!withParent)
+            withParent = false;
+        //从始发地或目的地里找到显示内容
+        if(object){
+            for(var i in object){
+                var o = object[i];
+                if(o.id == value){
+                    selected.unshift(o);
+                    return true;
+                }else{
+                    if(o.children){
+                        if(findLabelByValueRecursively(o.children, value, selected, withParent) && withParent){
+                            selected.unshift(o);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
+
+    function formatOriginOrDestValue(objects){
+        var str = '';
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                str += objects[i].name;
+                if( (i + 1) < objects.length)
+                    str += " / ";
+                i++;
+            }
+        }
+        return str;
+    }
+
+    function getOriginOrDestId(objects){
+        var ids = [];
+        if(objects instanceof Array){
+            var i = 0;
+            while(i < objects.length){
+                ids.push(objects[i].id);
+                i++;
+            }
+        }
+        return ids;
+    }
+
+    function getFreights(){
+        data.freightLoading = true;
+        axios.get('/business/freight/list')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    console.log(response.data.data);
+                    data.freights = response.data.data;
+                    data.freightLoading = false;
+                }
+                data.mode = 2;
+            })
+            .catch(function (error) {
+                console.log(error);
+                data.freightLoading = false;
+                data.mode = 2;
+            });
+    }
+
+
+    function fillDestAndFreightType(bizType, clear){
+        if(!clear)
+            clear = false;
+        if(bizType){
+            data.filterFreightTyeOpts = [];
+            if(clear)
+                data.form.freightType = null;
+            for(var i in data.freightTypeOpts){
+                if(bizType == data.freightTypeOpts[i].type)
+                    data.filterFreightTyeOpts.push(data.freightTypeOpts[i]);
+            }
+
+            data.filterDestOpts = [];
+            if(clear){
+                data.form.destination = null;
+                data.form.selectedDestOpts = [];
+            }
+            for(var i in data.destOpts){
+                if(bizType == data.destOpts[i].businessType)
+                    data.filterDestOpts.push(data.destOpts[i]);
+            }
+
+        }
+    }
+
+    if(data.menu == 1){
+        getFreights();
+    }
+
+
+    axios.get('/business/validateUser')
+        .then(function (response) {
+            console.log(response);
+            if(!response.data.code  || response.data.code!= 1) {
+                setTimeout(function () {
+                    window.location.href = "/business/login.html";
+                }, 500);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+
+    (function (){
+        axios.get('/get/allResources')
+            .then(function (response) {
+                console.log(response);
+                if(response.data.code == 1) {
+                    data.originOpts =response.data.origins ;
+                    data.destOpts =response.data.destinations;
+                    data.filterDestOpts = [];
+                    data.bizTypeOpts = response.data.bizTypes;
+                    data.airlinesOpts = response.data.airlines;
+                    data.freightTypeOpts = response.data.freightTypes;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    })();
+
+</script>
+</html>
