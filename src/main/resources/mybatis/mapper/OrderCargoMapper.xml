@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mybatis.mapper.OrderCargoMapper">
+    <sql id="orderCargoColumns">
+        order_cargo_id AS orderCargoId,
+        order_id AS orderId,
+        cargo_name AS cargoName,
+        cargo_en_name AS cargoEnName,
+        hs_code AS hsCode,
+        customs_unit_charge AS customsUnitCharge,
+        cargo_length AS cargoLength,
+        cargo_width AS cargoWidth,
+        cargo_height AS cargoHeight,
+        num_per_pack AS numPerPack,
+        package_num AS packageNum,
+        customs_total_charge AS customsTotalCharge,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="insertOrderCargo" parameterType="OrderCargo" useGeneratedKeys="true" keyProperty="order_cargo_id">
+        INSERT INTO order_cargo (order_id, cargo_name, cargo_en_name, hs_code, customs_unit_charge, cargo_length,
+         cargo_width, cargo_height, num_per_pack, package_num, customs_total_charge)
+        VALUES (#{orderId}, #{cargoName}, #{cargoEnName}, #{hsCode}, #{customsUnitCharge}, #{cargoLength}, #{cargoWidth},
+        #{cargoHeight}, #{numPerPack}, #{packageNum}, #{customsTotalCharge})
+    </insert>
+
+    <select id="findOrderCargoByOrderId" parameterType="String" resultType="OrderCargo">
+        SELECT <include refid="orderCargoColumns"></include>
+        FROM order_cargo WHERE order_id = #{orderId}
+    </select>
+
+</mapper>

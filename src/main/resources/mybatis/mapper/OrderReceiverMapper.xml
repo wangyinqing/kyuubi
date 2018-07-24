@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mybatis.mapper.OrderReceiverMapper">
+    <sql id="orderReceiverColumns">
+        order_receiver_id AS orderReceiverId,
+        order_id AS orderId,
+        biz_type AS bizType,
+        receiver_name AS receiverName,
+        receiver_code AS receiverCode,
+        receiver_company AS receiverCompany,
+        receiver_mobile AS receiverMobile,
+        receiver_contact AS receiverContact,
+        receiver_country_id AS receiverCountryId,
+        receiver_province_id AS receiverProvinceId,
+        receiver_city_id AS receiverCityId,
+        receiver_address AS receiverAddress,
+        receiver_postcode AS receiverPostcode,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="insertOrderReceiver" parameterType="OrderReceiver" useGeneratedKeys="true" keyProperty="order_receiver_id">
+        INSERT INTO order_receiver (order_id, biz_type, receiver_name, receiver_code, receiver_company, receiver_mobile, receiver_contact,
+        receiver_country_id, receiver_province_id, receiver_city_id, receiver_address, receiver_postcode)
+        VALUES (#{orderId}, #{bizType}, #{receiverName}, #{receiverCode}, #{receiverCompany}, #{receiverMobile}, #{receiverContact},
+        #{receiverCountryId}, #{receiverProvinceId}, #{receiverCityId}, #{receiverAddress}, #{receiverPostcode})
+    </insert>
+
+    <select id="findOrderReceiverByOrderId" parameterType="String" resultType="OrderReceiver">
+        SELECT <include refid="orderReceiverColumns"></include>
+        FROM order_receiver WHERE order_id = #{orderId}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+       Copyright 2015-2016 the original author or authors.
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.mybatis.mapper.OrderCollectMapper">
+    <sql id="orderCollectColumns">
+        order_collect_id AS orderCollectId,
+        order_id AS orderId,
+        collect_name AS collectName,
+        collect_mobile AS collectMobile,
+        collect_province_id AS collectProvinceId,
+        collect_city_id AS collectCityId,
+        collect_region_id AS collectRegionId,
+        collect_address AS collectAddress,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="insertOrderCollect" parameterType="OrderCollect" useGeneratedKeys="true" keyProperty="order_collect_id">
+        INSERT INTO order_collect (order_id, collect_name, collect_mobile, collect_province_id, collect_city_id, collect_region_id, collect_address)
+        VALUES (#{orderId}, #{collectName}, #{collectMobile}, #{collectProvinceId}, #{collectCityId}, #{collectRegionId}, #{collectAddress})
+    </insert>
+
+    <select id="findOrderCollectByOrderId" parameterType="String" resultType="OrderCollect">
+        SELECT <include refid="orderCollectColumns"></include>
+        FROM order_collect WHERE order_id = #{orderId}
+    </select>
+
+</mapper>
