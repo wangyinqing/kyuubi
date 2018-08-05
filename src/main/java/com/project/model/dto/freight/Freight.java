@@ -18,21 +18,15 @@ public class Freight {
 
     private Long providerId;
 
+    private Integer taxInclude;
+
+    private Integer timeMin;
+
+    private Integer timeMax;
+
     private List<FreightRange> freights;
 
     public Freight() {
-    }
-
-
-    public Freight(Long id, String origin, String destination, String bizType, String airlines, String freightType, Long providerId, List<FreightRange> freights) {
-        this.id = id;
-        this.origin = origin;
-        this.destination = destination;
-        this.bizType = bizType;
-        this.airlines = airlines;
-        this.freightType = freightType;
-        this.providerId = providerId;
-        this.freights = freights;
     }
 
     public Long getId() {
@@ -100,6 +94,30 @@ public class Freight {
         this.providerId = providerId;
     }
 
+    public Integer getTaxInclude() {
+        return taxInclude;
+    }
+
+    public void setTaxInclude(Integer taxInclude) {
+        this.taxInclude = taxInclude;
+    }
+
+    public Integer getTimeMin() {
+        return timeMin;
+    }
+
+    public void setTimeMin(Integer timeMin) {
+        this.timeMin = timeMin;
+    }
+
+    public Integer getTimeMax() {
+        return timeMax;
+    }
+
+    public void setTimeMax(Integer timeMax) {
+        this.timeMax = timeMax;
+    }
+
     @Override
     public String toString() {
         return "Freight{" +
@@ -110,6 +128,9 @@ public class Freight {
                 ", airlines='" + airlines + '\'' +
                 ", freightType='" + freightType + '\'' +
                 ", providerId=" + providerId +
+                ", taxInclude=" + taxInclude +
+                ", timeMin=" + timeMin +
+                ", timeMax=" + timeMax +
                 ", freights=" + freights +
                 '}';
     }

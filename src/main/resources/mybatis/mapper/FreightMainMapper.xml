@@ -23,7 +23,10 @@
         biz_type as bizType,
         airlines,
         freight_type as freightType,
-        provider_id as providerId
+        provider_id as providerId,
+        tax_include as taxInclude,
+        time_min as timeMin,
+        time_max as timeMax
     </sql>
 
     <sql id="searchPriceSolutionColumns">
@@ -33,6 +36,9 @@
         a.freight_type as freightType,
         a.airlines,
         a.biz_type as bizType,
+        a.tax_include as taxInclude,
+        a.time_min as timeMin,
+        a.time_max as timeMax,
         b.range_from as `from`,
         b.range_to as `to`,
         b.price
@@ -40,8 +46,10 @@
 
 
     <insert id="create" parameterType="FreightMain" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO logistics_freight (origin, destination, biz_type, airlines, freight_type, provider_id)
-        VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{freightType}, #{providerId})
+        INSERT INTO logistics_freight (origin, destination, biz_type, airlines, freight_type, provider_id,
+        tax_include, time_min, time_max)
+        VALUES (#{origin}, #{destination}, #{bizType}, #{airlines}, #{freightType}, #{providerId},
+        #{taxInclude}, #{timeMin}, #{timeMax})
     </insert>
 
     <select id="findByProvider" parameterType="long" resultType="FreightMain">

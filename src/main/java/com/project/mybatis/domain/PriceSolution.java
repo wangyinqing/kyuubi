@@ -22,6 +22,9 @@ public class PriceSolution {
     private Integer from;
     private Integer to;
     private BigDecimal price;
+    private Integer taxInclude;
+    private Integer timeMin;
+    private Integer timeMax;
 
     public Long getProviderId() {
         return providerId;
@@ -141,5 +144,29 @@ public class PriceSolution {
 
     public void setBizTypeName(String bizTypeName) {
         this.bizTypeName = bizTypeName;
+    }
+
+    public Integer getTaxInclude() {
+        return taxInclude;
+    }
+
+    public void setTaxInclude(Integer taxInclude) {
+        this.taxInclude = taxInclude;
+    }
+
+    public Integer getTimeMin() {
+        return timeMin;
+    }
+
+    public void setTimeMin(Integer timeMin) {
+        this.timeMin = timeMin;
+    }
+
+    public Integer getTimeMax() {
+        return timeMax;
+    }
+
+    public void setTimeMax(Integer timeMax) {
+        this.timeMax = timeMax;
     }
 }
