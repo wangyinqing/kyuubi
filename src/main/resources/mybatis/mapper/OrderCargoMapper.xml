@@ -35,7 +35,7 @@
 
     <insert id="insertOrderCargo" parameterType="OrderCargo" useGeneratedKeys="true" keyProperty="order_cargo_id">
         INSERT INTO order_cargo (order_id, cargo_name, cargo_en_name, hs_code, customs_unit_charge, cargo_length,
-         cargo_width, cargo_height, cargo_weight, num_per_pack, package_num, customs_total_charge)
+        cargo_width, cargo_height, cargo_weight, num_per_pack, package_num, customs_total_charge)
         VALUES (#{orderId}, #{cargoName}, #{cargoEnName}, #{hsCode}, #{customsUnitCharge}, #{cargoLength}, #{cargoWidth},
         #{cargoHeight}, #{cargoWeight}, #{numPerPack}, #{packageNum}, #{customsTotalCharge})
     </insert>
