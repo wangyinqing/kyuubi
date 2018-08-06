@@ -15,9 +15,10 @@ public class OrderCargo {
     private String cargoEnName;
     private String hsCode;
     private BigDecimal customsUnitCharge;
-    private Integer cargoLength;
-    private Integer cargoWidth;
-    private Integer cargoHeight;
+    private Double cargoLength;
+    private Double cargoWidth;
+    private Double cargoHeight;
+    private Double cargoWeight;
     private Integer numPerPack;
     private Integer packageNum;
     private BigDecimal customsTotalCharge;
@@ -72,28 +73,36 @@ public class OrderCargo {
         this.customsUnitCharge = customsUnitCharge;
     }
 
-    public Integer getCargoLength() {
+    public Double getCargoLength() {
         return cargoLength;
     }
 
-    public void setCargoLength(Integer cargoLength) {
+    public void setCargoLength(Double cargoLength) {
         this.cargoLength = cargoLength;
     }
 
-    public Integer getCargoWidth() {
+    public Double getCargoWidth() {
         return cargoWidth;
     }
 
-    public void setCargoWidth(Integer cargoWidth) {
+    public void setCargoWidth(Double cargoWidth) {
         this.cargoWidth = cargoWidth;
     }
 
-    public Integer getCargoHeight() {
+    public Double getCargoHeight() {
         return cargoHeight;
     }
 
-    public void setCargoHeight(Integer cargoHeight) {
+    public void setCargoHeight(Double cargoHeight) {
         this.cargoHeight = cargoHeight;
+    }
+
+    public Double getCargoWeight() {
+        return cargoWeight;
+    }
+
+    public void setCargoWeight(Double cargoWeight) {
+        this.cargoWeight = cargoWeight;
     }
 
     public Integer getNumPerPack() {

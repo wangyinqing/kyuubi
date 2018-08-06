@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.vo.AirlineVO;
 import com.project.model.vo.BizTypeVO;
@@ -12,6 +13,7 @@ import com.project.service.ResourceService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -109,5 +111,13 @@ public class ResourceController {
         map.put("freightTypes", freightTypes);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(map);
+    }
+
+    @GetMapping("/cityList")
+    @ResponseBody
+    public String getDomesticPoiList() {
+        //始发地
+        List<PoiDomesticVO> poiDomestic = resourceService.buildDomesticPoiVo();
+        return JSON.toJSONString(poiDomestic);
     }
 }
