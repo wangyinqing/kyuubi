@@ -1,0 +1,1597 @@
+/*订单信息查询-------------------------start*/
+.placeorder .pay_now {
+    display: inline-block;
+    margin-left: 15px;
+    border-radius: 3px;
+    width: 48px;
+    line-height: 22px;
+    font-size: 12px;
+    font-family: "Microsoft Yahei";
+    color: #fff;
+    cursor: pointer;
+    background: #6583fb;
+}
+
+.placeorder .info_tab_nav {
+    color: #999;
+    display: inline-block;
+    line-height: 2;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.placeorder .info_nav_selected {
+    color: #6583fb;
+    border-bottom: 3px solid #6583fb;
+    line-height: 2;
+}
+
+.placeorder .logistics_btn {
+    margin-left: 130px;
+    color: #6583fb;
+    cursor: pointer;
+}
+
+.placeorder .logistics_area {
+    display: none;
+    margin-left: 130px;
+    width: 750px;
+}
+
+.placeorder .time_now {
+    color: #6583fb;
+}
+
+.placeorder .time_line {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.placeorder .time_line:before {
+    content: "";
+    display: inline-block;
++ display: block;
+    position: absolute;
+    top: 35px;
+    left: 88px;
+    width: 25px;
+    height: 13px;
+    background: url(../images/jt.png) no-repeat;
+}
+
+.placeorder .time_now:before {
+    height: 25px;
+    background: url(../images/now.png) no-repeat;
+}
+
+.placeorder .time_line .line_left {
+    padding-top: 20px;
+    float: left;
+    width: 100px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.placeorder .time_line .line_left .point {
+    font-size: 20px;
+}
+
+.placeorder .time_line .line_right {
+    margin-left: 100px;
+    border-left: 1px solid #ccc;
+    padding: 30px 20px 10px 20px;
+    line-height: 1.5;
+}
+
+.placeorder .rdo {
+    display: inline-block;
+    background-image: url(/static/images/logistics-mark-mid.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.placeorder .rdo_selected {
+    background-image: url(/static/images/logistics-mark-top.png);
+}
+
+.placeorder .newShowFor .cell_hd {
+    min-width: 242px;
+}
+
+.placeorder .ml_240 {
+    margin-left: 140px;
+}
+
+.placeorder .ml_200 {
+    margin-left: 100px;
+}
+
+.placeorder .mb_15 {
+    margin-bottom: 15px;
+}
+
+.placeorder .nav_tt {
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: #6583fb;
+    line-height: 2;
+    border-bottom: 1px solid #ccc;
+}
+
+.placeorder .info_area {
+    margin: 50px auto 0;
+    width: 840px;
+    text-align: left;
+    line-height: 36px;
+}
+
+.placeorder .info_area.new_info_area {
+    margin: 32px auto 0;
+}
+
+.lvwen {
+    background-image: url(images/package_sprites_2.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: inline-block;
+    background-position: -95px -15px;
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+}
+
+.placeorder .cell_hd {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.placeorder .long_cell_hd {
+    width: 200px;
+    /*margin-left: 10px;*/
+}
+
+.placeorder .cell_hd_in {
+    /* display: inline-block; */
+    width: 105px;
+    font-size: 14px;
+    text-align: right;
+    color: #333;
+}
+
+.placeorder .cell_left_con {
+    display: inline-block;
++ display: inline;
+}
+
+.placeorder .cell_con_spcl {
+    width: 200px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.placeorder .size_info {
+    position: relative;
+    display: inline-block;
+    *display: inline;
+}
+
+.placeorder .cell_main {
+    display: inline-block;
+    width: 180px;
+}
+
+.placeorder .del_btn {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    background-image: url(images/red-x.png);
+    background-position: center center;
+    cursor: pointer;
+}
+
+.placeorder .info_area .input {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 38px;
+    line-height: 38px;
+    color: #333;
+}
+
+.placeorder .info_area .input1 {
+    margin: 15px 8px 0 18px;
+    width: 70px;
+    text-align: center;
+}
+
+.placeorder .info_area .input2 {
+    margin: 15px 0 15px;
+    padding-left: 10px;
+    width: 220px;
+
+}
+
+.placeorder .info_area .add {
+    display: inline-block;
+    border-radius: 5px;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.placeorder .info_area .add_linker {
+    width: 150px;
+    background: #6583fb;
+    color: #fff;
+}
+
+.placeorder .info_area input.clear_ml {
+    margin-left: 0;
+}
+
+.placeorder .txt_left {
+    text-align: left;
+}
+
+.placeorder .hd_img {
+    margin-bottom: 15px;
+    width: 1116px;
+}
+
+.placeorder .goods_add_btn {
+    display: inline-block;
+    width: 440px;
+    margin-top: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+    color: #636363;
+    cursor: pointer;
+}
+
+.placeorder .file_area {
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+.placeorder .file {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70px;
+    opacity: 0;
+    height: 38px;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+
+.placeorder .upload {
+    width: 220px;
+    padding-left: 10px;
+    margin: 0;
+}
+
+.placeorder .upload_btn {
+    margin: 0 8px 0 15px;
+    border-radius: 5px;
+    width: 70px;
+    height: 38px;
+    line-height: 38px;
+    color: #fff;
+    background: #6583fb;
+}
+
+.placeorder .in {
+    text-align: center;
+}
+
+.placeorder .protocol {
+    color: #5677fc;
+    cursor: pointer;
+}
+
+/*--------------common css  弹窗、按钮--------------------------*/
+body {
+    font-size: 14px;
+}
+
+.font_red {
+    color: #f00;
+}
+
+.btn_blue {
+    display: inline-block;
+    border-radius: 5px;
+    line-height: 38px;
+    font-family: 'Microsoft Yahei';
+    color: #fff;
+    background: #6583fb;
+    cursor: pointer;
+}
+
+.veil {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.prompt_box {
+    overflow: hidden;
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    color: #999;
+    box-shadow: 1px 1px 3px #666;
+    background: #fff;
+    z-index: 999999;
+}
+
+.prompt_order {
+    width: 380px;
+}
+
+.prompt_box .prompt_tt {
+    padding-left: 10px;
+    width: 100%;
+    line-height: 40px;
+    font-size: 16px;
+    text-align: left;
+    color: #fff;
+    background: #6583fb;
+}
+
+.prompt_box .prompt_info {
+    margin: 50px auto;
+    font-size: 16px;
+    color: #555;
+}
+
+.prompt_btn {
+    width: 100px;
+    margin-bottom: 30px;
+}
+
+.protocol {
+    color: #6583fb;
+    cursor: pointer;
+}
+
+.protocol_wrap {
+    position: fixed;
+    top: 15%;
+    width: 700px;
+    height: 70%;
+    z-index: 999;
+}
+
+.protocol_wrap .protocol_details {
+    height: 750px;
+    max-height: 75%;
+}
+
+.protocol_wrap iframe {
+    width: 100%;
+    border: none;
+    height: 100%;
+}
+
+.protocol_wrap .protocol_btn {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    width: 100px;
+    margin: 15px 0;
+}
+
+.ml {
+    margin-left: 15px;
+}
+
+.pst_r {
+    position: relative;
+}
+
+.confirm {
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    z-index: 99;
+    margin-left: -300px;
+    border-radius: 6px;
+    width: 600px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #929292;
+    background: #fff;
+}
+
+.confirm .confirm_title {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 0 25px;
+    height: 36px;
+    font-size: 16px;
+    line-height: 38px;
+    color: #6a74ff;
+    background: #f2f2f2;
+}
+
+.confirm .confirm_title .close {
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    background: url(../images/close_btn.png) no-repeat;
+}
+
+.confirm .confirm_content {
+    padding: 15px 30px 23px;
+}
+
+.confirm .consult {
+    margin-top: 15px;
+    color: #6a74ff;
+}
+
+.main {
+    margin: 12px auto 20px;
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    width: 1180px;
+    background: #fff;
+}
+
+/*违禁品弹窗 ----------------------------end*/
+
+/*--------------common css  弹窗、按钮----end----------------------*/
+
+/*-------------下单-------------------*/
+
+.order {
+    padding: 20px 22px 70px;
+    font-size: 14px;
+    color: #999;
+}
+
+.order .nav_tt {
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: #6583fb;
+    line-height: 2;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.order .info_area {
+    margin: 50px auto 0;
+    width: 600px;
+    text-align: left;
+    line-height: 36px;
+}
+
+.order .cell_hd {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.order .size_info {
+    position: relative;
+    display: inline-block;
+    *display: inline;
+}
+
+.order .cell_main {
+    display: inline-block;
+    width: 180px;
+}
+
+.order .del_btn {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    background-image: url(images/red-x.png);
+    background-position: center center;
+    cursor: pointer;
+}
+
+.order .submit_btn {
+    width: 200px;
+    font-size: 16px;
+}
+
+.order .info_area .input {
+    display: inline-block;
+    border: 1px solid #e7e7e7;
+    border-radius: 5px;
+    height: 38px;
+    line-height: 38px;
+    color: #999;
+}
+
+.order .info_area .input1 {
+    margin: 15px 8px 0 18px;
+    width: 70px;
+    text-align: center;
+}
+
+.order .info_area .input2 {
+    margin: 15px 200px 0 5px;
+    padding-left: 10px;
+    width: 220px;
+
+}
+
+.order .info_area .add {
+    display: inline-block;
+    border-radius: 5px;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.order .info_area .add_linker {
+    width: 150px;
+    background: #6583fb;
+    color: #fff;
+}
+
+.order .info_area input.clear_ml {
+    margin-left: 0;
+}
+
+.order .txt_left {
+    text-align: left;
+}
+
+.order .txt_center {
+    text-align: center;
+}
+
+.order .rdo {
+    display: inline-block;
+    background-image: url(/static/images/logistics-mark-mid.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0 5px 0 30px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.order .rdo_selected {
+    background-image: url(/static/images/logistics-mark-top.png);
+}
+
+.order .ml_10 {
+    margin-left: 10px;
+}
+
+.order .mbt {
+    margin: 15px 0 15px;
+}
+
+.order .mr_110 {
+    margin-right: 310px;
+}
+
+/*-------------下单  end-------------------*/
+
+/*国际物流下单页--------------------------start*/
+.container .info_table {
+    color: #333;
+}
+
+.placeorder .ml_240 {
+    margin-left: 140px;
+}
+
+.placeorder .ml_200 {
+    margin-left: 100px;
+}
+
+.placeorder .mb_15 {
+    margin-bottom: 15px;
+}
+
+.placeorder .nav_tt {
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    color: #6583fb;
+    line-height: 2;
+    border-bottom: 1px solid #ccc;
+}
+
+.placeorder .info_area {
+    margin: 50px auto 0;
+    width: 840px;
+    text-align: left;
+    line-height: 36px;
+}
+
+.placeorder .info_area.new_info_area {
+    margin: 32px auto 0;
+}
+
+.placeorder .cell_hd {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.placeorder .long_cell_hd {
+    width: 200px;
+    /*margin-left: 10px;*/
+}
+
+.placeorder .cell_hd_in {
+    display: inline-block;
+    width: 105px;
+    font-size: 14px;
+    text-align: right;
+    color: #333;
+}
+
+.placeorder .cell_left_con {
+    display: inline-block;
++ display: inline;
+}
+
+.placeorder .cell_con_spcl {
+    width: 200px;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+.placeorder .size_info {
+    position: relative;
+    display: inline-block;
+    *display: inline;
+}
+
+.placeorder .cell_main {
+    display: inline-block;
+    width: 180px;
+}
+
+.placeorder .del_btn {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    text-align: center;
+    background-image: url(../images/red-x.png);
+    background-position: center center;
+    cursor: pointer;
+}
+
+.placeorder .info_area .input {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 38px;
+    line-height: 38px;
+    color: #333;
+}
+
+.placeorder .info_area .input1 {
+    margin: 15px 8px 0 18px;
+    width: 70px;
+    text-align: center;
+}
+
+.placeorder .info_area .input2 {
+    margin: 15px 0 15px;
+    padding-left: 10px;
+    width: 220px;
+
+}
+
+.placeorder .info_area .add {
+    display: inline-block;
+    border-radius: 5px;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.placeorder .info_area .add_linker {
+    width: 150px;
+    background: #6583fb;
+    color: #fff;
+}
+
+.placeorder .info_area input.clear_ml {
+    margin-left: 0;
+}
+
+.placeorder .txt_left {
+    text-align: left;
+}
+
+.placeorder .hd_img {
+    margin-bottom: 15px;
+    width: 1116px;
+}
+
+.placeorder .goods_add_btn {
+    display: inline-block;
+    width: 440px;
+    margin-top: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+    color: #636363;
+    cursor: pointer;
+}
+
+.placeorder .file_area {
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+}
+
+.placeorder .file {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70px;
+    opacity: 0;
+    height: 38px;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+
+.placeorder .upload {
+    width: 220px;
+    padding-left: 10px;
+    margin: 0;
+}
+
+.placeorder .upload_btn {
+    margin: 0 8px 0 15px;
+    border-radius: 5px;
+    width: 70px;
+    height: 38px;
+    line-height: 38px;
+    color: #fff;
+    background: #6583fb;
+}
+
+.placeorder .in {
+    text-align: center;
+}
+
+.placeorder .protocol {
+    color: #5677fc;
+    cursor: pointer;
+}
+
+/*第一步---------------------------end*/
+
+/*订单信息查询-------------------------start*/
+.placeorder .pay_now {
+    display: inline-block;
+    margin-left: 15px;
+    border-radius: 3px;
+    width: 48px;
+    line-height: 22px;
+    font-size: 12px;
+    font-family: "Microsoft Yahei";
+    color: #fff;
+    cursor: pointer;
+    background: #6583fb;
+}
+
+.placeorder .info_tab_nav {
+    color: #999;
+    display: inline-block;
+    line-height: 2;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.placeorder .info_nav_selected {
+    color: #6583fb;
+    border-bottom: 3px solid #6583fb;
+    line-height: 2;
+}
+
+.placeorder .logistics_btn {
+    margin-left: 130px;
+    color: #6583fb;
+    cursor: pointer;
+}
+
+.placeorder .logistics_area {
+    display: none;
+    margin-left: 130px;
+    width: 750px;
+}
+
+.placeorder .time_now {
+    color: #6583fb;
+}
+
+.placeorder .time_line {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.placeorder .time_line:before {
+    content: "";
+    display: inline-block;
++ display: block;
+    position: absolute;
+    top: 35px;
+    left: 88px;
+    width: 25px;
+    height: 13px;
+    background: url(../images/jt.png) no-repeat;
+}
+
+.placeorder .time_now:before {
+    height: 25px;
+    background: url(../images/now.png) no-repeat;
+}
+
+.placeorder .time_line .line_left {
+    padding-top: 20px;
+    float: left;
+    width: 100px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.placeorder .time_line .line_left .point {
+    font-size: 20px;
+}
+
+.placeorder .time_line .line_right {
+    margin-left: 100px;
+    border-left: 1px solid #ccc;
+    padding: 30px 20px 10px 20px;
+    line-height: 1.5;
+}
+
+/*订单信息查询-------------------------end*/
+/*国际物流下单页----------------------------end*/
+
+/*--注册 start--*/
+.page_hd {
+    width: 100%;
+    background: #6583fb;
+    height: 40px;
+    line-height: 40px;
+}
+
+.page_hd .tab_nav {
+    width: 1180px;
+    margin: 0 auto;
+}
+
+.page_hd .tab_item {
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.page_hd .nav_cur {
+    background: #fff;
+    color: #6583fb;
+}
+
+/*-------------货兜--公共头部导航条----结束----------------- */
+/*--------------common css  弹窗、按钮--------------------------*/
+.font_red {
+    color: #f00;
+}
+
+.btn_blue {
+    display: inline-block;
+    border-radius: 5px;
+    line-height: 38px;
+    font-family: 'Microsoft Yahei';
+    color: #fff;
+    background: #6583fb;
+    cursor: pointer;
+}
+
+/*
+.prompt_box {
+    overflow: hidden;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    color: #999;
+    box-shadow: 1px 1px 3px #666;
+    background: #fff;
+}
+.prompt_box .prompt_tt {
+    padding-left: 10px;
+    width: 100%;
+    line-height: 40px;
+    text-align: left;
+    color: #6583fb;
+    background: #f2f2f2;
+}
+.prompt_box .prompt_info {
+    margin: 50px auto;
+}
+.prompt_btn {
+    width :100px;
+    margin-bottom: 30px;
+}
+*/
+
+.prompt_order {
+    width: 380px;
+}
+
+.ml {
+    margin-left: 15px;
+}
+
+/*--------------common css  弹窗、按钮----end----------------------*/
+
+/*物流商入驻 start*/
+
+.main {
+    margin: 12px auto 20px;
+    border-radius: 5px;
+    width: 1180px;
+    background: #fff;
+}
+
+.seller_rst {
+    padding: 30px 22px 70px;
+}
+
+.seller_rst .rst_nav {
+    padding: 48px 0 32px;
+    background: url(../images/partner_1.jpg) no-repeat;
+    background-size: 100% auto;
+    text-align: center;
+}
+
+.seller_rst .rst_nav .pic1 {
+    margin-bottom: 42px;
+}
+
+.seller_rst .nav_tt {
+    margin: 35px 0 15px;
+    font-size: 18px;
+    line-height: 1;
+    color: #6583fb;
+}
+
+.seller_rst .section_tt {
+    padding-left: 15px;
+    width: 100%;
+    text-align: left;
+    line-height: 44px;
+    font-size: 18px;
+    color: #666;
+    background: #f1f1f1;
+}
+
+.seller_rst .section_tt .round1 {
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+}
+
+.seller_rst .section_tt .round2 {
+    display: inline-block;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #999;
+}
+
+.seller_rst table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.seller_rst .th, .seller_rst .in {
+    padding-top: 15px;
+}
+
+.seller_rst .th {
+    text-align: right;
+}
+
+.seller_rst .in {
+    padding-left: 10px;
+    text-align: left;
+}
+
+.seller_rst .th1 {
+    width: 30%;
+}
+
+.seller_rst .th2 {
+    width: 7%;
+}
+
+.seller_rst .in1 {
+    width: 19%;
+}
+
+.seller_rst .in2 {
+    width: 43%;
+}
+
+.seller_rst .in3 {
+    width: 70%;
+}
+
+.seller_rst .th span {
+    color: #f00;
+}
+
+.seller_rst .in .input1 {
+    border: 1px solid #ccc;
+    width: 207px;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding-left: 10px;
+}
+
+.seller_rst .file_area {
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 520px;
+    height: 38px;
+    line-height: 38px;
+}
+
+.seller_rst .file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    height: 100%;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+
+.upload {
+    width: 450px;
+    border: none;
+}
+
+.btn {
+    float: right;
+    width: 55px;
+    height: 100%;
+    background: none;
+    border-left: 1px solid #ccc;
+    color: #666;
+}
+
+.txtarea {
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    width: 520px;
+    height: 240px;
+}
+
+.txtarea_th {
+    vertical-align: text-top;
+    line-height: 32px;
+}
+
+.seller_rst .tfooter {
+    text-align: center;
+    padding-top: 33px;
+}
+
+.rst_submit_btn {
+    width: 220px;
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+.rdo {
+    display: inline-block;
+    background-image: url(/static/images/logistics-mark-mid.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0 5px 0 30px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.rdo_selected {
+    background-image: url(/static/images/logistics-mark-top.png);
+}
+
+.protocal {
+    color: #6583fb;
+    cursor: pointer;
+}
+
+.rst_box {
+    width: 380px;
+}
+
+/*物流商入驻 end*/
+
+/*关于我们------------------start*/
+/*-------------货兜--公共头部导航条----结束----------------- */
+/*活动简介start*/
+.aboutus .vdo_play {
+    width: 100%;
+    padding: 50px 0 65px;
+    background: #fff;
+}
+
+.aboutus .vdo_play .vdo_set {
+    display: block;
+    box-shadow: 1px 1px 20px #000;
+    width: 700px;
+    margin: 0 auto;
+}
+
+.aboutus .main_intro {
+    width: 970px;
+    margin: 25px auto;
+}
+
+.aboutus .intro_hd {
+    border-radius: 5px;
+    height: 53px;
+    line-height: 53px;
+    font-size: 20px;
+    color: #666;
+    background: #fff;
+    margin-bottom: 15px;
+}
+
+.aboutus .huodull_item {
+    display: inline-block;
+    cursor: pointer;
+    width: 116px;
+    text-align: center;
+}
+
+.aboutus .intro_hd .selected {
+    display: inline-block;
+    background: url(../images/sprites.png) no-repeat;
+    height: 65px;
+    color: #fff;
+}
+
+.aboutus .intro_con {
+    overflow: hidden;
+    border-radius: 5px;
+    padding: 10px 28px 40px;
+    font-size: 16px;
+    color: #666;
+    background: #fff;
+}
+
+.aboutus .intro_tt {
+    border-bottom: 1px solid #d1d1d1;
+    padding: 30px 0 22px;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.aboutus .tt_ch {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: #6583fb;
+}
+
+.aboutus .contact_way {
+    margin: 38px 15px 0;
+    line-height: 30px;
+}
+
+.aboutus .contact_list {
+    display: inline-block;
+    width: 50%;
+}
+
+.aboutus .contact_list1 {
+    display: inline-block;
+    width: 50%;
+}
+
+.aboutus .contact_list2 {
+    display: inline-block;
+    width: 49%;
+}
+
+/*货兜优势start*/
+.aboutus .advan_list {
+    margin-bottom: 25px;
+}
+
+.aboutus .advan_list .list_hd {
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #6583fb;
+}
+
+.aboutus .advan_list .list_con {
+    line-height: 24px;
+}
+
+.aboutus .list_hd .special, .news_logo {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding-left: 18px;
+    height: 54px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    background: url(../images/sprites.png) no-repeat;
+}
+
+.aboutus .list_hd .sp0 {
+    width: 202px;
+    background-size: 288px 140px;
+    background-position: 0 -64px;
+}
+
+.aboutus .list_hd .sp1 {
+    width: 223px;
+    background-size: 318px 140px;
+    background-position: 0 -65px;
+}
+
+.aboutus .list_hd .sp2 {
+    width: 241px;
+    background-position: 0 -67px;
+}
+
+/*货兜优势内容区end*/
+.aboutus .news_logo {
+    padding-left: 24px;
+    width: 150px;
+    line-height: 48px;
+    font-size: 30px;
+    background-position: 0 -67px;
+    background-size: 228px 140px;
+}
+
+.aboutus .news_main {
+    position: relative;
+    margin-left: 10px;
+    padding: 20px 0;
+}
+
+.aboutus .news_list {
+    display: inline-block;
+    position: relative;
+    padding: 0 0 40px 20px;
+    font-size: 16px;
+    color: #666;
+}
+
+.aboutus .news_date {
+    float: left;
+    width: 105px;
+}
+
+.aboutus .news_img {
+    float: left;
+    width: 205px;
+    height: 135px;
+}
+
+.aboutus .news_list_con {
+    margin-left: 340px;
+}
+
+.aboutus .news_tt {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/*货兜动态内容区end*/
+/*货兜简介end*/
+
+/*“加入我们”*/
+.aboutus .ind_box {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    bottom: 18px;
+}
+
+.aboutus .ind_box .indicator {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    text-align: center;
+}
+
+.aboutus .ind_box .indicator li {
+    display: inline-block;
+    margin: 0 5px 15px;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    line-height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    background: #fff;
+}
+
+.aboutus .ind_box .indicator .on {
+    background: #ff5f00;
+}
+
+.aboutus .m_left {
+    margin-left: 237px;
+    margin-bottom: 30px;
+    background: none;
+}
+
+.aboutus .side_bar {
+    display: inline-block;
+    float: left;
+    width: 237px;
+    background: #f1f1f1;
+    width: 187px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: #666873;
+    cursor: pointer;
+}
+
+.aboutus .side_bar .bar_cur {
+    color: #f9f9f9;
+    background: #6583fb;
+}
+
+.aboutus .pst_condition {
+    display: inline-block;
+    margin-left: 50px;
+}
+
+.aboutus .condition_list {
+    font-size: 16px;
+    color: #666;
+}
+
+.aboutus .condition_list li {
+    margin-bottom: 10px;
+}
+
+.aboutus .condition_tt {
+    line-height: 38px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+}
+
+.aboutus .more_btn {
+    float: right;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6583fb;
+}
+
+.aboutus .more_btn .page_num {
+    float: left;
+    margin-left: 5px;
+    width: 16px;
+    border: 1px solid #6583fb;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    line-height: 16px;
+    font-weight: 600;
+    color: #6583fb;
+}
+
+/*join_us end*/
+/*“加入我们” end*/
+.aboutus .attentus {
+    position: relative;
+    height: 153px;
+}
+
+.aboutus .img_box {
+    display: inline-block;
+    width: 310px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 153px;
+    background: #fff;
+    margin: 0 0 10px 16px;
+}
+
+.aboutus .clear_mar {
+    margin: 0;
+}
+
+.aboutus .wchat_qr {
+    cursor: pointer;
+}
+
+.aboutus .wchat_qr_logo {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    margin-right: 10px;
+    display: none;
+}
+
+.aboutus .hr_email {
+    text-align: right;
+    color: #6583fb;
+}
+
+/*fqa__偏远地区查询-------------------start*/
+.remote_query_bd {
+    padding: 45px 65px;
+}
+
+.remote_query_bd .query_box {
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.remote_query_bd .query_box.query_condition_box {
+    margin-bottom: 20px;
+}
+
+.remote_query_bd .query_box .box_hd {
+    border-bottom: 1px solid #ccc;
+    padding-left: 20px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #555;
+    background: #EAF9F9;
+}
+
+.remote_query_bd .query_condition_box .box_content {
+    padding: 30px 0 30px 30px;
+}
+
+.remote_query_bd .box_content .con_cell {
+    display: inline-block;
+    /*margin-right: 30px;*/
+}
+
+.remote_query_bd .con_cell .reciver_area {
+    width: 190px;
+}
+
+.remote_query_bd .con_cell .post_code {
+    width: 150px;
+}
+
+.remote_query_bd .con_cell .in {
+    padding: 0 4px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    height: 27px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #555;
+}
+
+.remote_query_bd .query_box.query_condition_box .btn_blue {
+    width: 100px;
+    font-size: 16px;
+}
+
+.remote_query_bd .query_box.query_result_box .box_content {
+    padding: 30px;
+}
+
+.remote_query_bd .result_tbl th, .remote_query_bd .result_tbl td {
+    border: 1px solid #ccc;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+}
+
+.remote_query_bd .result_tbl th {
+    background: #f5f5f5;
+}
+
+.query_none .prompt_box {
+    width: 350px;
+}
+
+/*fqa__偏远地区查询-------------------end-------16-05-12*/
